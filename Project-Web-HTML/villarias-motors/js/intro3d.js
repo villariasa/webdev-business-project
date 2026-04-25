@@ -78,15 +78,16 @@
       camera.updateProjectionMatrix();
     }
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 3));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.3;
+    renderer.toneMappingExposure = 1.4;
+    renderer.physicallyCorrectLights = true;
 
     const scene = new THREE.Scene();
-    const fog = new THREE.FogExp2(0x000000, 0.025);
+    const fog = new THREE.FogExp2(0x000000, 0.014);
     scene.fog = fog;
 
     const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 200);
@@ -95,22 +96,43 @@
     window.addEventListener('resize', setSize);
 
     /* ── LIGHTS ── */
-    scene.add(new THREE.AmbientLight(0xffffff, 0.2));
+    scene.add(new THREE.AmbientLight(0xffffff, 0.35));
 
-    const keyLight = new THREE.DirectionalLight(0xfff5e0, 2.8);
+    const keyLight = new THREE.DirectionalLight(0xfff5e0, 4.0);
     keyLight.position.set(6, 9, 4);
     keyLight.castShadow = true;
-    keyLight.shadow.mapSize.set(1024, 1024);
-    keyLight.shadow.bias = -0.001;
+    keyLight.shadow.mapSize.set(2048, 2048);
+    keyLight.shadow.bias = -0.0005;
+    keyLight.shadow.normalBias = 0.02;
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x00bfff, 2.0);
+    const rimLight = new THREE.DirectionalLight(0x4fc3f7, 2.4);
     rimLight.position.set(-5, 2, -5);
     scene.add(rimLight);
 
-    const fillLight = new THREE.PointLight(0xc9a84c, 1.2, 16);
+    const fillLight = new THREE.PointLight(0xc9a84c, 1.6, 20);
     fillLight.position.set(0, -1.2, 2);
     scene.add(fillLight);
+
+    const backLight = new THREE.DirectionalLight(0xc9a84c, 1.2);
+    backLight.position.set(0, 2, -6);
+    scene.add(backLight);
+
+    const envGen = new THREE.PMREMGenerator(renderer);
+    envGen.compileEquirectangularShader();
+    const envScene = new THREE.Scene();
+    envScene.background = new THREE.Color(0x111111);
+    [
+      { color: 0xfff5e0, intensity: 4.0, pos: [6, 9, 4] },
+      { color: 0x4fc3f7, intensity: 2.5, pos: [-5, 2, -5] },
+      { color: 0xc9a84c, intensity: 1.8, pos: [0, -2, 2] },
+      { color: 0xffffff, intensity: 1.2, pos: [-4, 4, 2] },
+    ].forEach(function(l) {
+      var dl = new THREE.DirectionalLight(l.color, l.intensity);
+      dl.position.set(l.pos[0], l.pos[1], l.pos[2]);
+      envScene.add(dl);
+    });
+    scene.environment = envGen.fromScene(envScene).texture;
 
     /* ── GROUND ── */
     const ground = new THREE.Mesh(
@@ -149,6 +171,90 @@
     const carGroup = new THREE.Group();
     scene.add(carGroup);
 
+    /* ── 1. SPEED LINES ── */
+    var SL2_COUNT = 80;
+    var sl2Geo = new THREE.BufferGeometry();
+    var sl2Pos = new Float32Array(SL2_COUNT * 6);
+    for (var i = 0; i < SL2_COUNT; i++) {
+      var sx = (Math.random()-0.5)*24, sy = (Math.random()-0.5)*12, sz = (Math.random()-0.5)*8 - 2;
+      sl2Pos[i*6]=sx; sl2Pos[i*6+1]=sy; sl2Pos[i*6+2]=sz;
+      sl2Pos[i*6+3]=sx; sl2Pos[i*6+4]=sy; sl2Pos[i*6+5]=sz-0.8;
+    }
+    sl2Geo.setAttribute('position', new THREE.BufferAttribute(sl2Pos, 3));
+    var sl2Mat = new THREE.LineBasicMaterial({ color: 0xc9a84c, transparent: true, opacity: 0.0 });
+    var speedLines2 = new THREE.LineSegments(sl2Geo, sl2Mat);
+    scene.add(speedLines2);
+
+    /* ── 2. GROUND REFLECTION ── */
+    var refl2Mat = new THREE.MeshStandardMaterial({ color: 0x000000, metalness: 1.0, roughness: 0.0, transparent: true, opacity: 0.38 });
+    var refl2Mesh = new THREE.Mesh(new THREE.PlaneGeometry(14, 14), refl2Mat);
+    refl2Mesh.rotation.x = -Math.PI / 2;
+    refl2Mesh.position.y = -1.13;
+    scene.add(refl2Mesh);
+
+    /* ── 3. CAMERA SHAKE STATE ── */
+    var shake2X = 0, shake2Y = 0;
+
+    /* ── 4. EMBER PARTICLES ── */
+    var EM2_COUNT = 60;
+    var em2Geo = new THREE.BufferGeometry();
+    var em2Pos = new Float32Array(EM2_COUNT * 3);
+    var em2Vel = [];
+    for (var i = 0; i < EM2_COUNT; i++) {
+      em2Pos[i*3]=(Math.random()-0.5)*10; em2Pos[i*3+1]=Math.random()*5-1; em2Pos[i*3+2]=(Math.random()-0.5)*10;
+      em2Vel.push({ x:(Math.random()-0.5)*0.008, y:Math.random()*0.012+0.004, z:(Math.random()-0.5)*0.008 });
+    }
+    em2Geo.setAttribute('position', new THREE.BufferAttribute(em2Pos, 3));
+    var em2Mat = new THREE.PointsMaterial({ color: 0xffaa33, size: 0.055, transparent: true, opacity: 0.7, sizeAttenuation: true });
+    var embers2 = new THREE.Points(em2Geo, em2Mat);
+    scene.add(embers2);
+
+    /* ── 5. SPOTLIGHT ── */
+    var spotLight2 = new THREE.SpotLight(0xfff5e0, 3.5, 18, Math.PI * 0.18, 0.4, 1.5);
+    spotLight2.position.set(0, 10, 2);
+    spotLight2.target.position.set(0, 0, 0);
+    scene.add(spotLight2); scene.add(spotLight2.target);
+
+    /* ── 6. RIM COLOR STATE ── */
+    var rimColor2 = new THREE.Color(0x00bfff);
+
+    /* ── 7. GRID PULSE ── */
+    var gridHelper2 = new THREE.GridHelper(20, 20, 0xc9a84c, 0xc9a84c);
+    gridHelper2.position.y = -1.14;
+    gridHelper2.material.transparent = true;
+    gridHelper2.material.opacity = 0.06;
+    scene.add(gridHelper2);
+
+    /* ── 8. HEADLIGHT FLARES ── */
+    var flare2L = new THREE.PointLight(0xffffff, 0.0, 4);
+    flare2L.position.set(0.6, 0.1, 1.8); carGroup.add(flare2L);
+    var flare2R = new THREE.PointLight(0xffffff, 0.0, 4);
+    flare2R.position.set(-0.6, 0.1, 1.8); carGroup.add(flare2R);
+
+    var lastScrollYFx2 = 0, scrollSpeedFx2 = 0;
+
+    /* ── B. NEON UNDERGLOW ── */
+    var glow2A = new THREE.PointLight(0xc9a84c, 0.0, 5);
+    glow2A.position.set( 0.8,-1.0, 0); carGroup.add(glow2A);
+    var glow2B = new THREE.PointLight(0x00aaff, 0.0, 5);
+    glow2B.position.set(-0.8,-1.0, 0); carGroup.add(glow2B);
+    var glow2C = new THREE.PointLight(0xaa00ff, 0.0, 5);
+    glow2C.position.set( 0,  -1.0, 1); carGroup.add(glow2C);
+    var glow2Hue = 0;
+
+    /* ── D. STAR FIELD ── */
+    var star2Geo = new THREE.BufferGeometry();
+    var star2Pos = new Float32Array(400 * 3);
+    for (var sti2 = 0; sti2 < 400; sti2++) {
+      var th2 = Math.random()*Math.PI*2, ph2 = Math.acos(2*Math.random()-1), r2 = 35+Math.random()*15;
+      star2Pos[sti2*3]=r2*Math.sin(ph2)*Math.cos(th2); star2Pos[sti2*3+1]=r2*Math.sin(ph2)*Math.sin(th2); star2Pos[sti2*3+2]=r2*Math.cos(ph2);
+    }
+    star2Geo.setAttribute('position', new THREE.BufferAttribute(star2Pos, 3));
+    var star2Mat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.12, transparent: true, opacity: 0.35, sizeAttenuation: true });
+    var stars2 = new THREE.Points(star2Geo, star2Mat);
+    scene.add(stars2);
+
+
     let modelReady = false;
 
     function onLoaded(gltf) {
@@ -166,7 +272,12 @@
         obj.receiveShadow = true;
         if (obj.material) {
           const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
-          mats.forEach(m => { m.envMapIntensity = 1.8; m.needsUpdate = true; });
+          mats.forEach(m => {
+          m.envMapIntensity = 2.8;
+          if (m.metalness !== undefined) m.metalness = Math.max(m.metalness, 0.7);
+          if (m.roughness !== undefined) m.roughness = Math.min(m.roughness, 0.35);
+          m.needsUpdate = true;
+        });
         }
       });
       carGroup.add(model);
@@ -287,8 +398,7 @@
       mouse.x = lerp(mouse.x, mouse.tx, 0.06);
       mouse.y = lerp(mouse.y, mouse.ty, 0.06);
 
-      /* camera mouse parallax — inverted Y vs hero for different feel */
-      camera.position.set(state.camX + mouse.x * 0.3, state.camY + mouse.y * 0.25, state.camZ);
+      /* camera lookAt — position set by shake block below */
       camera.lookAt(state.lookX, state.lookY, state.lookZ);
 
       carGroup.position.set(state.carX, state.carY + entranceOffY, state.carZ);
@@ -319,6 +429,61 @@
 
       particles.rotation.y += delta * 0.012;
       particles.rotation.x += delta * 0.003;
+
+      /* ── SCROLL SPEED ── */
+      scrollSpeedFx2 = lerp(scrollSpeedFx2, (scrollY - lastScrollYFx2) / (delta * 500 + 0.001), 0.15);
+      lastScrollYFx2 = scrollY;
+      var spd2 = clamp(Math.abs(scrollSpeedFx2), 0, 1);
+
+      /* ── 1. SPEED LINES ── */
+      sl2Mat.opacity = lerp(sl2Mat.opacity, spd2 * 0.55, 0.12);
+      speedLines2.position.z = lerp(speedLines2.position.z, spd2 * 1.2, 0.1);
+
+      /* ── 2. GROUND REFLECTION ── */
+      refl2Mat.opacity = 0.22 + Math.sin(elapsed * 0.4) * 0.06;
+
+      /* ── 3. CAMERA SHAKE ── */
+      shake2X = lerp(shake2X, (Math.random()-0.5) * spd2 * 0.04, 0.2);
+      shake2Y = lerp(shake2Y, (Math.random()-0.5) * spd2 * 0.025, 0.2);
+      camera.position.set(state.camX + mouse.x * 0.3 + shake2X, state.camY + mouse.y * 0.25 + shake2Y, state.camZ);
+
+      /* ── 4. EMBER DRIFT ── */
+      var ep2 = em2Geo.attributes.position.array;
+      for (var ei2 = 0; ei2 < EM2_COUNT; ei2++) {
+        ep2[ei2*3] += em2Vel[ei2].x; ep2[ei2*3+1] += em2Vel[ei2].y; ep2[ei2*3+2] += em2Vel[ei2].z;
+        if (ep2[ei2*3+1] > 5) { ep2[ei2*3+1]=-1; ep2[ei2*3]=(Math.random()-0.5)*10; ep2[ei2*3+2]=(Math.random()-0.5)*10; }
+      }
+      em2Geo.attributes.position.needsUpdate = true;
+      em2Mat.opacity = 0.4 + spd2 * 0.4;
+
+      /* ── 5. SPOTLIGHT PULSE ── */
+      spotLight2.intensity = 2.5 + Math.sin(elapsed * 0.6) * 0.8;
+
+      /* ── 6. RIM COLOR SHIFT ── */
+      var hue2 = (rawProg * 0.18 + elapsed * 0.012) % 1;
+      rimColor2.setHSL(hue2 + 0.55, 1.0, 0.6);
+      rimLight.color.lerp(rimColor2, 0.03);
+
+      /* ── 7. GRID PULSE ── */
+      gridHelper2.material.opacity = 0.04 + spd2 * 0.12 + Math.sin(elapsed * 1.8) * 0.02;
+
+      /* ── 8. HEADLIGHT FLARES ── */
+      var flare2Base = 0.55 + Math.sin(elapsed * 2.1) * 0.12;
+      var flare2Facing = clamp(1.0 - Math.abs(state.carRotY) * 0.6, 0.1, 1.0);
+      flare2L.intensity = flare2Base * flare2Facing * state.carOpacity * 2.2;
+      flare2R.intensity = flare2Base * flare2Facing * state.carOpacity * 2.2;
+
+      /* ── B. NEON UNDERGLOW ── */
+      glow2Hue = (glow2Hue + delta * 0.18) % 1;
+      var g2c = new THREE.Color().setHSL(glow2Hue, 1.0, 0.55);
+      glow2A.color.set(g2c); glow2A.intensity = 1.2 + Math.sin(elapsed * 2.1) * 0.5;
+      var g2c2 = new THREE.Color().setHSL((glow2Hue+0.33)%1, 1.0, 0.55);
+      glow2B.color.set(g2c2); glow2B.intensity = 1.2 + Math.sin(elapsed*1.7+1)*0.5;
+      var g2c3 = new THREE.Color().setHSL((glow2Hue+0.66)%1, 1.0, 0.55);
+      glow2C.color.set(g2c3); glow2C.intensity = 1.2 + Math.sin(elapsed*2.4+2)*0.5;
+
+      /* ── D. STAR FIELD ── */
+      stars2.rotation.y += delta * 0.004;
 
       renderer.render(scene, camera);
     }

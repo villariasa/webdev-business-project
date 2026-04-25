@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Register — Villarias Motors</title>
+  <link rel="icon" type="image/png" href="assets/logo/icon.png" />
+  <link rel="apple-touch-icon" href="assets/logo/icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -15,12 +17,13 @@
   <div class="cursor-follower" id="cursorFollower"></div>
 
   <nav class="navbar" id="navbar">
-    <a href="index.html" class="nav-logo">VILLARIAS<span>MOTORS</span></a>
+    <a href="index.html" class="nav-logo" aria-label="Villarias Motors Home"><img src="assets/logo/horizontal-logo.png" alt="Villarias Motors" class="nav-logo-img" /></a>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="services.html">Showroom</a></li>
       <li><a href="contact.html">Contact</a></li>
+      <li><a href="resources.html">Resources</a></li>
     </ul>
     <div class="nav-actions">
       <a href="cart.html" class="cart-icon" id="cartIcon">
@@ -41,6 +44,10 @@
     <div class="register-layout">
       <div class="register-left">
         <div class="reg-left-content">
+          <div class="reg-verified-badge">
+            <img src="assets/logo/circle-icon.png" alt="Villarias Motors" class="reg-badge-icon" />
+            <span>Verified Luxury Dealer</span>
+          </div>
           <div class="section-label">EXCLUSIVE ACCESS</div>
           <h2 class="reg-title">Join the<br/><span class="text-gold">Elite.</span></h2>
           <p>Register for priority access to Villarias Motors' curated fleet of the world's most extraordinary supercars. Your journey begins here.</p>
@@ -71,18 +78,19 @@
       <div class="register-right">
         <div class="register-form-wrap glass-card">
           <div class="form-header">
+            <img src="assets/logo/circle-icon.png" alt="" class="form-header-icon" aria-hidden="true" />
             <h3>Client Registration</h3>
             <p>Complete the form to request exclusive membership.</p>
           </div>
           <form class="register-form" id="registerForm" novalidate>
             <div class="form-group" id="fgName">
               <label for="reg_name">Full Name <span class="req">*</span></label>
-              <input type="text" id="reg_name" name="reg_name" placeholder="Marcus Villarias" autocomplete="name" />
+              <input type="text" id="reg_name" name="reg_name" placeholder="Medy Villarias" autocomplete="name" />
               <span class="field-error" id="err_name"></span>
             </div>
             <div class="form-group" id="fgEmail">
               <label for="reg_email">Email Address <span class="req">*</span></label>
-              <input type="email" id="reg_email" name="reg_email" placeholder="marcus@example.com" autocomplete="email" />
+              <input type="email" id="reg_email" name="reg_email" placeholder="medy@example.com" autocomplete="email" />
               <span class="field-error" id="err_email"></span>
             </div>
             <div class="form-group" id="fgPassword">

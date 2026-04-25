@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact — Villarias Motors</title>
+  <link rel="icon" type="image/png" href="assets/logo/icon.png" />
+  <link rel="apple-touch-icon" href="assets/logo/icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -15,7 +17,7 @@
   <div class="cursor-follower" id="cursorFollower"></div>
 
   <nav class="navbar" id="navbar">
-    <a href="index.html" class="nav-logo">VILLARIAS<span>MOTORS</span></a>
+    <a href="index.html" class="nav-logo" aria-label="Villarias Motors Home"><img src="assets/logo/horizontal-logo.png" alt="Villarias Motors" class="nav-logo-img" /></a>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
@@ -55,14 +57,14 @@
               <div class="contact-info-icon">📍</div>
               <div>
                 <strong>Showroom Address</strong>
-                <span>Villa Monte Carlo, Avenue Princesse Grace<br/>Monaco, MC 98000</span>
+                <span>4th Floor Litecloud, 2 Sanson Rd<br/>Lahug, Cebu City, 6000 Cebu<br/>Philippines</span>
               </div>
             </div>
             <div class="contact-info-card glass-card">
               <div class="contact-info-icon">📞</div>
               <div>
                 <strong>Concierge Line</strong>
-                <span>+377 93 00 00 00</span>
+                <span>+63 (32) 000 0000</span>
                 <small>Available 24 hours, 7 days a week</small>
               </div>
             </div>
@@ -149,12 +151,19 @@
         <h2 class="section-title">Our <span class="text-gold">Location</span></h2>
       </div>
       <div class="map-wrap reveal-up">
-        <div class="map-placeholder glass-card">
-          <div class="map-placeholder-inner">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" class="map-icon"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <h4>Villarias Motors Monaco</h4>
-            <p>Villa Monte Carlo, Avenue Princesse Grace<br/>Monaco, MC 98000</p>
-            <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="btn-outline map-cta">Open in Google Maps</a>
+        <div class="map-embed-wrap">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d242.37847!2d123.8969787!3d10.3304861!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a99925c478a6a1%3A0x965e72af73cc066d!2sLitecloud!5e1!3m2!1sen!2sph!4v1714000000000"
+            width="100%" height="480"
+            style="border:0; border-radius:12px; display:block;"
+            allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Villarias Motors Location"
+          ></iframe>
+          <div class="map-address-tag">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            4th Floor Litecloud, 2 Sanson Rd, Lahug, Cebu City, Philippines &nbsp;&middot;&nbsp;
+            <a href="https://www.google.com/maps/dir/BLDG.,+Lot+4+Block,+Litecloud,+4th+Floor+Litecloud,+2+Sanson+Rd,+Cebu+City,+6000+Cebu,+Philippines/@10.3305503,123.8969395,173m/data=!3m1!1e3!4m13!4m12!1m5!1m1!1s0x33a99925c478a6a1:0x965e72af73cc066d!2m2!1d123.8969787!2d10.3304861!1m5!1m1!1s0x33a99925c478a6a1:0x965e72af73cc066d!2m2!1d123.8969787!2d10.3304861?entry=ttu&g_ep=EgoyMDI2MDQyMi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">Get Directions</a>
           </div>
         </div>
       </div>
@@ -165,7 +174,7 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="footer-logo">VILLARIAS<span>MOTORS</span></div>
+          <a href="index.html" class="footer-logo-link"><img src="assets/logo/primary.png" alt="Villarias Motors" class="footer-logo-img" /></a>
           <p>The most prestigious digital-first supercar showroom in the world.</p>
           <div class="footer-social">
             <a href="#" class="social-link" aria-label="Instagram">
@@ -183,6 +192,7 @@
             <li><a href="about.html">About Us</a></li>
             <li><a href="services.html">Showroom</a></li>
             <li><a href="contact.html">Contact</a></li>
+      <li><a href="resources.html">Resources</a></li>
           </ul>
         </div>
         <div class="footer-links-col">

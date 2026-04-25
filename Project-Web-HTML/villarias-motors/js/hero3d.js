@@ -9,8 +9,6 @@
   /* ── DEVICE CAPABILITY ─────────────────────────────────── */
   function isLowEnd() {
     const nav = window.navigator;
-    if (nav.hardwareConcurrency && nav.hardwareConcurrency <= 2) return true;
-    if (nav.deviceMemory && nav.deviceMemory < 2) return true;
     if (/Mobi|Android|iPhone|iPad/i.test(nav.userAgent)) return true;
     return false;
   }
@@ -122,16 +120,17 @@
       camera.updateProjectionMatrix();
     }
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 3));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.25;
+    renderer.toneMappingExposure = 1.4;
+    renderer.physicallyCorrectLights = true;
 
     /* ── SCENE ── */
     const scene = new THREE.Scene();
-    const fog = new THREE.FogExp2(0x000000, 0.028);
+    const fog = new THREE.FogExp2(0x000000, 0.016);
     scene.fog = fog;
 
     /* ── CAMERA ── */
@@ -142,27 +141,48 @@
     window.addEventListener('resize', setSize);
 
     /* ── LIGHTS ── */
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.18);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.35);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfff5e0, 3.0);
+    const keyLight = new THREE.DirectionalLight(0xfff5e0, 4.0);
     keyLight.position.set(5, 8, 5);
     keyLight.castShadow = true;
-    keyLight.shadow.mapSize.set(1024, 1024);
-    keyLight.shadow.bias = -0.001;
+    keyLight.shadow.mapSize.set(2048, 2048);
+    keyLight.shadow.bias = -0.0005;
+    keyLight.shadow.normalBias = 0.02;
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x00bfff, 1.8);
+    const rimLight = new THREE.DirectionalLight(0x4fc3f7, 2.4);
     rimLight.position.set(-6, 3, -4);
     scene.add(rimLight);
 
-    const groundBounce = new THREE.PointLight(0xc9a84c, 1.0, 14);
+    const groundBounce = new THREE.PointLight(0xc9a84c, 1.6, 18);
     groundBounce.position.set(0, -1.5, 1);
     scene.add(groundBounce);
 
-    const fillLight = new THREE.PointLight(0xffffff, 0.7, 22);
+    const fillLight = new THREE.PointLight(0xffffff, 1.0, 28);
     fillLight.position.set(-4, 4, 2);
     scene.add(fillLight);
+
+    const backLight = new THREE.DirectionalLight(0xc9a84c, 1.2);
+    backLight.position.set(0, 2, -6);
+    scene.add(backLight);
+
+    const envGen = new THREE.PMREMGenerator(renderer);
+    envGen.compileEquirectangularShader();
+    const envScene = new THREE.Scene();
+    envScene.background = new THREE.Color(0x111111);
+    [
+      { color: 0xfff5e0, intensity: 4.0, pos: [5, 8, 5] },
+      { color: 0x4fc3f7, intensity: 2.5, pos: [-6, 3, -4] },
+      { color: 0xc9a84c, intensity: 1.8, pos: [0, -2, 1] },
+      { color: 0xffffff, intensity: 1.2, pos: [-4, 4, 2] },
+    ].forEach(function(l) {
+      var dl = new THREE.DirectionalLight(l.color, l.intensity);
+      dl.position.set(l.pos[0], l.pos[1], l.pos[2]);
+      envScene.add(dl);
+    });
+    scene.environment = envGen.fromScene(envScene).texture;
 
     /* ── GROUND ── */
     const groundMesh = new THREE.Mesh(
@@ -210,7 +230,9 @@
         if (obj.material) {
           const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
           mats.forEach(function (m) {
-            m.envMapIntensity = 1.6;
+            m.envMapIntensity = 2.8;
+            if (m.metalness !== undefined) m.metalness = Math.max(m.metalness, 0.7);
+            if (m.roughness !== undefined) m.roughness = Math.min(m.roughness, 0.35);
             m.needsUpdate = true;
           });
         }
@@ -238,6 +260,105 @@
 
     /* ── PARTICLES ── */
     const particles = buildParticles(THREE, scene);
+
+    /* ── 1. SPEED LINES ── */
+    var SL_COUNT = 80;
+    var slGeo = new THREE.BufferGeometry();
+    var slPos = new Float32Array(SL_COUNT * 6);
+    for (var i = 0; i < SL_COUNT; i++) {
+      var sx = (Math.random() - 0.5) * 24;
+      var sy = (Math.random() - 0.5) * 12;
+      var sz = (Math.random() - 0.5) * 8 - 2;
+      slPos[i*6]   = sx; slPos[i*6+1] = sy; slPos[i*6+2] = sz;
+      slPos[i*6+3] = sx; slPos[i*6+4] = sy; slPos[i*6+5] = sz - 0.8;
+    }
+    slGeo.setAttribute('position', new THREE.BufferAttribute(slPos, 3));
+    var slMat = new THREE.LineBasicMaterial({ color: 0xc9a84c, transparent: true, opacity: 0.0 });
+    var speedLines = new THREE.LineSegments(slGeo, slMat);
+    scene.add(speedLines);
+
+    /* ── 2. GROUND REFLECTION PLANE ── */
+    var reflMat = new THREE.MeshStandardMaterial({
+      color: 0x000000, metalness: 1.0, roughness: 0.0,
+      transparent: true, opacity: 0.38,
+    });
+    var reflMesh = new THREE.Mesh(new THREE.PlaneGeometry(14, 14), reflMat);
+    reflMesh.rotation.x = -Math.PI / 2;
+    reflMesh.position.y = -1.13;
+    scene.add(reflMesh);
+
+    /* ── 3. CAMERA SHAKE STATE ── */
+    var shakeX = 0, shakeY = 0;
+
+    /* ── 4. EMBER PARTICLES ── */
+    var EM_COUNT = 60;
+    var emGeo = new THREE.BufferGeometry();
+    var emPos = new Float32Array(EM_COUNT * 3);
+    var emVel = [];
+    for (var i = 0; i < EM_COUNT; i++) {
+      emPos[i*3]   = (Math.random()-0.5)*10;
+      emPos[i*3+1] = Math.random()*5 - 1;
+      emPos[i*3+2] = (Math.random()-0.5)*10;
+      emVel.push({ x:(Math.random()-0.5)*0.008, y: Math.random()*0.012+0.004, z:(Math.random()-0.5)*0.008 });
+    }
+    emGeo.setAttribute('position', new THREE.BufferAttribute(emPos, 3));
+    var emMat = new THREE.PointsMaterial({ color: 0xffaa33, size: 0.055, transparent: true, opacity: 0.7, sizeAttenuation: true });
+    var embers = new THREE.Points(emGeo, emMat);
+    scene.add(embers);
+
+    /* ── 5. SPOTLIGHT CONE ── */
+    var spotLight = new THREE.SpotLight(0xfff5e0, 3.5, 18, Math.PI * 0.18, 0.4, 1.5);
+    spotLight.position.set(0, 10, 2);
+    spotLight.target.position.set(0, 0, 0);
+    scene.add(spotLight);
+    scene.add(spotLight.target);
+
+    /* ── 6. RIM COLOR SHIFT STATE ── */
+    var rimColor = new THREE.Color(0x00bfff);
+
+    /* ── 7. GRID PULSE ── */
+    var gridHelper = new THREE.GridHelper(20, 20, 0xc9a84c, 0xc9a84c);
+    gridHelper.position.y = -1.14;
+    gridHelper.material.transparent = true;
+    gridHelper.material.opacity = 0.06;
+    scene.add(gridHelper);
+
+    /* ── 8. HEADLIGHT FLARES ── */
+    var flareL = new THREE.PointLight(0xffffff, 0.0, 4);
+    flareL.position.set( 0.6, 0.1, 1.8);
+    carGroup.add(flareL);
+    var flareR = new THREE.PointLight(0xffffff, 0.0, 4);
+    flareR.position.set(-0.6, 0.1, 1.8);
+    carGroup.add(flareR);
+
+    var lastScrollYFx = 0;
+    var scrollSpeedFx = 0;
+
+    /* ── B. NEON UNDERGLOW LIGHTS ── */
+    var glowA = new THREE.PointLight(0xc9a84c, 0.0, 5);
+    glowA.position.set( 0.8, -1.0, 0); carGroup.add(glowA);
+    var glowB = new THREE.PointLight(0x00aaff, 0.0, 5);
+    glowB.position.set(-0.8, -1.0, 0); carGroup.add(glowB);
+    var glowC = new THREE.PointLight(0xaa00ff, 0.0, 5);
+    glowC.position.set( 0,   -1.0, 1); carGroup.add(glowC);
+    var glowHue = 0;
+
+    /* ── D. STAR FIELD ── */
+    var starGeo = new THREE.BufferGeometry();
+    var starPos = new Float32Array(400 * 3);
+    for (var sti = 0; sti < 400; sti++) {
+      var theta = Math.random() * Math.PI * 2;
+      var phi   = Math.acos(2 * Math.random() - 1);
+      var r     = 35 + Math.random() * 15;
+      starPos[sti*3]   = r * Math.sin(phi) * Math.cos(theta);
+      starPos[sti*3+1] = r * Math.sin(phi) * Math.sin(theta);
+      starPos[sti*3+2] = r * Math.cos(phi);
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    var starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.12, transparent: true, opacity: 0.35, sizeAttenuation: true });
+    var stars = new THREE.Points(starGeo, starMat);
+    scene.add(stars);
+
 
     /* ── CURRENT STATE (interpolated toward targets) ── */
     const state = {
@@ -358,11 +479,6 @@
       mouse.y = lerp(mouse.y, mouse.ty, 0.06);
 
       /* ── APPLY TO THREE.JS ── */
-      camera.position.set(
-        state.camX + mouse.x * 0.5,
-        state.camY - mouse.y * 0.3,
-        state.camZ
-      );
       camera.lookAt(state.lookX, state.lookY, state.lookZ);
 
       carGroup.position.set(state.carX + entranceOffsetX, state.carY, state.carZ);
@@ -396,6 +512,67 @@
         particles.rotation.y += delta * 0.015;
         particles.rotation.x += delta * 0.004;
       }
+
+      /* ── SCROLL SPEED ── */
+      scrollSpeedFx = lerp(scrollSpeedFx, (scrollY - lastScrollYFx) / (delta * 500 + 0.001), 0.15);
+      lastScrollYFx = scrollY;
+      var spd = clamp(Math.abs(scrollSpeedFx), 0, 1);
+
+      /* ── 1. SPEED LINES ── */
+      slMat.opacity = lerp(slMat.opacity, spd * 0.55, 0.12);
+      speedLines.position.z = lerp(speedLines.position.z, spd * 1.2, 0.1);
+
+      /* ── 2. GROUND REFLECTION ── */
+      reflMat.opacity = 0.22 + Math.sin(elapsed * 0.4) * 0.06;
+
+      /* ── 3. CAMERA SHAKE ── */
+      shakeX = lerp(shakeX, (Math.random()-0.5) * spd * 0.04, 0.2);
+      shakeY = lerp(shakeY, (Math.random()-0.5) * spd * 0.025, 0.2);
+      camera.position.set(
+        state.camX + mouse.x * 0.5 + shakeX,
+        state.camY - mouse.y * 0.3 + shakeY,
+        state.camZ
+      );
+
+      /* ── 4. EMBER DRIFT ── */
+      var ep = emGeo.attributes.position.array;
+      for (var ei = 0; ei < EM_COUNT; ei++) {
+        ep[ei*3]   += emVel[ei].x;
+        ep[ei*3+1] += emVel[ei].y;
+        ep[ei*3+2] += emVel[ei].z;
+        if (ep[ei*3+1] > 5) { ep[ei*3+1] = -1; ep[ei*3] = (Math.random()-0.5)*10; ep[ei*3+2] = (Math.random()-0.5)*10; }
+      }
+      emGeo.attributes.position.needsUpdate = true;
+      emMat.opacity = 0.4 + spd * 0.4;
+
+      /* ── 5. SPOTLIGHT PULSE ── */
+      spotLight.intensity = 2.5 + Math.sin(elapsed * 0.6) * 0.8;
+
+      /* ── 6. RIM COLOR SHIFT ── */
+      var hue = (rawProgress * 0.18 + elapsed * 0.012) % 1;
+      rimColor.setHSL(hue + 0.55, 1.0, 0.6);
+      rimLight.color.lerp(rimColor, 0.03);
+
+      /* ── 7. GRID PULSE ── */
+      gridHelper.material.opacity = 0.04 + spd * 0.12 + Math.sin(elapsed * 1.8) * 0.02;
+
+      /* ── 8. HEADLIGHT FLARES ── */
+      var flareBase = 0.55 + Math.sin(elapsed * 2.1) * 0.12;
+      var flareFacing = clamp(1.0 - Math.abs(state.carRotY) * 0.6, 0.1, 1.0);
+      flareL.intensity = flareBase * flareFacing * state.carOpacity * 2.2;
+      flareR.intensity = flareBase * flareFacing * state.carOpacity * 2.2;
+
+      /* ── B. NEON UNDERGLOW ── */
+      glowHue = (glowHue + delta * 0.18) % 1;
+      var gc = new THREE.Color().setHSL(glowHue, 1.0, 0.55);
+      glowA.color.set(gc); glowA.intensity = 1.2 + Math.sin(elapsed * 2.1) * 0.5;
+      var gc2 = new THREE.Color().setHSL((glowHue + 0.33) % 1, 1.0, 0.55);
+      glowB.color.set(gc2); glowB.intensity = 1.2 + Math.sin(elapsed * 1.7 + 1) * 0.5;
+      var gc3 = new THREE.Color().setHSL((glowHue + 0.66) % 1, 1.0, 0.55);
+      glowC.color.set(gc3); glowC.intensity = 1.2 + Math.sin(elapsed * 2.4 + 2) * 0.5;
+
+      /* ── D. STAR FIELD ── */
+      stars.rotation.y += delta * 0.004;
 
       renderer.render(scene, camera);
     }
@@ -582,13 +759,16 @@
   function lazyInit() {
     const hero = document.getElementById('cinematicScrollTrack') || document.getElementById('hero');
     if (!hero) { waitForThree(init); return; }
+    var started = false;
+    function trigger() { if (!started) { started = true; waitForThree(init); } }
     if ('IntersectionObserver' in window) {
       const io = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting) { io.disconnect(); waitForThree(init); }
+        if (entries[0].isIntersecting) { io.disconnect(); trigger(); }
       }, { threshold: 0.01 });
       io.observe(hero);
+      setTimeout(function () { io.disconnect(); trigger(); }, 2000);
     } else {
-      waitForThree(init);
+      trigger();
     }
   }
 

@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Villarias Motors — Drive the Extraordinary</title>
+  <link rel="icon" type="image/png" href="assets/logo/icon.png" />
+  <link rel="apple-touch-icon" href="assets/logo/icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -15,12 +17,13 @@
   <div class="cursor-follower" id="cursorFollower"></div>
 
   <nav class="navbar" id="navbar">
-    <a href="index.html" class="nav-logo">VILLARIAS<span>MOTORS</span></a>
+    <a href="index.html" class="nav-logo" aria-label="Villarias Motors Home"><img src="assets/logo/horizontal-logo.png" alt="Villarias Motors" class="nav-logo-img" /></a>
     <ul class="nav-links">
       <li><a href="index.html" class="active">Home</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="services.html">Showroom</a></li>
       <li><a href="contact.html">Contact</a></li>
+      <li><a href="resources.html">Resources</a></li>
     </ul>
     <div class="nav-actions">
       <a href="cart.html" class="cart-icon" id="cartIcon">
@@ -42,6 +45,12 @@
         <img src="assets/cars/car-1.png" alt="Featured Supercar" class="hero-3d-fallback" id="hero3dFallback" />
         <div class="cin-vignette"></div>
         <div class="cin-grid-overlay"></div>
+        <div class="hero-brand-watermark" aria-hidden="true">
+          <img src="assets/logo/primary.png" alt="" class="hero-wm-img" />
+        </div>
+        <div class="hero-letterbox top" id="heroLetterbox" aria-hidden="true"></div>
+        <div class="hero-letterbox bot" id="heroLetterboxBot" aria-hidden="true"></div>
+        <div class="hero-haze" id="heroHaze" aria-hidden="true"></div>
       </div>
 
       <div class="cin-scenes-wrap">
@@ -119,6 +128,9 @@
         <img src="assets/cars/car-5.png" alt="Luxury Car" class="cin2-fallback" id="intro3dFallback" />
         <div class="cin2-vignette"></div>
         <div class="cin2-grid-overlay"></div>
+        <div class="intro-letterbox top" id="introLetterbox" aria-hidden="true"></div>
+        <div class="intro-letterbox bot" id="introLetterboxBot" aria-hidden="true"></div>
+        <div class="intro-haze" id="introHaze" aria-hidden="true"></div>
       </div>
 
       <div class="cin2-scenes-wrap">
@@ -285,7 +297,7 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="footer-logo">VILLARIAS<span>MOTORS</span></div>
+          <a href="index.html" class="footer-logo-link"><img src="assets/logo/primary.png" alt="Villarias Motors" class="footer-logo-img" /></a>
           <p>The most prestigious digital-first supercar showroom in the world. Drive the extraordinary.</p>
           <div class="footer-social">
             <a href="#" class="social-link" aria-label="Instagram">
@@ -306,6 +318,7 @@
             <li><a href="about.html">About Us</a></li>
             <li><a href="services.html">Showroom</a></li>
             <li><a href="contact.html">Contact</a></li>
+      <li><a href="resources.html">Resources</a></li>
           </ul>
         </div>
         <div class="footer-links-col">
@@ -362,33 +375,28 @@
   <script src="js/script.js"></script>
   <script>
     window.addEventListener('load', function () {
-      var s = document.createElement('script');
-      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js';
-      s.onload = function () {
-        var g = document.createElement('script');
-        g.src = 'https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/loaders/GLTFLoader.js';
-        g.onload = function () {
-          var m = document.createElement('script');
-          m.src = 'js/model-data.js';
-          m.onload = function () {
-            var h = document.createElement('script');
-            h.src = 'js/hero3d.js';
-            document.body.appendChild(h);
+      function loadScript(src, cb) {
+        var el = document.createElement('script');
+        el.src = src;
+        el.onload = cb || function(){};
+        el.onerror = function(){ console.warn('Failed to load: ' + src); if(cb) cb(); };
+        document.body.appendChild(el);
+        return el;
+      }
 
-            var m2 = document.createElement('script');
-            m2.src = 'js/model2-data.js';
-            m2.onload = function () {
-              var i2 = document.createElement('script');
-              i2.src = 'js/intro3d.js';
-              document.body.appendChild(i2);
-            };
-            document.body.appendChild(m2);
-          };
-          document.body.appendChild(m);
-        };
-        document.body.appendChild(g);
-      };
-      document.body.appendChild(s);
+      loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js', function () {
+        loadScript('https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/loaders/GLTFLoader.js', function () {
+
+          var hero3dReady = false;
+          var intro3dReady = false;
+
+          function tryHero()  { if (!hero3dReady)  { hero3dReady  = true; loadScript('js/hero3d.js'); } }
+          function tryIntro() { if (!intro3dReady) { intro3dReady = true; loadScript('js/intro3d.js'); } }
+
+          loadScript('js/model-data.js',  tryHero);
+          loadScript('js/model2-data.js', tryIntro);
+        });
+      });
     });
 
     (function () {

@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resources Used — Villarias Motors</title>
+  <link rel="icon" type="image/png" href="assets/logo/icon.png" />
+  <link rel="apple-touch-icon" href="assets/logo/icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── RESOURCES PAGE STYLES ── */
+    .res-hero {
+      min-height: 52vh;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--black);
+      position: relative; overflow: hidden; text-align: center;
+      padding: 120px 24px 60px;
+    }
+    .res-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(201,168,76,.10) 0%, transparent 70%);
+    }
+    .res-hero-content { position: relative; z-index: 2; max-width: 720px; }
+    .res-hero h1 { font-size: clamp(2.2rem,5vw,3.8rem); font-weight: 900; line-height: 1.1; margin-bottom: 16px; }
+    .res-hero p  { color: var(--muted); font-size: 1.05rem; max-width: 560px; margin: 0 auto; }
+
+    .res-section { padding: 80px 0; background: var(--black); }
+    .res-section:nth-child(even) { background: var(--charcoal); }
+
+    .res-category { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+    .res-category-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 40px; padding-bottom: 18px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .res-category-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: rgba(201,168,76,.12); border: 1px solid rgba(201,168,76,.25);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .res-category-icon svg { color: var(--gold); }
+    .res-category-num { font-size: .7rem; letter-spacing: .2em; color: var(--gold); text-transform: uppercase; margin-bottom: 4px; }
+    .res-category-title { font-size: 1.5rem; font-weight: 700; color: var(--white); }
+
+    .res-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+    .res-card {
+      background: rgba(255,255,255,.03); border: 1px solid var(--glass-border);
+      border-radius: 14px; padding: 24px;
+      transition: border-color .3s, transform .3s, box-shadow .3s;
+    }
+    .res-card:hover {
+      border-color: rgba(201,168,76,.35);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 36px rgba(0,0,0,.35);
+    }
+    .res-card-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .res-logo {
+      width: 40px; height: 40px; border-radius: 8px; object-fit: contain;
+      background: #fff; padding: 4px; flex-shrink: 0;
+    }
+    .res-logo-placeholder {
+      width: 40px; height: 40px; border-radius: 8px; flex-shrink: 0;
+      background: rgba(201,168,76,.12); border: 1px solid rgba(201,168,76,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .65rem; font-weight: 700; color: var(--gold); text-align: center;
+      line-height: 1.2; padding: 4px;
+    }
+    .res-card-name { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 2px; }
+    .res-card-tag  {
+      display: inline-block; font-size: .6rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--gold);
+      background: rgba(201,168,76,.1); border-radius: 4px; padding: 2px 7px;
+    }
+    .res-card-desc { font-size: .82rem; color: var(--muted); line-height: 1.65; margin-bottom: 14px; }
+    .res-card-source {
+      display: flex; align-items: center; gap: 6px;
+      font-size: .72rem; color: rgba(255,255,255,.35);
+    }
+    .res-card-source a { color: rgba(201,168,76,.7); text-decoration: none; word-break: break-all; }
+    .res-card-source a:hover { color: var(--gold); }
+
+    .res-note {
+      max-width: 1100px; margin: 60px auto 0; padding: 0 32px;
+    }
+    .res-note-inner {
+      background: rgba(201,168,76,.05); border: 1px solid rgba(201,168,76,.18);
+      border-radius: 12px; padding: 24px 28px;
+      display: flex; gap: 16px; align-items: flex-start;
+    }
+    .res-note-icon { color: var(--gold); flex-shrink: 0; margin-top: 2px; }
+    .res-note-text { font-size: .83rem; color: var(--muted); line-height: 1.7; }
+    .res-note-text strong { color: var(--white); }
+
+    @media (max-width: 600px) {
+      .res-grid { grid-template-columns: 1fr; }
+      .res-category { padding: 0 18px; }
+    }
+  </style>
+</head>
+<body class="page-bio" data-page="bio">
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
+
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-logo" aria-label="Villarias Motors Home">
+      <img src="assets/logo/horizontal-logo.png" alt="Villarias Motors" class="nav-logo-img" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="services.html">Showroom</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="resources.html">Resources</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="cart.html" class="cart-icon" id="cartIcon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </a>
+      <a href="register.html" class="btn-gold">Get Access</a>
+    </div>
+    <button class="nav-toggle" id="navToggle">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="res-hero">
+    <div class="res-hero-content">
+      <div class="section-label" style="margin-bottom:16px">PROJECT DOCUMENTATION</div>
+      <h1>Resources <span class="text-gold">Used</span></h1>
+      <p>A complete reference of all tools, technologies, libraries, AI systems, and design assets used in the development of Villarias Motors.</p>
+    </div>
+  </section>
+
+  <!-- 1. DEVELOPMENT TOOLS & TECHNOLOGIES -->
+  <section class="res-section">
+    <div class="res-category">
+      <div class="res-category-header">
+        <div class="res-category-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <div>
+          <div class="res-category-num">Category 01</div>
+          <div class="res-category-title">Development Tools &amp; Technologies</div>
+        </div>
+      </div>
+      <div class="res-grid">
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" alt="HTML5" class="res-logo" />
+            <div>
+              <div class="res-card-name">HTML5</div>
+              <span class="res-card-tag">Markup</span>
+            </div>
+          </div>
+          <p class="res-card-desc">The structural backbone of all pages — used to build semantic layouts for the homepage, showroom, about, contact, cart, register, and bio pages.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noopener">developer.mozilla.org</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg" alt="CSS3" class="res-logo" />
+            <div>
+              <div class="res-card-name">CSS3</div>
+              <span class="res-card-tag">Styling</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Used for all visual styling — custom CSS variables, animations, glass-morphism effects, responsive grid/flex layouts, and scroll-driven transitions across the entire site.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank" rel="noopener">developer.mozilla.org</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg" alt="JavaScript" class="res-logo" />
+            <div>
+              <div class="res-card-name">JavaScript (ES6+)</div>
+              <span class="res-card-tag">Programming Language</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Core scripting language for all interactivity — cart logic, modal systems, form validation, scroll tracking, dynamic content, and all 3D scene orchestration.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener">developer.mozilla.org</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Three.js_Icon.svg/200px-Three.js_Icon.svg.png" alt="Three.js" class="res-logo" style="background:#000;" onerror="this.onerror=null;this.src='https://threejs.org/files/favicon.ico';" />
+            <div>
+              <div class="res-card-name">Three.js r134</div>
+              <span class="res-card-tag">3D Library</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Used to render both cinematic 3D car scenes on the homepage. Handles WebGL rendering, scene graph, camera control, lighting (PBR), PMREM environment maps, particle systems, and scroll-driven animation.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://threejs.org" target="_blank" rel="noopener">threejs.org</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/GSAP_Logo.svg/200px-GSAP_Logo.svg.png" alt="GSAP" class="res-logo" style="background:#0e100f;" onerror="this.onerror=null;this.src='https://gsap.com/favicon.ico';" />
+            <div>
+              <div class="res-card-name">GSAP 3.12.5</div>
+              <span class="res-card-tag">Animation Library</span>
+            </div>
+          </div>
+          <p class="res-card-desc">GreenSock Animation Platform — used for scroll-triggered reveal animations (ScrollTrigger), element fade-ins, and smooth entrance transitions across all pages.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://gsap.com" target="_blank" rel="noopener">gsap.com</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Three.js_Icon.svg/200px-Three.js_Icon.svg.png" alt="GLTFLoader" class="res-logo" style="background:#000;" onerror="this.onerror=null;this.src='https://threejs.org/files/favicon.ico';" />
+            <div>
+              <div class="res-card-name">GLTFLoader (Three.js)</div>
+              <span class="res-card-tag">3D File Loader</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Three.js loader addon used to parse and load the two GLB 3D car models (base64-encoded) directly in the browser without any server-side processing.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://threejs.org/docs/#examples/en/loaders/GLTFLoader" target="_blank" rel="noopener">threejs.org/docs</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://www.google.com/favicon.ico" alt="Google Maps" class="res-logo" />
+            <div>
+              <div class="res-card-name">Google Maps Embed API</div>
+              <span class="res-card-tag">Mapping Service</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Embedded on the Contact page to display the exact showroom location at Litecloud, 2 Sanson Rd, Lahug, Cebu City, Philippines with a live interactive map.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://developers.google.com/maps/documentation/embed" target="_blank" rel="noopener">developers.google.com/maps</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Google Fonts" class="res-logo" />
+            <div>
+              <div class="res-card-name">Google Fonts</div>
+              <span class="res-card-tag">Typography</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Provides the two typefaces used throughout the site — <strong style="color:var(--white)">Poppins</strong> for headings and display text, and <strong style="color:var(--white)">Inter</strong> for body and UI copy.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://fonts.google.com" target="_blank" rel="noopener">fonts.google.com</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://code.visualstudio.com/favicon.ico" alt="VS Code" class="res-logo" style="background:#1e1e1e;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="res-logo-placeholder" style="display:none;">VS Code</div>
+            <div>
+              <div class="res-card-name">Visual Studio Code</div>
+              <span class="res-card-tag">Code Editor</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Primary code editor used for writing and managing all HTML, CSS, and JavaScript files throughout the entire project development.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://code.visualstudio.com" target="_blank" rel="noopener">code.visualstudio.com</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://marketplace.visualstudio.com/favicon.ico" alt="Live Server" class="res-logo" style="background:#1e1e1e;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="res-logo-placeholder" style="display:none;">Live Server</div>
+            <div>
+              <div class="res-card-name">Live Server (VS Code)</div>
+              <span class="res-card-tag">Dev Utility</span>
+            </div>
+          </div>
+          <p class="res-card-desc">VS Code extension used to run a local HTTP development server at <code style="color:var(--gold);font-size:.75rem">http://127.0.0.1:5500</code> for real-time browser preview and hot reload during development.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer" target="_blank" rel="noopener">VS Code Marketplace</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. AI TOOLS & ASSISTANCE -->
+  <section class="res-section">
+    <div class="res-category">
+      <div class="res-category-header">
+        <div class="res-category-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 8v4l3 3"/><circle cx="18" cy="6" r="4"/></svg>
+        </div>
+        <div>
+          <div class="res-category-num">Category 02</div>
+          <div class="res-category-title">AI Tools &amp; Assistance</div>
+        </div>
+      </div>
+      <div class="res-grid">
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/180px-ChatGPT_logo.svg.png" alt="ChatGPT" class="res-logo" style="background:#10a37f;" onerror="this.onerror=null;this.src='https://openai.com/favicon.ico';" />
+            <div>
+              <div class="res-card-name">ChatGPT (OpenAI)</div>
+              <span class="res-card-tag">AI Assistant</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Used extensively for research, generating content copy (car descriptions, about page text), debugging JavaScript logic, and getting suggestions for layout and UX patterns.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://chat.openai.com" target="_blank" rel="noopener">chat.openai.com</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" alt="Gemini" class="res-logo" style="background:#1a1a2e;" />
+            <div>
+              <div class="res-card-name">Google Gemini</div>
+              <span class="res-card-tag">AI Assistant</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Used for Product Requirements Document (PRD) creation, ideation of project features, and brainstorming the overall concept and structure of the Villarias Motors platform.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://gemini.google.com" target="_blank" rel="noopener">gemini.google.com</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Claude_AI_logo.svg/200px-Claude_AI_logo.svg.png" alt="Claude" class="res-logo" style="background:#cc9b7a;" onerror="this.onerror=null;this.src='https://claude.ai/favicon.ico';" />
+            <div>
+              <div class="res-card-name">Claude (Anthropic)</div>
+              <span class="res-card-tag">AI Coding Assistant</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Used via Claude Code for advanced code generation — writing the entire Three.js 3D scene scripts, scroll-driven animations, visual effects, CSS architecture, and implementing complex features across all pages.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://openai.com/favicon.ico" alt="AI Image" class="res-logo" style="background:#10a37f;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="res-logo-placeholder" style="display:none;">AI Image</div>
+            <div>
+              <div class="res-card-name">AI Image Generation</div>
+              <span class="res-card-tag">Visual Assets</span>
+            </div>
+          </div>
+          <p class="res-card-desc">AI image generation tools were used to produce high-quality supercar visuals, team member placeholder photos, and design asset references used throughout the showroom and about sections.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://openai.com/dall-e" target="_blank" rel="noopener">DALL·E / Midjourney</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. DESIGN & MEDIA RESOURCES -->
+  <section class="res-section">
+    <div class="res-category">
+      <div class="res-category-header">
+        <div class="res-category-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
+        <div>
+          <div class="res-category-num">Category 03</div>
+          <div class="res-category-title">Design &amp; Media Resources</div>
+        </div>
+      </div>
+      <div class="res-grid">
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://sketchfab.com/favicon.ico" alt="GLB 3D" class="res-logo" style="background:#1a1a1a;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="res-logo-placeholder" style="display:none;">GLB 3D</div>
+            <div>
+              <div class="res-card-name">GLB 3D Car Models</div>
+              <span class="res-card-tag">3D Assets</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Two GLB format 3D car models used in the cinematic homepage scenes. Models are base64-encoded and bundled into <code style="color:var(--gold);font-size:.75rem">model-data.js</code> and <code style="color:var(--gold);font-size:.75rem">model2-data.js</code> for zero-latency loading without a server.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://sketchfab.com" target="_blank" rel="noopener">Sketchfab / Custom</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://heroicons.com/favicon.ico" alt="SVG Icons" class="res-logo" style="background:#0f172a;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="res-logo-placeholder" style="display:none;">SVG Icons</div>
+            <div>
+              <div class="res-card-name">Inline SVG Icons</div>
+              <span class="res-card-tag">Iconography</span>
+            </div>
+          </div>
+          <p class="res-card-desc">All icons throughout the site (navigation, contact cards, cart, social links) are hand-crafted inline SVGs — no external icon library dependency, keeping the site lightweight.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://heroicons.com" target="_blank" rel="noopener">Heroicons inspired</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://ui-avatars.com/favicon.ico" alt="UI Avatars" class="res-logo" style="background:#fff;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="res-logo-placeholder" style="display:none;">UI Avatars</div>
+            <div>
+              <div class="res-card-name">UI Avatars API</div>
+              <span class="res-card-tag">Fallback Assets</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Used as a graceful fallback for team member profile photos. Automatically generates initials-based avatar images if a team photo file is missing or fails to load.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://ui-avatars.com" target="_blank" rel="noopener">ui-avatars.com</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="assets/logo/icon.png" alt="Villarias Motors" class="res-logo" style="background:#0a0a0a;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="res-logo-placeholder" style="display:none;">Brand Logo</div>
+            <div>
+              <div class="res-card-name">Custom Brand Assets</div>
+              <span class="res-card-tag">Branding</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Official Villarias Motors brand assets — primary logo, horizontal logo, icon, and circle icon — designed and provided by the project owner. Used across navbar, footer, favicon, and register page.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="#" rel="noopener">Custom / Proprietary</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Google Fonts" class="res-logo" />
+            <div>
+              <div class="res-card-name">Poppins &amp; Inter Typefaces</div>
+              <span class="res-card-tag">Typography</span>
+            </div>
+          </div>
+          <p class="res-card-desc"><strong style="color:var(--white)">Poppins</strong> (weights 300–900) is used for all display headings and section titles. <strong style="color:var(--white)">Inter</strong> (weights 300–600) is used for body text, labels, and UI elements.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://fonts.google.com/specimen/Poppins" target="_blank" rel="noopener">fonts.google.com</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. DATA SOURCES / REFERENCES -->
+  <section class="res-section">
+    <div class="res-category">
+      <div class="res-category-header">
+        <div class="res-category-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        </div>
+        <div>
+          <div class="res-category-num">Category 04</div>
+          <div class="res-category-title">Data Sources &amp; References</div>
+        </div>
+      </div>
+      <div class="res-grid">
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/MDN_Web_Docs.svg/200px-MDN_Web_Docs.svg.png" alt="MDN" class="res-logo" style="background:#fff;" onerror="this.onerror=null;this.src='https://developer.mozilla.org/favicon.ico';" />
+            <div>
+              <div class="res-card-name">MDN Web Docs</div>
+              <span class="res-card-tag">Reference</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Primary technical reference for HTML5, CSS3, and JavaScript APIs — used throughout development for documentation on IntersectionObserver, Web APIs, CSS custom properties, and browser compatibility.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://developer.mozilla.org" target="_blank" rel="noopener">developer.mozilla.org</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Three.js_Icon.svg/200px-Three.js_Icon.svg.png" alt="Three.js" class="res-logo" style="background:#000;" onerror="this.onerror=null;this.src='https://threejs.org/files/favicon.ico';" />
+            <div>
+              <div class="res-card-name">Three.js Documentation</div>
+              <span class="res-card-tag">Reference</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Official Three.js API documentation and examples — referenced for PMREMGenerator, SpotLight, FogExp2, BufferGeometry, MeshStandardMaterial, and scroll-driven scene architecture.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://threejs.org/docs" target="_blank" rel="noopener">threejs.org/docs</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://gsap.com/favicon.ico" alt="GSAP" class="res-logo" style="background:#0e100f;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="res-logo-placeholder" style="display:none;">GSAP Docs</div>
+            <div>
+              <div class="res-card-name">GSAP Documentation</div>
+              <span class="res-card-tag">Reference</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Referenced for ScrollTrigger plugin setup, timeline control, and best practices for scroll-based animation performance and integration with existing JavaScript code.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://gsap.com/docs" target="_blank" rel="noopener">gsap.com/docs</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico" alt="Stack Overflow" class="res-logo" style="background:#fff;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="res-logo-placeholder" style="display:none;">Stack Overflow</div>
+            <div>
+              <div class="res-card-name">Stack Overflow</div>
+              <span class="res-card-tag">Community Reference</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Community Q&amp;A platform referenced for troubleshooting browser-specific behavior, WebGL rendering issues, CSS positioning edge cases, and JavaScript performance optimization techniques.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://stackoverflow.com" target="_blank" rel="noopener">stackoverflow.com</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. OTHER UTILITIES -->
+  <section class="res-section">
+    <div class="res-category">
+      <div class="res-category-header">
+        <div class="res-category-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <div>
+          <div class="res-category-num">Category 05</div>
+          <div class="res-category-title">Other Utilities &amp; Tools</div>
+        </div>
+      </div>
+      <div class="res-grid">
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Cloudflare_Logo.svg/200px-Cloudflare_Logo.svg.png" alt="cdnjs" class="res-logo" style="background:#f38020;" onerror="this.onerror=null;this.src='https://cdnjs.com/favicon.ico';" />
+            <div>
+              <div class="res-card-name">cdnjs (Cloudflare CDN)</div>
+              <span class="res-card-tag">CDN</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Used to serve Three.js r134 and GSAP 3.12.5 from Cloudflare's globally distributed CDN — ensuring fast load times and high availability without self-hosting large library files.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://cdnjs.com" target="_blank" rel="noopener">cdnjs.com</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://www.jsdelivr.com/favicon.ico" alt="jsDelivr" class="res-logo" style="background:#e84d3d;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="res-logo-placeholder" style="display:none;">jsDelivr</div>
+            <div>
+              <div class="res-card-name">jsDelivr CDN</div>
+              <span class="res-card-tag">CDN</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Used to serve the Three.js GLTFLoader addon — the npm-based CDN path provides the <code style="color:var(--gold);font-size:.75rem">examples/js/loaders/GLTFLoader.js</code> file needed for loading GLB 3D model files.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://jsdelivr.com" target="_blank" rel="noopener">jsdelivr.com</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/MDN_Web_Docs.svg/200px-MDN_Web_Docs.svg.png" alt="LocalStorage" class="res-logo" style="background:#fff;" onerror="this.onerror=null;this.src='https://developer.mozilla.org/favicon.ico';" />
+            <div>
+              <div class="res-card-name">Browser LocalStorage API</div>
+              <span class="res-card-tag">Web API</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Used for client-side cart persistence — stores selected cars, quantities, and cart state in the browser so that cart contents are retained across page navigations without a backend server.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank" rel="noopener">MDN — localStorage</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/MDN_Web_Docs.svg/200px-MDN_Web_Docs.svg.png" alt="IntersectionObserver" class="res-logo" style="background:#fff;" onerror="this.onerror=null;this.src='https://developer.mozilla.org/favicon.ico';" />
+            <div>
+              <div class="res-card-name">IntersectionObserver API</div>
+              <span class="res-card-tag">Web API</span>
+            </div>
+          </div>
+          <p class="res-card-desc">Used to lazily initialize the 3D scenes only when the hero sections enter the viewport — preventing unnecessary GPU load on page load and improving overall performance.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" target="_blank" rel="noopener">MDN — IntersectionObserver</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <div class="res-card-header">
+            <img src="https://www.khronos.org/favicon.ico" alt="WebGL" class="res-logo" style="background:#fff;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="res-logo-placeholder" style="display:none;">WebGL</div>
+            <div>
+              <div class="res-card-name">WebGL API</div>
+              <span class="res-card-tag">Web API</span>
+            </div>
+          </div>
+          <p class="res-card-desc">The low-level GPU rendering API that powers both 3D scenes — accessed through Three.js WebGLRenderer. Enables hardware-accelerated 3D graphics, real-time lighting, and shadow mapping directly in the browser.</p>
+          <div class="res-card-source">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API" target="_blank" rel="noopener">MDN — WebGL</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <div class="res-note" style="padding-bottom:80px;">
+    <div class="res-note-inner">
+      <svg class="res-note-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <p class="res-note-text">
+        <strong>Note:</strong> All external libraries are loaded via CDN and are subject to their respective open-source licenses. Three.js is licensed under the MIT License. GSAP is used under the GreenSock Standard License (free for non-commercial projects). Google Fonts and Google Maps Embed are used under Google's standard Terms of Service. All brand assets and custom photography are proprietary to Villarias Motors.
+      </p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo-link"><img src="assets/logo/primary.png" alt="Villarias Motors" class="footer-logo-img" /></a>
+          <p>The most prestigious digital-first supercar showroom in the world. Drive the extraordinary.</p>
+        </div>
+        <div class="footer-links-col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="services.html">Showroom</a></li>
+            <li><a href="contact.html">Contact</a></li>
+      <li><a href="resources.html">Resources</a></li>
+          </ul>
+        </div>
+        <div class="footer-links-col">
+          <h4>Project</h4>
+          <ul>
+            <li><a href="bio.html">Student Bio</a></li>
+            <li><a href="resources.html" class="active">Resources Used</a></li>
+            <li><a href="register.html">Register</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Villarias Motors. All rights reserved.</p>
+        <p>Crafted with precision &amp; passion.</p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
