@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome — Villarias Motors</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="page-thankyou" data-page="thankyou">
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
+
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-logo">VILLARIAS<span>MOTORS</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="services.html">Showroom</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="cart.html" class="cart-icon" id="cartIcon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </a>
+    </div>
+    <button class="nav-toggle" id="navToggle">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <section class="thankyou-section">
+    <div class="thankyou-bg">
+      <div class="ty-bg-gradient"></div>
+      <div class="ty-particles" id="tyParticles"></div>
+    </div>
+    <div class="thankyou-content">
+      <div class="ty-emblem">
+        <div class="ty-emblem-ring"></div>
+        <div class="ty-emblem-ring ty-ring-2"></div>
+        <div class="ty-check">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+      </div>
+      <div class="ty-label">REGISTRATION CONFIRMED</div>
+      <h1 class="ty-title">Welcome to the<br/><span class="text-gold">Elite.</span></h1>
+      <p class="ty-greeting" id="tyGreeting">Dear Valued Client,</p>
+      <p class="ty-message">Your application for exclusive Villarias Motors membership has been received. Our dedicated acquisition consultant will be in touch within <strong>24 hours</strong> to discuss your preferences and arrange a private consultation.</p>
+      <p class="ty-brand-note" id="tyBrandNote"></p>
+      <div class="ty-details glass-card">
+        <div class="ty-detail-item">
+          <span class="ty-detail-icon">📋</span>
+          <div>
+            <strong>Application Reference</strong>
+            <span id="tyRefCode">VM-2025-00000</span>
+          </div>
+        </div>
+        <div class="ty-detail-item">
+          <span class="ty-detail-icon">📧</span>
+          <div>
+            <strong>Confirmation Sent To</strong>
+            <span id="tyEmail">your registered email</span>
+          </div>
+        </div>
+        <div class="ty-detail-item">
+          <span class="ty-detail-icon">⏰</span>
+          <div>
+            <strong>Response Time</strong>
+            <span>Within 24 business hours</span>
+          </div>
+        </div>
+      </div>
+      <div class="ty-next-steps">
+        <h3>What Happens Next?</h3>
+        <div class="ty-steps">
+          <div class="ty-step">
+            <div class="ty-step-num">01</div>
+            <p>Our concierge team reviews your application and preferred brand selection.</p>
+          </div>
+          <div class="ty-step">
+            <div class="ty-step-num">02</div>
+            <p>A dedicated acquisition specialist is assigned to your account.</p>
+          </div>
+          <div class="ty-step">
+            <div class="ty-step-num">03</div>
+            <p>We arrange a private, personalized consultation at your convenience.</p>
+          </div>
+        </div>
+      </div>
+      <div class="ty-ctas">
+        <a href="services.html" class="btn-gold magnetic">Explore Our Collection</a>
+        <a href="index.html" class="btn-outline magnetic">Return Home</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top:none; padding-top:2rem;">
+        <p>&copy; 2025 Villarias Motors. All rights reserved.</p>
+        <p>Crafted with precision &amp; passion.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
