@@ -27,6 +27,142 @@ const CARS = [
   { id:22, brand:'Ferrari',      name:'Purosangue',        tagline:'Ferraris first ever SUV',         price:400000,  top_speed:'193 mph', hp:'715 hp',   engine:'6.5L V12',           badge:'New',     color:'#FF2800', img:'assets/cars/car-22.png' },
 ];
 
+// ── CAR FEATURES DATA ─────────────────────────────────────
+const CAR_FEATURES = {
+  1:  [
+    { label:'Performance',  img:'assets/car-features/car1-f1.png',  desc:'986 hp hybrid V8 catapults from 0–100 in 2.5 seconds.' },
+    { label:'Interior',     img:'assets/car-features/car1-f2.png',  desc:'Handcrafted cabin fusing Alcantara, carbon fibre and digital precision.' },
+    { label:'Technology',   img:'assets/car-features/car1-f3.png',  desc:'eManettino switch cycles four electrified driving modes instantly.' },
+    { label:'Comfort',      img:'assets/car-features/car1-f4.png',  desc:'Active suspension and magnetic dampers absorb every imperfection.' },
+  ],
+  2:  [
+    { label:'Performance',  img:'assets/car-features/car2-f1.png',  desc:'963 hp V12 hybrid open-air machine, 0–100 in 2.9 seconds.' },
+    { label:'Interior',     img:'assets/car-features/car2-f2.png',  desc:'Bespoke removable hardtop with carbon-reinforced roll hoops.' },
+    { label:'Technology',   img:'assets/car-features/car2-f3.png',  desc:'Kinetic energy recovery system feeding electric motors on demand.' },
+    { label:'Comfort',      img:'assets/car-features/car2-f4.png',  desc:'Wind deflector and climate seats for open-top grand touring.' },
+  ],
+  3:  [
+    { label:'Performance',  img:'assets/car-features/car3-f1.png',  desc:'640 hp naturally aspirated V10 screaming to 8,500 rpm.' },
+    { label:'Interior',     img:'assets/car-features/car3-f2.png',  desc:'Driver-focused cockpit with Lamborghini Alcantara steering.' },
+    { label:'Technology',   img:'assets/car-features/car3-f3.png',  desc:'LDVI predictive all-wheel-drive system reads road in milliseconds.' },
+    { label:'Comfort',      img:'assets/car-features/car3-f4.png',  desc:'Strada mode softens ride for effortless daily city driving.' },
+  ],
+  4:  [
+    { label:'Performance',  img:'assets/car-features/car4-f1.png',  desc:'1,001 hp V12 hybrid successor to the Aventador flagship.' },
+    { label:'Interior',     img:'assets/car-features/car4-f2.png',  desc:'Futuristic cockpit wrapped in full-colour digital interface.' },
+    { label:'Technology',   img:'assets/car-features/car4-f3.png',  desc:'Three electric motors plus V12 form a 3-motor hybrid architecture.' },
+    { label:'Comfort',      img:'assets/car-features/car4-f4.png',  desc:'Adaptive suspension balances track aggression with road civility.' },
+  ],
+  5:  [
+    { label:'Performance',  img:'assets/car-features/car5-f1.png',  desc:'1,600 hp quad-turbo W16 engine, 0–100 in 2.4 seconds.' },
+    { label:'Interior',     img:'assets/car-features/car5-f2.png',  desc:'Bespoke leather and carbon interior with floating centre console.' },
+    { label:'Technology',   img:'assets/car-features/car5-f3.png',  desc:'Seven-speed dual-clutch gearbox with paddle-shift in 100 ms.' },
+    { label:'Comfort',      img:'assets/car-features/car5-f4.png',  desc:'Hydropneumatic suspension auto-levels for imperious grand touring.' },
+  ],
+  6:  [
+    { label:'Performance',  img:'assets/car-features/car6-f1.png',  desc:'525 hp flat-six naturally aspirated, revving freely to 9,000 rpm.' },
+    { label:'Interior',     img:'assets/car-features/car6-f2.png',  desc:'Motorsport bucket seats and roll cage-ready lightweight cabin.' },
+    { label:'Technology',   img:'assets/car-features/car6-f3.png',  desc:'Active aerodynamics generate 409 kg of downforce at top speed.' },
+    { label:'Comfort',      img:'assets/car-features/car6-f4.png',  desc:'PCCB ceramic brakes offer fade-free stopping from 200 mph.' },
+  ],
+  7:  [
+    { label:'Performance',  img:'assets/car-features/car7-f1.png',  desc:'887 hp V8 hybrid capable of 214 mph without compromising fuel economy.' },
+    { label:'Interior',     img:'assets/car-features/car7-f2.png',  desc:'Panoramic glass roof flooding cockpit with natural light.' },
+    { label:'Technology',   img:'assets/car-features/car7-f3.png',  desc:'Two front electric motors enable torque vectoring on demand.' },
+    { label:'Comfort',      img:'assets/car-features/car7-f4.png',  desc:'PASM chassis with rear-axle steering for urban manoeuvrability.' },
+  ],
+  8:  [
+    { label:'Performance',  img:'assets/car-features/car8-f1.png',  desc:'720 hp twin-turbo V8 with retractable hard top in 11 seconds.' },
+    { label:'Interior',     img:'assets/car-features/car8-f2.png',  desc:'Driver-centric Alcantara wrapped interior with MSO options.' },
+    { label:'Technology',   img:'assets/car-features/car8-f3.png',  desc:'Proactive chassis control II anticipates road surfaces in real time.' },
+    { label:'Comfort',      img:'assets/car-features/car8-f4.png',  desc:'Comfort suspension setting transforms 720S into a refined GT.' },
+  ],
+  9:  [
+    { label:'Performance',  img:'assets/car-features/car9-f1.png',  desc:'789 hp V8 producing the most downforce of any road-legal McLaren.' },
+    { label:'Interior',     img:'assets/car-features/car9-f2.png',  desc:'F1-inspired central driving position puts you at the apex.' },
+    { label:'Technology',   img:'assets/car-features/car9-f3.png',  desc:'Inertia push rods and active aero work in unison below 250 km/h.' },
+    { label:'Comfort',      img:'assets/car-features/car9-f4.png',  desc:'Hydraulic steering delivers unfiltered road feel and precision.' },
+  ],
+  10: [
+    { label:'Performance',  img:'assets/car-features/car10-f1.png', desc:'1,001 hp W16 that reset the world top-speed record at 253 mph.' },
+    { label:'Interior',     img:'assets/car-features/car10-f2.png', desc:'Hand-stitched two-tone leather with polished aluminium accents.' },
+    { label:'Technology',   img:'assets/car-features/car10-f3.png', desc:'Seven-speed DSG gearbox with Haldex all-wheel-drive management.' },
+    { label:'Comfort',      img:'assets/car-features/car10-f4.png', desc:'Pneumatic suspension raises ride height for ramp approach angles.' },
+  ],
+  11: [
+    { label:'Performance',  img:'assets/car-features/car11-f1.png', desc:'563 hp twin-turbo V12 wrapped in serene, cathedral-quiet refinement.' },
+    { label:'Interior',     img:'assets/car-features/car11-f2.png', desc:'Starlight headliner with 1,340 hand-sewn fibre-optic stars.' },
+    { label:'Technology',   img:'assets/car-features/car11-f3.png', desc:'Night Vision and four-camera Park Assist for effortless luxury.' },
+    { label:'Comfort',      img:'assets/car-features/car11-f4.png', desc:'Magic Carpet Ride air suspension floats over any surface.' },
+  ],
+  12: [
+    { label:'Performance',  img:'assets/car-features/car12-f1.png', desc:'591 hp Black Badge V12 with 50 nm more torque than standard Ghost.' },
+    { label:'Interior',     img:'assets/car-features/car12-f2.png', desc:'Darkened chrome and carbon fibre accents define Black Badge excess.' },
+    { label:'Technology',   img:'assets/car-features/car12-f3.png', desc:'Satellite Aided Transmission pre-selects gears before every bend.' },
+    { label:'Comfort',      img:'assets/car-features/car12-f4.png', desc:'Planar suspension system provides unparalleled body isolation.' },
+  ],
+  13: [
+    { label:'Performance',  img:'assets/car-features/car13-f1.png', desc:'1,160 hp naturally aspirated V12 co-developed with Red Bull Racing.' },
+    { label:'Interior',     img:'assets/car-features/car13-f2.png', desc:'FIA-certified racing harness and HANS-compatible roll structure.' },
+    { label:'Technology',   img:'assets/car-features/car13-f3.png', desc:'DRS rear wing deploys electronically to slash aerodynamic drag.' },
+    { label:'Comfort',      img:'assets/car-features/car13-f4.png', desc:'Reactive spring system enables road legality without compromising pace.' },
+  ],
+  14: [
+    { label:'Performance',  img:'assets/car-features/car14-f1.png', desc:'770 hp twin-turbo V12 — the most powerful production Aston ever.' },
+    { label:'Interior',     img:'assets/car-features/car14-f2.png', desc:'Bridge of Weir leather with carbon fibre inlays throughout.' },
+    { label:'Technology',   img:'assets/car-features/car14-f3.png', desc:'Electronic rear differential and torque vectoring for precise exits.' },
+    { label:'Comfort',      img:'assets/car-features/car14-f4.png', desc:'Adaptive dampers offer GT touring mode for long-distance comfort.' },
+  ],
+  15: [
+    { label:'Performance',  img:'assets/car-features/car15-f1.png', desc:'809 hp V12 barchetta with zero roof and pure wind-in-hair drama.' },
+    { label:'Interior',     img:'assets/car-features/car15-f2.png', desc:'Minimalist carbonfibre cockpit strips every gram to essentials.' },
+    { label:'Technology',   img:'assets/car-features/car15-f3.png', desc:'Virtual windscreen channels airflow over occupants at speed.' },
+    { label:'Comfort',      img:'assets/car-features/car15-f4.png', desc:'Manettino offers Wet, Comfort, Sport, Race, and Qualify modes.' },
+  ],
+  16: [
+    { label:'Performance',  img:'assets/car-features/car16-f1.png', desc:'657 hp twin-turbo V8 SUV hitting 100 km/h in 3.3 seconds flat.' },
+    { label:'Interior',     img:'assets/car-features/car16-f2.png', desc:'5-seat cabin with Lamborghini sport seats and open-pore carbon.' },
+    { label:'Technology',   img:'assets/car-features/car16-f3.png', desc:'Lamborghini Dynamic Vehicle Control coordinates torque to all wheels.' },
+    { label:'Comfort',      img:'assets/car-features/car16-f4.png', desc:'Air suspension and active anti-roll bars tame body roll at cornering.' },
+  ],
+  17: [
+    { label:'Performance',  img:'assets/car-features/car17-f1.png', desc:'1,000 hp V8 hybrid, built for track-only extra-sensory speed.' },
+    { label:'Interior',     img:'assets/car-features/car17-f2.png', desc:'Full harness, helmet accommodation and FIA-grade roll cage.' },
+    { label:'Technology',   img:'assets/car-features/car17-f3.png', desc:'DRS system and active front axle aerodynamics for downforce mastery.' },
+    { label:'Comfort',      img:'assets/car-features/car17-f4.png', desc:'Bespoke air cooling system maintains driver temperature on track.' },
+  ],
+  18: [
+    { label:'Performance',  img:'assets/car-features/car18-f1.png', desc:'870 hp dual-motor EV with 0–100 in 2.5 seconds and PDCC Sport.' },
+    { label:'Interior',     img:'assets/car-features/car18-f2.png', desc:'GT Sport seats with integrated belt guides and Race-Tex upholstery.' },
+    { label:'Technology',   img:'assets/car-features/car18-f3.png', desc:'800-volt architecture enables 270 kW DC fast-charge capability.' },
+    { label:'Comfort',      img:'assets/car-features/car18-f4.png', desc:'Active suspension with air springs and electromechanical roll bars.' },
+  ],
+  19: [
+    { label:'Performance',  img:'assets/car-features/car19-f1.png', desc:'1,479 hp quad-turbo W16 tuned for lateral grip over raw top speed.' },
+    { label:'Interior',     img:'assets/car-features/car19-f2.png', desc:'Body-hugging carbon-framed seats with double-layer Alcantara finish.' },
+    { label:'Technology',   img:'assets/car-features/car19-f3.png', desc:'Front slit and rear NACA ducts generate 90 kg more downforce than Chiron.' },
+    { label:'Comfort',      img:'assets/car-features/car19-f4.png', desc:'Adaptive air suspension lowers 35 mm in Sport mode at 180 km/h.' },
+  ],
+  20: [
+    { label:'Performance',  img:'assets/car-features/car20-f1.png', desc:'671 hp twin-turbo V8 with 8-speed automatic, 0–100 in 3.6 seconds.' },
+    { label:'Interior',     img:'assets/car-features/car20-f2.png', desc:'55 standard leather options and an array of piano-black trims.' },
+    { label:'Technology',   img:'assets/car-features/car20-f3.png', desc:'Aston Martin\'s latest infotainment with wireless Apple CarPlay.' },
+    { label:'Comfort',      img:'assets/car-features/car20-f4.png', desc:'Sport Plus seats with 14-way power adjustment and heating.' },
+  ],
+  21: [
+    { label:'Performance',  img:'assets/car-features/car21-f1.png', desc:'577 hp dual-motor EV — Rolls-Royce\'s first fully electric motor car.' },
+    { label:'Interior',     img:'assets/car-features/car21-f2.png', desc:'Illuminated Fascia with 5,500 LEDs creates celestial ambient lighting.' },
+    { label:'Technology',   img:'assets/car-features/car21-f3.png', desc:'Fully adaptive air suspension with noise-cancelling road-sensing.' },
+    { label:'Comfort',      img:'assets/car-features/car21-f4.png', desc:'Four-zone climate and reclining rear seats for limousine serenity.' },
+  ],
+  22: [
+    { label:'Performance',  img:'assets/car-features/car22-f1.png', desc:'715 hp naturally aspirated V12 SUV, Ferrari\'s first in its history.' },
+    { label:'Interior',     img:'assets/car-features/car22-f2.png', desc:'2+2 seating with rear individual bucket seats for four adults.' },
+    { label:'Technology',   img:'assets/car-features/car22-f3.png', desc:'Active suspension with integrated Ferrari Dynamic Enhancer Pro.' },
+    { label:'Comfort',      img:'assets/car-features/car22-f4.png', desc:'Panoramic glass roof spanning the full width of the cabin.' },
+  ],
+};
+
 // ── CART ──────────────────────────────────────────────────
 const Cart = {
   get()  { try { return JSON.parse(localStorage.getItem('vm_cart') || '[]'); } catch(e){ return []; } },
@@ -203,6 +339,7 @@ function buildSlider() {
   const TEXT_SLOT_H  = 220;   // px height per car name "slot" in the bg text track
   let currentIndex   = 0;
   let isDragging     = false;
+  let hasDragged     = false;
   let dragStartX     = 0;
   let dragStartOff   = 0;
   let currentOffset  = 0;     // current track translateX value
@@ -212,7 +349,20 @@ function buildSlider() {
   const items        = [];    // references to DOM nodes
 
   // ── BUILD HTML ──
-  track.innerHTML = CARS.map((car, i) => `
+  track.innerHTML = CARS.map((car, i) => {
+    const feats = CAR_FEATURES[car.id] || [];
+    const previewHTML = feats.length ? `
+      <div class="vm-feat-preview">
+        <div class="vm-feat-preview-label">FEATURES</div>
+        <div class="vm-feat-preview-grid">
+          ${feats.map(f => `
+            <div class="vm-feat-thumb" data-feat-img="${f.img}" data-feat-label="${f.label}" title="${f.label}">
+              <img src="${f.img}" alt="${f.label}" class="vm-feat-thumb-img" onerror="this.closest('.vm-feat-thumb').classList.add('vm-feat-no-img')" />
+              <span class="vm-feat-thumb-label">${f.label}</span>
+            </div>`).join('')}
+        </div>
+      </div>` : '';
+    return `
     <div class="vm-car-item" data-id="${car.id}" data-index="${i}" style="--vm-car-color:${car.color}">
       ${car.badge ? `<div class="vm-car-badge">${car.badge}</div>` : ''}
       <div class="vm-car-img-wrap">
@@ -229,8 +379,10 @@ function buildSlider() {
           <button class="vm-btn-add" data-id="${car.id}">Add to Cart</button>
           <button class="vm-btn-detail" data-id="${car.id}" title="Details">⊞</button>
         </div>
+        ${previewHTML}
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 
   // ── BUILD BACKGROUND TEXT TRACK ──
   // For each car we create two stacked text nodes (layer-1 large white, layer-2 smaller gold).
@@ -391,6 +543,7 @@ function buildSlider() {
   // ── DRAG-TO-SCROLL with inertia ──
   stage.addEventListener('mousedown', e => {
     isDragging  = true;
+    hasDragged  = false;
     dragStartX  = e.clientX;
     dragStartOff= currentOffset;
     lastX       = e.clientX;
@@ -405,12 +558,11 @@ function buildSlider() {
     velocity   = e.clientX - lastX;
     lastX      = e.clientX;
     const dx   = e.clientX - dragStartX;
+    if (Math.abs(dx) > 5) hasDragged = true;
     const newX = dragStartOff + dx;
     gsap.set(track, { x: newX });
     currentOffset = newX;
-    // live parallax during drag
     liveParallax(newX);
-    // sync background text vertically as drag progresses
     liveTextSync(newX);
     e.preventDefault();
   });
@@ -498,22 +650,23 @@ function buildSlider() {
 
   // ── CLICK ──
   track.addEventListener('click', e => {
-    // If it was a drag, ignore
-    if (Math.abs(currentOffset - (centerOff() - currentIndex * ITEM_W)) > 8) return;
+    if (hasDragged) { hasDragged = false; return; }
 
     const addBtn    = e.target.closest('.vm-btn-add');
     const detailBtn = e.target.closest('.vm-btn-detail');
+    const featThumb = e.target.closest('.vm-feat-thumb');
     const carItem   = e.target.closest('.vm-car-item');
 
     if (addBtn)    { const car=CARS.find(c=>c.id==addBtn.dataset.id);    if(car) { Cart.add(car); return; } }
     if (detailBtn) { const car=CARS.find(c=>c.id==detailBtn.dataset.id); if(car) { openModal(car); return; } }
+    if (featThumb) { openFeatureLightbox(featThumb.dataset.featImg, featThumb.dataset.featLabel); return; }
     if (carItem) {
       const idx = parseInt(carItem.dataset.index);
       if (idx !== currentIndex) {
-        goTo(idx); // clicking a non-active car navigates to it
+        goTo(idx);
       } else {
         const car = CARS.find(c=>c.id==carItem.dataset.id);
-        if (car) openModal(car); // clicking active car opens modal
+        if (car) openModal(car);
       }
     }
   });
@@ -562,6 +715,69 @@ function hexToRgba(hex, alpha) {
   return `rgba(${r},${g},${b},${alpha})`;
 }
 
+// ── FEATURE LIGHTBOX ──────────────────────────────────────
+function openFeatureLightbox(src, label) {
+  let lb = document.getElementById('featureLightbox');
+  if (!lb) {
+    lb = document.createElement('div');
+    lb.id = 'featureLightbox';
+    lb.className = 'feature-lightbox';
+    lb.innerHTML = `
+      <div class="flb-overlay"></div>
+      <div class="flb-inner">
+        <button class="flb-close" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <img class="flb-img" src="" alt="" />
+        <div class="flb-label"></div>
+      </div>`;
+    document.body.appendChild(lb);
+    lb.querySelector('.flb-overlay').addEventListener('click', closeFeatureLightbox);
+    lb.querySelector('.flb-close').addEventListener('click', closeFeatureLightbox);
+    document.addEventListener('keydown', e => { if (e.key==='Escape') closeFeatureLightbox(); });
+  }
+  lb.querySelector('.flb-img').src  = src;
+  lb.querySelector('.flb-img').alt  = label;
+  lb.querySelector('.flb-label').textContent = label;
+  lb.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeFeatureLightbox() {
+  const lb = document.getElementById('featureLightbox');
+  if (lb) {
+    lb.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+// ── BUILD FEATURES GRID HTML ───────────────────────────────
+function buildFeaturesGridHTML(carId) {
+  const feats = CAR_FEATURES[carId];
+  if (!feats) return '';
+  return `
+    <div class="cf-section">
+      <div class="cf-header">
+        <span class="cf-eyebrow">CAR FEATURES</span>
+        <h3 class="cf-title">Explore Every <span class="text-gold">Detail</span></h3>
+      </div>
+      <div class="cf-grid">
+        ${feats.map((f, i) => `
+          <div class="cf-card cf-card--${i}" data-feat-img="${f.img}" data-feat-label="${f.label}">
+            <div class="cf-img-wrap">
+              <img src="${f.img}" alt="${f.label}" class="cf-img" onerror="this.closest('.cf-img-wrap').classList.add('cf-no-img')" />
+              <div class="cf-img-overlay">
+                <svg class="cf-zoom-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+              </div>
+            </div>
+            <div class="cf-card-body">
+              <span class="cf-label">${f.label}</span>
+              <p class="cf-desc">${f.desc}</p>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
 // ── MODAL ─────────────────────────────────────────────────
 function openModal(car) {
   const modal = document.getElementById('carModal');
@@ -573,6 +789,7 @@ function openModal(car) {
   const priceEl = document.getElementById('modalPrice');
   const specsEl = document.getElementById('modalSpecs');
   const addBtn  = document.getElementById('modalAddCart');
+  const featEl  = document.getElementById('modalFeatures');
 
   if (imgEl) { imgEl.src=car.img; imgEl.alt=car.name; imgEl.style.opacity='1'; }
   if (badgeEl) { badgeEl.textContent=car.badge||car.brand; badgeEl.style.display=car.badge?'block':'none'; }
@@ -585,6 +802,20 @@ function openModal(car) {
     <div class="modal-spec-item"><span class="modal-spec-label">Engine</span><span class="modal-spec-value">${car.engine}</span></div>
     <div class="modal-spec-item"><span class="modal-spec-label">Category</span><span class="modal-spec-value">${car.badge||'Production'}</span></div>`;
   if (addBtn) addBtn.dataset.id = car.id;
+  if (featEl) {
+    featEl.innerHTML = buildFeaturesGridHTML(car.id);
+    featEl.querySelectorAll('.cf-card').forEach(card => {
+      card.addEventListener('click', () => {
+        openFeatureLightbox(card.dataset.featImg, card.dataset.featLabel);
+      });
+    });
+    if (typeof gsap !== 'undefined') {
+      gsap.from(featEl.querySelectorAll('.cf-card'), {
+        y: 30, opacity: 0, duration: .6,
+        stagger: .1, ease: 'power3.out', delay: .2
+      });
+    }
+  }
 
   modal.classList.add('active');
   document.body.style.overflow='hidden';
@@ -602,10 +833,13 @@ function buildCarsGrid() {
   function renderGrid(brand) {
     const list = brand==='all' ? CARS : CARS.filter(c=>c.brand===brand);
     grid.innerHTML = list.map(car => `
-      <div class="car-card" data-brand="${car.brand}">
+      <div class="car-card" data-brand="${car.brand}" data-id="${car.id}">
         ${car.badge ? `<div class="car-card-badge">${car.badge}</div>` : ''}
         <div class="car-card-img-wrap">
-          <img src="${car.img}" alt="${car.name}" class="car-card-img" onerror="this.style.opacity='0'"/>
+          <img src="${car.img}" alt="${car.name}" class="car-card-img" loading="lazy" onerror="this.style.opacity='0'"/>
+          <div class="car-card-hover-overlay">
+            <button class="cc-view-btn" data-id="${car.id}">View Details</button>
+          </div>
         </div>
         <div class="car-card-body">
           <div class="car-card-brand">${car.brand}</div>
@@ -614,13 +848,20 @@ function buildCarsGrid() {
           <div class="car-card-price">${fmtPrice(car.price)}</div>
         </div>
         <div class="car-card-footer">
-          <button class="btn-add-cart slide-add-btn" data-id="${car.id}" style="flex:1;">Add to Cart</button>
-          <button class="slide-view-btn" data-id="${car.id}" style="padding:10px 14px;" title="Details">⊞</button>
+          <button class="slide-add-btn" data-id="${car.id}">Add to Cart</button>
+          <button class="slide-view-btn" data-id="${car.id}" title="Details">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
         </div>
       </div>`).join('');
 
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-      gsap.from('.car-card', { y:40, opacity:0, duration:.6, stagger:.06, ease:'power3.out' });
+    const cards = grid.querySelectorAll('.car-card');
+    cards.forEach(c => { c.style.opacity = '1'; c.style.transform = 'none'; });
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo(cards,
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: .5, stagger: .05, ease: 'power3.out', clearProps: 'all' }
+      );
     }
   }
 
@@ -635,10 +876,17 @@ function buildCarsGrid() {
   });
 
   grid.addEventListener('click', e => {
-    const addBtn = e.target.closest('.slide-add-btn');
-    if (addBtn) { const car=CARS.find(c=>c.id==addBtn.dataset.id); if(car) Cart.add(car); return; }
+    const addBtn  = e.target.closest('.slide-add-btn');
+    if (addBtn)  { const car=CARS.find(c=>c.id==addBtn.dataset.id);  if(car) { Cart.add(car); return; } }
     const viewBtn = e.target.closest('.slide-view-btn');
-    if (viewBtn) { const car=CARS.find(c=>c.id==viewBtn.dataset.id); if(car) openModal(car); }
+    if (viewBtn) { const car=CARS.find(c=>c.id==viewBtn.dataset.id); if(car) { openModal(car); return; } }
+    const ccBtn   = e.target.closest('.cc-view-btn');
+    if (ccBtn)   { const car=CARS.find(c=>c.id==ccBtn.dataset.id);   if(car) { openModal(car); return; } }
+    const card    = e.target.closest('.car-card');
+    if (card && !e.target.closest('button')) {
+      const car = CARS.find(c=>c.id==card.dataset.id);
+      if (car) openModal(car);
+    }
   });
 }
 
