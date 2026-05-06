@@ -209,16 +209,48 @@ function initCursor() {
   const cursor   = document.getElementById('cursor');
   const follower = document.getElementById('cursorFollower');
   if (!cursor || !follower) return;
+  if (window.VMPerformance && !window.VMPerformance.shouldUseCustomCursor()) {
+    cursor.style.display = 'none';
+    follower.style.display = 'none';
+    document.body.classList.add('native-cursor');
+    document.body.style.cursor = 'auto';
+    return;
+  }
   let mx=0, my=0, fx=0, fy=0;
+  let rafId = 0;
+  let pointerInside = true;
   document.addEventListener('mousemove', e => {
     mx=e.clientX; my=e.clientY;
-    cursor.style.left = mx+'px'; cursor.style.top = my+'px';
+    cursor.style.transform = 'translate3d(' + mx + 'px,' + my + 'px,0) translate(-50%,-50%)';
+    pointerInside = true;
+    if (!rafId && document.visibilityState !== 'hidden') rafId = requestAnimationFrame(followAnim);
   });
-  (function followAnim(){
+  document.addEventListener('mouseleave', () => {
+    pointerInside = false;
+    cursor.style.opacity = '0';
+    follower.style.opacity = '0';
+  });
+  document.addEventListener('mouseenter', () => {
+    pointerInside = true;
+    cursor.style.opacity = '';
+    follower.style.opacity = '';
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden' && rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+    } else if (!rafId) {
+      rafId = requestAnimationFrame(followAnim);
+    }
+  });
+  function followAnim(){
+    rafId = 0;
+    if (!pointerInside || document.visibilityState === 'hidden') return;
     fx += (mx-fx)*.12; fy += (my-fy)*.12;
-    follower.style.left=fx+'px'; follower.style.top=fy+'px';
-    requestAnimationFrame(followAnim);
-  })();
+    follower.style.transform = 'translate3d(' + fx + 'px,' + fy + 'px,0) translate(-50%,-50%)';
+    rafId = requestAnimationFrame(followAnim);
+  }
+  rafId = requestAnimationFrame(followAnim);
   document.querySelectorAll('a,button,[data-hover]').forEach(el => {
     el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
     el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
@@ -227,13 +259,16 @@ function initCursor() {
 
 // ── NAVBAR ────────────────────────────────────────────────
 function initNav() {
-  const navbar = document.querySelector('.navbar');
-  if (navbar) {
-    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 50));
-  }
   const nav = document.querySelector('nav');
   if (nav) {
-    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50));
+    let isScrolled = window.scrollY > 50;
+    nav.classList.toggle('scrolled', isScrolled);
+    window.addEventListener('scroll', () => {
+      const next = window.scrollY > 50;
+      if (next === isScrolled) return;
+      isScrolled = next;
+      nav.classList.toggle('scrolled', isScrolled);
+    }, { passive: true });
   }
   const toggle = document.getElementById('navToggle');
   const navLinks = document.querySelector('.nav-links');
@@ -350,18 +385,7 @@ function buildSlider() {
 
   // ── BUILD HTML ──
   track.innerHTML = CARS.map((car, i) => {
-    const feats = CAR_FEATURES[car.id] || [];
-    const previewHTML = feats.length ? `
-      <div class="vm-feat-preview">
-        <div class="vm-feat-preview-label">FEATURES</div>
-        <div class="vm-feat-preview-grid">
-          ${feats.map(f => `
-            <div class="vm-feat-thumb" data-feat-img="${f.img}" data-feat-label="${f.label}" title="${f.label}">
-              <img src="${f.img}" alt="${f.label}" class="vm-feat-thumb-img" onerror="this.closest('.vm-feat-thumb').classList.add('vm-feat-no-img')" />
-              <span class="vm-feat-thumb-label">${f.label}</span>
-            </div>`).join('')}
-        </div>
-      </div>` : '';
+    const previewHTML = '';
     return `
     <div class="vm-car-item" data-id="${car.id}" data-index="${i}" style="--vm-car-color:${car.color}">
       ${car.badge ? `<div class="vm-car-badge">${car.badge}</div>` : ''}
@@ -369,7 +393,7 @@ function buildSlider() {
         <div class="vm-car-glow" style="background:${car.color};"></div>
         <div class="vm-car-shadow"></div>
         <img src="${car.img}" alt="${car.name}" class="vm-car-img"
-             onerror="this.style.opacity='0'"/>
+             loading="lazy" decoding="async" onerror="this.style.opacity='0'"/>
       </div>
       <div class="vm-car-card">
         <span class="vm-car-card-brand">${car.brand}</span>
@@ -478,14 +502,13 @@ function buildSlider() {
       const abs   = Math.abs(dist);
       const scale = abs === 0 ? 1.15 : Math.max(0.75, 1 - abs * 0.13);
       const opac  = abs === 0 ? 1    : Math.max(0.35, 1 - abs * 0.25);
-      const blur  = abs === 0 ? 0    : Math.min(abs * 2, 5);
       const zIdx  = 100 - abs * 10;
 
-      // GSAP tween scale/opacity/filter on each item
+      // Keep this transform-only. Animating CSS filters across the whole carousel
+      // causes repeated paints and visible drag jank.
       gsap.to(item, {
         scale,
         opacity: opac,
-        filter: blur > 0 ? `blur(${blur}px)` : 'none',
         zIndex: zIdx,
         duration: .6,
         ease: 'power3.out',
@@ -508,17 +531,7 @@ function buildSlider() {
     // ── BG TRANSITION: smoothly blend car's color into background ──
     const car = CARS[activeIdx];
     if (bgLayer && car) {
-      gsap.to(bgLayer, {
-        duration: 1.0,
-        ease: 'power2.inOut',
-        onUpdate: function() {},
-        // We drive this with direct style because GSAP can't tween
-        // gradient strings natively — use a custom property instead
-      });
-      bgLayer.style.background =
-        `radial-gradient(ellipse at 50% 65%, ${hexToRgba(car.color, .12)} 0%, transparent 55%),
-         linear-gradient(135deg, #0d0d0d 0%, #000 60%, #0d0d0d 100%)`;
-      bgLayer.style.transition = 'background 1s ease';
+      bgLayer.style.setProperty('--active-car-rgb', hexToRgbParts(car.color));
     }
 
     // ── DOTS ──
@@ -620,7 +633,8 @@ function buildSlider() {
   }
 
   // ── HOVER 3D TILT ──
-  items.forEach((item) => {
+  const enableHoverTilt = !window.matchMedia || window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (enableHoverTilt) items.forEach((item) => {
     item.addEventListener('mousemove', e => {
       const rect = item.getBoundingClientRect();
       const cx   = rect.left + rect.width  / 2;
@@ -715,6 +729,13 @@ function hexToRgba(hex, alpha) {
   return `rgba(${r},${g},${b},${alpha})`;
 }
 
+function hexToRgbParts(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `${r}, ${g}, ${b}`;
+}
+
 // ── FEATURE LIGHTBOX ──────────────────────────────────────
 function openFeatureLightbox(src, label) {
   let lb = document.getElementById('featureLightbox');
@@ -728,7 +749,7 @@ function openFeatureLightbox(src, label) {
         <button class="flb-close" aria-label="Close">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
-        <img class="flb-img" src="" alt="" />
+        <img class="flb-img" src="" alt="" decoding="async" />
         <div class="flb-label"></div>
       </div>`;
     document.body.appendChild(lb);
@@ -764,7 +785,7 @@ function buildFeaturesGridHTML(carId) {
         ${feats.map((f, i) => `
           <div class="cf-card cf-card--${i}" data-feat-img="${f.img}" data-feat-label="${f.label}">
             <div class="cf-img-wrap">
-              <img src="${f.img}" alt="${f.label}" class="cf-img" onerror="this.closest('.cf-img-wrap').classList.add('cf-no-img')" />
+              <img src="${f.img}" alt="${f.label}" class="cf-img" loading="lazy" decoding="async" onerror="this.closest('.cf-img-wrap').classList.add('cf-no-img')" />
               <div class="cf-img-overlay">
                 <svg class="cf-zoom-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
               </div>
@@ -836,7 +857,7 @@ function buildCarsGrid() {
       <div class="car-card" data-brand="${car.brand}" data-id="${car.id}">
         ${car.badge ? `<div class="car-card-badge">${car.badge}</div>` : ''}
         <div class="car-card-img-wrap">
-          <img src="${car.img}" alt="${car.name}" class="car-card-img" loading="lazy" onerror="this.style.opacity='0'"/>
+          <img src="${car.img}" alt="${car.name}" class="car-card-img" loading="lazy" decoding="async" onerror="this.style.opacity='0'"/>
           <div class="car-card-hover-overlay">
             <button class="cc-view-btn" data-id="${car.id}">View Details</button>
           </div>
@@ -915,7 +936,7 @@ function renderCartPage() {
     listEl.innerHTML = items.map(car => `
       <div class="cart-item" id="ci-${car.id}">
         <div class="cart-item-img-wrap">
-          <img src="${car.img}" alt="${car.name}" onerror="this.style.opacity='0'"/>
+          <img src="${car.img}" alt="${car.name}" loading="lazy" decoding="async" onerror="this.style.opacity='0'"/>
         </div>
         <div class="cart-item-details">
           <span class="cart-item-brand">${car.brand}</span>
@@ -950,7 +971,7 @@ function renderCartPage() {
       <div class="car-card">
         ${car.badge ? `<div class="car-card-badge">${car.badge}</div>` : ''}
         <div class="car-card-img-wrap">
-          <img src="${car.img}" alt="${car.name}" class="car-card-img" onerror="this.style.opacity='0'"/>
+          <img src="${car.img}" alt="${car.name}" class="car-card-img" loading="lazy" decoding="async" onerror="this.style.opacity='0'"/>
         </div>
         <div class="car-card-body">
           <div class="car-card-brand">${car.brand}</div>

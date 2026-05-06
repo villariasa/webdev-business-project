@@ -6,18 +6,26 @@
 (function () {
   'use strict';
 
-  /* ── DEVICE CAPABILITY ─────────────────────────────────── */
-  function isLowEnd() {
-    const nav = window.navigator;
-    if (/Mobi|Android|iPhone|iPad/i.test(nav.userAgent)) return true;
-    return false;
-  }
-
   function showStaticFallback() {
     const canvas = document.getElementById('hero3dCanvas');
     if (canvas) canvas.style.display = 'none';
     const fb = document.getElementById('hero3dFallback');
     if (fb) fb.style.display = 'block';
+  }
+
+  function getPerfQuality() {
+    const perf = window.VMPerformance;
+    const mode = perf ? perf.getRenderMode() : '3d-lite';
+    return perf ? perf.getQuality(mode) : {
+      mode: mode,
+      antialias: false,
+      dprCap: 1.25,
+      shadows: false,
+      shadowMapSize: 512,
+      particleScale: 0.45,
+      effectsScale: 0.5,
+      physicallyCorrectLights: false,
+    };
   }
 
   /* ── WAIT FOR THREE ────────────────────────────────────── */
@@ -100,16 +108,23 @@
 
   /* ── MAIN ──────────────────────────────────────────────── */
   function init() {
-    if (isLowEnd()) { showStaticFallback(); return; }
+    const quality = getPerfQuality();
+    if (quality.mode === 'static-fallback') { showStaticFallback(); return; }
 
     const THREE = window.THREE;
     const canvas = document.getElementById('hero3dCanvas');
     if (!canvas) return;
+    canvas.style.display = 'block';
 
     /* ── RENDERER ── */
     let renderer;
     try {
-      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+      renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: quality.antialias,
+        alpha: true,
+        powerPreference: 'high-performance',
+      });
     } catch (e) { showStaticFallback(); return; }
 
     function setSize() {
@@ -120,13 +135,13 @@
       camera.updateProjectionMatrix();
     }
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 3));
-    renderer.shadowMap.enabled = true;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, quality.dprCap));
+    renderer.shadowMap.enabled = quality.shadows;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.4;
-    renderer.physicallyCorrectLights = true;
+    renderer.physicallyCorrectLights = quality.physicallyCorrectLights;
 
     /* ── SCENE ── */
     const scene = new THREE.Scene();
@@ -146,8 +161,8 @@
 
     const keyLight = new THREE.DirectionalLight(0xfff5e0, 4.0);
     keyLight.position.set(5, 8, 5);
-    keyLight.castShadow = true;
-    keyLight.shadow.mapSize.set(2048, 2048);
+    keyLight.castShadow = quality.shadows;
+    keyLight.shadow.mapSize.set(quality.shadowMapSize, quality.shadowMapSize);
     keyLight.shadow.bias = -0.0005;
     keyLight.shadow.normalBias = 0.02;
     scene.add(keyLight);
@@ -191,7 +206,7 @@
     );
     groundMesh.rotation.x = -Math.PI / 2;
     groundMesh.position.y = -1.12;
-    groundMesh.receiveShadow = true;
+    groundMesh.receiveShadow = quality.shadows;
     scene.add(groundMesh);
 
     /* ── GROUND REFLECTION RING ── */
@@ -209,6 +224,42 @@
 
     /* ── LOAD REAL GLB MODEL ── */
     let modelReady = false;
+    const fadeMaterials = [];
+    let fadeComplete = false;
+
+    function cacheFadeMaterial(material) {
+      if (!material || !('opacity' in material)) return;
+      fadeMaterials.push({
+        material: material,
+        opacity: material.opacity === undefined ? 1 : material.opacity,
+        transparent: material.transparent,
+      });
+      material.transparent = true;
+      material.opacity = 0;
+    }
+
+    function cacheFadeMaterials(root) {
+      root.traverse(function (obj) {
+        if (!obj.isMesh || !obj.material) return;
+        const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+        mats.forEach(cacheFadeMaterial);
+      });
+    }
+
+    function updateFadeMaterials(opacity) {
+      if (fadeComplete || !fadeMaterials.length) return;
+      const value = clamp(opacity, 0, 1);
+      fadeMaterials.forEach(function (entry) {
+        entry.material.opacity = entry.opacity * value;
+      });
+      if (value > 0.995) {
+        fadeMaterials.forEach(function (entry) {
+          entry.material.opacity = entry.opacity;
+          entry.material.transparent = entry.transparent;
+        });
+        fadeComplete = true;
+      }
+    }
 
     function onGltfLoaded(gltf) {
       const model = gltf.scene;
@@ -225,8 +276,8 @@
 
       model.traverse(function (obj) {
         if (!obj.isMesh) return;
-        obj.castShadow = true;
-        obj.receiveShadow = true;
+        obj.castShadow = quality.shadows;
+        obj.receiveShadow = quality.shadows;
         if (obj.material) {
           const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
           mats.forEach(function (m) {
@@ -237,6 +288,7 @@
           });
         }
       });
+      cacheFadeMaterials(model);
 
       carGroup.add(model);
       modelReady = true;
@@ -245,24 +297,21 @@
     function onGltfError(err) {
       console.warn('GLB load failed, using procedural mesh.', err);
       buildCarMesh(THREE, carGroup);
+      cacheFadeMaterials(carGroup);
       modelReady = true;
     }
 
-    /* Load from embedded base64 data URL — works on file:// and http:// */
+    /* Load the binary GLB directly to avoid parsing multi-megabyte base64 JS. */
     (function loadGlb() {
       var loader = new THREE.GLTFLoader();
-      if (typeof GLB_MODEL_DATA !== 'undefined') {
-        loader.load(GLB_MODEL_DATA, onGltfLoaded, undefined, onGltfError);
-      } else {
-        onGltfError(new Error('model-data.js not loaded'));
-      }
+      loader.load('assets/3d/3d-model-1.glb', onGltfLoaded, undefined, onGltfError);
     })();
 
     /* ── PARTICLES ── */
-    const particles = buildParticles(THREE, scene);
+    const particles = buildParticles(THREE, scene, Math.max(80, Math.round(320 * quality.particleScale)));
 
     /* ── 1. SPEED LINES ── */
-    var SL_COUNT = 80;
+    var SL_COUNT = Math.max(24, Math.round(80 * quality.effectsScale));
     var slGeo = new THREE.BufferGeometry();
     var slPos = new Float32Array(SL_COUNT * 6);
     for (var i = 0; i < SL_COUNT; i++) {
@@ -291,7 +340,7 @@
     var shakeX = 0, shakeY = 0;
 
     /* ── 4. EMBER PARTICLES ── */
-    var EM_COUNT = 60;
+    var EM_COUNT = Math.max(20, Math.round(60 * quality.effectsScale));
     var emGeo = new THREE.BufferGeometry();
     var emPos = new Float32Array(EM_COUNT * 3);
     var emVel = [];
@@ -345,8 +394,9 @@
 
     /* ── D. STAR FIELD ── */
     var starGeo = new THREE.BufferGeometry();
-    var starPos = new Float32Array(400 * 3);
-    for (var sti = 0; sti < 400; sti++) {
+    var STAR_COUNT = Math.max(120, Math.round(400 * quality.effectsScale));
+    var starPos = new Float32Array(STAR_COUNT * 3);
+    for (var sti = 0; sti < STAR_COUNT; sti++) {
       var theta = Math.random() * Math.PI * 2;
       var phi   = Math.acos(2 * Math.random() - 1);
       var r     = 35 + Math.random() * 15;
@@ -377,22 +427,35 @@
 
     /* ── MOUSE PARALLAX ── */
     const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
-    document.addEventListener('mousemove', e => {
-      mouse.tx = (e.clientX / window.innerWidth - 0.5) * 2;
-      mouse.ty = (e.clientY / window.innerHeight - 0.5) * 2;
-    });
+    if (quality.mode === 'full-3d') {
+      document.addEventListener('mousemove', e => {
+        mouse.tx = (e.clientX / window.innerWidth - 0.5) * 2;
+        mouse.ty = (e.clientY / window.innerHeight - 0.5) * 2;
+      });
+    }
 
     /* ── SCROLL ── */
-    let scrollY = 0;
-    let entranceDone = false;
+    let scrollY = window.scrollY || 0;
     const ENTRANCE_DURATION = 1400; // ms
     const startTime = performance.now();
+    const scrollTrack = document.getElementById('cinematicScrollTrack');
+    let totalScrollH = window.innerHeight * 3;
+
+    function refreshTrackMetrics() {
+      totalScrollH = scrollTrack ? Math.max(scrollTrack.offsetHeight - window.innerHeight, 1) : window.innerHeight * 3;
+    }
 
     window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
+    window.addEventListener('resize', refreshTrackMetrics);
+    refreshTrackMetrics();
 
     /* ── SCENE TEXT SYNC ── */
+    const sceneEls = Array.prototype.slice.call(document.querySelectorAll('.cin-scene'));
+    let activeSceneIdx = -1;
     function syncSceneText(sceneIdx, slide) {
-      document.querySelectorAll('.cin-scene').forEach((el, i) => {
+      if (sceneIdx === activeSceneIdx) return;
+      activeSceneIdx = sceneIdx;
+      sceneEls.forEach((el, i) => {
         const active = i === sceneIdx;
         el.classList.toggle('cin-active', active);
         if (active && slide) {
@@ -402,10 +465,50 @@
     }
 
     let lastTime = performance.now();
+    let rafId = 0;
+    let isVisible = true;
+    let firstRendered = false;
+
+    function canRender() {
+      return isVisible && document.visibilityState !== 'hidden';
+    }
+
+    function startLoop() {
+      if (rafId || !canRender()) return;
+      lastTime = performance.now();
+      if (canRender()) {
+        rafId = requestAnimationFrame(animate);
+      } else if (window.VMPerformance) {
+        window.VMPerformance.setActive3d('none');
+      }
+      if (window.VMPerformance) window.VMPerformance.setActive3d('hero');
+    }
+
+    function stopLoop() {
+      if (!rafId) return;
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+      if (window.VMPerformance) window.VMPerformance.setActive3d('none');
+    }
+
+    if (scrollTrack && 'IntersectionObserver' in window) {
+      const renderObserver = new IntersectionObserver(entries => {
+        isVisible = entries[0].isIntersecting;
+        if (isVisible) startLoop();
+        else stopLoop();
+      }, { rootMargin: '220px 0px', threshold: 0.01 });
+      renderObserver.observe(scrollTrack);
+    }
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'hidden') stopLoop();
+      else startLoop();
+    });
 
     /* ── ANIMATE ── */
     function animate() {
-      requestAnimationFrame(animate);
+      rafId = 0;
+      if (!canRender()) return;
 
       const now = performance.now();
       const delta = Math.min((now - lastTime) / 1000, 0.05);
@@ -417,9 +520,6 @@
       const entranceEased = easeOutQuart(entranceT);
 
       /* ── SCROLL-BASED SCENE INTERPOLATION ── */
-      const scrollTrack = document.getElementById('cinematicScrollTrack');
-      const totalScrollH = scrollTrack ? scrollTrack.offsetHeight - window.innerHeight : window.innerHeight * 3;
-
       /* progress 0–1 over entire scroll track */
       const rawProgress = clamp(scrollY / totalScrollH, 0, 1);
 
@@ -485,18 +585,7 @@
       carGroup.rotation.y = state.carRotY + Math.sin(elapsed * 0.32) * 0.018;
       carGroup.scale.setScalar(state.carScale);
 
-      /* fade-in all materials */
-      carGroup.traverse(obj => {
-        if (obj.isMesh && obj.material) {
-          const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
-          mats.forEach(m => {
-            if ('opacity' in m) {
-              m.transparent = state.carOpacity < 0.999;
-              m.opacity = clamp(state.carOpacity, 0, 1);
-            }
-          });
-        }
-      });
+      updateFadeMaterials(state.carOpacity);
 
       /* lights */
       rimLight.intensity  = state.rimInt + Math.sin(elapsed * 1.3) * 0.15;
@@ -559,30 +648,35 @@
       /* ── 8. HEADLIGHT FLARES ── */
       var flareBase = 0.55 + Math.sin(elapsed * 2.1) * 0.12;
       var flareFacing = clamp(1.0 - Math.abs(state.carRotY) * 0.6, 0.1, 1.0);
-      flareL.intensity = flareBase * flareFacing * state.carOpacity * 2.2;
-      flareR.intensity = flareBase * flareFacing * state.carOpacity * 2.2;
+      flareL.intensity = flareBase * flareFacing * state.carOpacity * 2.2 * quality.effectsScale;
+      flareR.intensity = flareBase * flareFacing * state.carOpacity * 2.2 * quality.effectsScale;
 
       /* ── B. NEON UNDERGLOW ── */
       glowHue = (glowHue + delta * 0.18) % 1;
       var gc = new THREE.Color().setHSL(glowHue, 1.0, 0.55);
-      glowA.color.set(gc); glowA.intensity = 1.2 + Math.sin(elapsed * 2.1) * 0.5;
+      glowA.color.set(gc); glowA.intensity = (1.2 + Math.sin(elapsed * 2.1) * 0.5) * quality.effectsScale;
       var gc2 = new THREE.Color().setHSL((glowHue + 0.33) % 1, 1.0, 0.55);
-      glowB.color.set(gc2); glowB.intensity = 1.2 + Math.sin(elapsed * 1.7 + 1) * 0.5;
+      glowB.color.set(gc2); glowB.intensity = (1.2 + Math.sin(elapsed * 1.7 + 1) * 0.5) * quality.effectsScale;
       var gc3 = new THREE.Color().setHSL((glowHue + 0.66) % 1, 1.0, 0.55);
-      glowC.color.set(gc3); glowC.intensity = 1.2 + Math.sin(elapsed * 2.4 + 2) * 0.5;
+      glowC.color.set(gc3); glowC.intensity = (1.2 + Math.sin(elapsed * 2.4 + 2) * 0.5) * quality.effectsScale;
 
       /* ── D. STAR FIELD ── */
       stars.rotation.y += delta * 0.004;
 
       renderer.render(scene, camera);
+      if (!firstRendered && modelReady) {
+        firstRendered = true;
+        const fb = document.getElementById('hero3dFallback');
+        if (fb) fb.style.display = 'none';
+      }
+      rafId = requestAnimationFrame(animate);
     }
 
-    animate();
+    startLoop();
   }
 
   /* ── BUILD PARTICLES ───────────────────────────────────── */
-  function buildParticles(THREE, scene) {
-    const count = 320;
+  function buildParticles(THREE, scene, count) {
     const geo = new THREE.BufferGeometry();
     const positions = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {

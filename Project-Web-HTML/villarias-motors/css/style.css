@@ -33,6 +33,10 @@ body {
   overflow-x: hidden;
   cursor: none;
 }
+body.native-cursor,
+body.native-cursor * {
+  cursor: auto !important;
+}
 
 /* ── CUSTOM CURSOR ── */
 #cursor {
@@ -1228,10 +1232,10 @@ footer {
 .vm-showroom-bg-layer {
   position: absolute;
   inset: -40px;
-  background: radial-gradient(ellipse at 50% 60%, rgba(201,168,76,.07) 0%, transparent 55%),
+  --active-car-rgb: 201, 168, 76;
+  background: radial-gradient(ellipse at 50% 60%, rgba(var(--active-car-rgb), .10) 0%, transparent 55%),
               linear-gradient(135deg, #0d0d0d 0%, #000 60%, #0d0d0d 100%);
-  transition: background 1.2s cubic-bezier(.25,.46,.45,.94);
-  will-change: background;
+  transition: opacity 1.2s cubic-bezier(.25,.46,.45,.94);
 }
 /* subtle moving grid lines for depth */
 .vm-showroom-grid-lines {
@@ -1379,7 +1383,7 @@ footer {
   display: block;
   position: relative;
   z-index: 2;
-  filter: drop-shadow(0 24px 48px rgba(0,0,0,.7));
+  filter: drop-shadow(0 14px 28px rgba(0,0,0,.58));
   transition: filter .4s ease;
   pointer-events: none;
 }
@@ -1393,7 +1397,7 @@ footer {
   height: 40px;
   border-radius: 50%;
   background: var(--vm-car-color, rgba(201,168,76,.35));
-  filter: blur(18px);
+  filter: blur(10px);
   opacity: 0.3;
   transition: opacity .5s, width .5s, background .5s;
   z-index: 1;
@@ -1407,7 +1411,7 @@ footer {
   width: 60%;
   height: 14px;
   background: rgba(0,0,0,.6);
-  filter: blur(10px);
+  filter: blur(6px);
   border-radius: 50%;
   z-index: 0;
   transition: width .5s, opacity .5s;
@@ -1416,7 +1420,7 @@ footer {
 /* active car enhancements */
 .vm-car-item.is-active .vm-car-glow  { opacity: .7; width: 90%; }
 .vm-car-item.is-active .vm-car-shadow{ width: 80%; opacity: .9; }
-.vm-car-item.is-active .vm-car-img   { filter: drop-shadow(0 30px 60px rgba(0,0,0,.8)) drop-shadow(0 0 40px var(--vm-car-color, rgba(201,168,76,.3))); }
+.vm-car-item.is-active .vm-car-img   { filter: drop-shadow(0 18px 34px rgba(0,0,0,.72)) drop-shadow(0 0 18px var(--vm-car-color, rgba(201,168,76,.25))); }
 
 /* ── Car info card (appears under active car) ── */
 .vm-car-card {

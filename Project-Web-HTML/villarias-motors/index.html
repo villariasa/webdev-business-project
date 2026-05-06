@@ -266,7 +266,7 @@
         </div>
         <div class="experience-visual reveal-up">
           <div class="exp-visual-card glass-card">
-            <img src="assets/cars/car-5.png" alt="Supercar" class="exp-car-img"
+        <img src="assets/cars/car-5.png" alt="Supercar" class="exp-car-img" loading="lazy" decoding="async"
                  onerror="this.style.display='none'" />
             <div class="exp-car-info">
               <span class="exp-car-brand">Bugatti</span>
@@ -372,44 +372,75 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="js/performance.js"></script>
   <script src="js/script.js"></script>
   <script>
-    window.addEventListener('load', function () {
-      function loadScript(src, cb) {
-        var el = document.createElement('script');
-        el.src = src;
-        el.onload = cb || function(){};
-        el.onerror = function(){ console.warn('Failed to load: ' + src); if(cb) cb(); };
-        document.body.appendChild(el);
-        return el;
+    (function () {
+      var perf = window.VMPerformance;
+      var mode = perf ? perf.getRenderMode() : '3d-lite';
+      if (perf) perf.setMode(mode);
+
+      function show3dFallbacks() {
+        [
+          ['hero3dCanvas', 'hero3dFallback'],
+          ['intro3dCanvas', 'intro3dFallback']
+        ].forEach(function (ids) {
+          var canvas = document.getElementById(ids[0]);
+          var fallback = document.getElementById(ids[1]);
+          if (fallback) fallback.style.display = 'block';
+          if (canvas && mode === 'static-fallback') canvas.style.display = 'none';
+        });
       }
 
-      loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js', function () {
-        loadScript('https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/loaders/GLTFLoader.js', function () {
+      function start3dLoader() {
+        if (mode === 'static-fallback') {
+          show3dFallbacks();
+          return;
+        }
 
-          var hero3dReady = false;
-          var intro3dReady = false;
+        var loadScript = perf ? perf.loadScript : function (src, cb) {
+          var el = document.createElement('script');
+          el.src = src;
+          el.onload = cb || function () {};
+          document.body.appendChild(el);
+        };
 
-          function tryHero()  { if (!hero3dReady)  { hero3dReady  = true; loadScript('js/hero3d.js'); } }
-          function tryIntro() { if (!intro3dReady) { intro3dReady = true; loadScript('js/intro3d.js'); } }
-
-          loadScript('js/model-data.js',  tryHero);
-          loadScript('js/model2-data.js', tryIntro);
+        loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js', function () {
+          loadScript('https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/loaders/GLTFLoader.js', function () {
+            loadScript('js/hero3d.js');
+            loadScript('js/intro3d.js');
+          });
         });
+      }
+
+      show3dFallbacks();
+      window.addEventListener('load', function () {
+        if (perf) {
+          perf.whenIdle(start3dLoader, 1600);
+        } else {
+          setTimeout(start3dLoader, 250);
+        }
       });
-    });
+    })();
 
     (function () {
       var bar  = document.getElementById('cinProgressBar');
       var hint = document.getElementById('cinScrollHint');
       var track;
-      window.addEventListener('scroll', function () {
+      var scheduled = false;
+      function updateHeroProgress() {
+        scheduled = false;
         if (!track) track = document.getElementById('cinematicScrollTrack');
         if (!track || !bar) return;
         var max = track.offsetHeight - window.innerHeight;
         var pct = max > 0 ? Math.min(window.scrollY / max, 1) * 100 : 0;
         bar.style.width = pct + '%';
         if (hint) hint.style.opacity = window.scrollY > 60 ? '0' : '1';
+      }
+      window.addEventListener('scroll', function () {
+        if (scheduled) return;
+        scheduled = true;
+        requestAnimationFrame(updateHeroProgress);
       }, { passive: true });
     })();
   </script>
