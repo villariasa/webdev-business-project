@@ -43,6 +43,7 @@
       <div class="cin-canvas-wrap">
         <canvas id="hero3dCanvas" class="hero-3d-canvas" aria-hidden="true"></canvas>
         <img src="assets/cars/car-1.png" alt="Featured Supercar" class="hero-3d-fallback" id="hero3dFallback" />
+        <div class="cin-3d-loader" id="hero3dLoader"><div class="cin-3d-loader-ring"></div></div>
         <div class="cin-vignette"></div>
         <div class="cin-grid-overlay"></div>
         <div class="hero-brand-watermark" aria-hidden="true">
@@ -126,6 +127,7 @@
       <div class="cin2-canvas-wrap">
         <canvas id="intro3dCanvas" aria-hidden="true"></canvas>
         <img src="assets/cars/car-5.png" alt="Luxury Car" class="cin2-fallback" id="intro3dFallback" />
+        <div class="cin-3d-loader" id="intro3dLoader"><div class="cin-3d-loader-ring"></div></div>
         <div class="cin2-vignette"></div>
         <div class="cin2-grid-overlay"></div>
         <div class="intro-letterbox top" id="introLetterbox" aria-hidden="true"></div>
@@ -382,13 +384,17 @@
 
       function show3dFallbacks() {
         [
-          ['hero3dCanvas', 'hero3dFallback'],
-          ['intro3dCanvas', 'intro3dFallback']
+          ['hero3dCanvas', 'hero3dFallback', 'hero3dLoader'],
+          ['intro3dCanvas', 'intro3dFallback', 'intro3dLoader']
         ].forEach(function (ids) {
           var canvas = document.getElementById(ids[0]);
           var fallback = document.getElementById(ids[1]);
-          if (fallback) fallback.style.display = 'block';
-          if (canvas && mode === 'static-fallback') canvas.style.display = 'none';
+          var loader = document.getElementById(ids[2]);
+          if (mode === 'static-fallback') {
+            if (fallback) fallback.style.display = 'block';
+            if (canvas) canvas.style.display = 'none';
+            if (loader) { loader.classList.add('loaded'); }
+          }
         });
       }
 

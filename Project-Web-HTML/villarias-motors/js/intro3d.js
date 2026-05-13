@@ -16,6 +16,8 @@
     if (canvas) canvas.style.display = 'none';
     const fb = document.getElementById('intro3dFallback');
     if (fb) fb.style.display = 'block';
+    const loader = document.getElementById('intro3dLoader');
+    if (loader) loader.classList.add('loaded');
   }
 
   function getPerfQuality() {
@@ -116,6 +118,9 @@
     camera.position.set(2.5, 2.0, 7.0);
     setSize();
     window.addEventListener('resize', setSize);
+    window.addEventListener('orientationchange', function () {
+      setTimeout(function () { setSize(); refreshTrackMetrics(); }, 200);
+    });
 
     /* ── LIGHTS ── */
     scene.add(new THREE.AmbientLight(0xffffff, 0.35));
@@ -448,6 +453,13 @@
       if (!canRender()) return;
 
       const now = performance.now();
+      if (quality.maxFPS) {
+        const minInterval = 1000 / quality.maxFPS;
+        if (now - lastTime < minInterval) {
+          rafId = requestAnimationFrame(animate);
+          return;
+        }
+      }
       const delta = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
       const elapsed = now / 1000;
@@ -589,6 +601,8 @@
         firstRendered = true;
         const fb = document.getElementById('intro3dFallback');
         if (fb) fb.style.display = 'none';
+        const loader = document.getElementById('intro3dLoader');
+        if (loader) loader.classList.add('loaded');
       }
       rafId = requestAnimationFrame(animate);
     }

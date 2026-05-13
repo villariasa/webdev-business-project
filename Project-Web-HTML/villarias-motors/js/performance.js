@@ -38,13 +38,21 @@
       nav.maxTouchPoints > 0;
     var mobileUA = /Mobi|Android|iPhone|iPad|iPod/i.test(nav.userAgent);
 
-    if (reducedMotion || !hasWebGL() || touch || mobileUA) {
+    if (reducedMotion || !hasWebGL()) {
       return 'static-fallback';
     }
 
     var memory = nav.deviceMemory || 4;
     var cores = nav.hardwareConcurrency || 4;
     var dpr = window.devicePixelRatio || 1;
+    var isMobile = touch || mobileUA;
+
+    if (isMobile) {
+      if (memory >= 2 && cores >= 4) {
+        return '3d-lite';
+      }
+      return '3d-lite';
+    }
 
     if (memory < 6 || cores < 6 || dpr > 2) {
       return '3d-lite';
@@ -71,12 +79,13 @@
       return {
         mode: mode,
         antialias: false,
-        dprCap: 1.25,
+        dprCap: 1,
         shadows: false,
         shadowMapSize: 512,
-        particleScale: 0.45,
-        effectsScale: 0.5,
-        physicallyCorrectLights: false
+        particleScale: 0.3,
+        effectsScale: 0.3,
+        physicallyCorrectLights: false,
+        maxFPS: 30
       };
     }
 

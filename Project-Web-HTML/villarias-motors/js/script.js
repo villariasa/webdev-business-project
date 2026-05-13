@@ -368,6 +368,7 @@ function buildSlider() {
   const bgTextTrack  = document.getElementById('vmBgTextTrack');
   const bgTextNodes  = { l1: [], l2: [] }; // layer-1 (large) and layer-2 (gold) per car
 
+  const getItemW     = () => (items[0] ? items[0].offsetWidth : 380);
   const ITEM_W       = 380;   // px width per car slot (must match CSS .vm-car-item width)
   const PARALLAX     = 28;    // px parallax offset factor per slot
   const TILT_MAX     = 12;    // degrees max tilt on hover
@@ -445,7 +446,7 @@ function buildSlider() {
   function liveTextSync(trackX) {
     if (!bgTextTrack) return;
     // fractional index = how far we are from item[0] center
-    const fracIdx = (centerOff() - trackX) / ITEM_W;
+    const fracIdx = (centerOff() - trackX) / getItemW();
     // layer-1: direct mapping; layer-2: slight delay factor for parallax depth
     gsap.set(bgTextTrack, { y: -(fracIdx * TEXT_SLOT_H) });
   }
@@ -466,8 +467,8 @@ function buildSlider() {
 
   // ── TRACK WIDTH: center first item ──
   // Stage center offset so item[0] starts centered
-  const stageW    = () => stage.getBoundingClientRect().width || window.innerWidth;
-  const centerOff = () => (stageW() / 2) - (ITEM_W / 2);
+  const stageW    = () => stage.offsetWidth || window.innerWidth;
+  const centerOff = () => Math.round((stageW() / 2) - (getItemW() / 2));
 
   function applyTrackTranslate(x) {
     currentOffset = x;
@@ -478,7 +479,7 @@ function buildSlider() {
   function goTo(index, instant) {
     index = Math.max(0, Math.min(CARS.length - 1, index));
     currentIndex = index;
-    const targetX = centerOff() - index * ITEM_W;
+    const targetX = centerOff() - index * getItemW();
 
     if (instant) {
       applyTrackTranslate(targetX);
@@ -613,7 +614,7 @@ function buildSlider() {
   function snapAfterDrag() {
     const co     = centerOff();
     // rawIndex: how far we've moved from center in item units
-    const rawIdx = (co - currentOffset) / ITEM_W;
+    const rawIdx = (co - currentOffset) / getItemW();
     // nudge by velocity (inertia feel) — clamp to ±1.5 items
     const nudge  = Math.max(-1.5, Math.min(1.5, -velocity / 60));
     const snapped = Math.round(rawIdx + nudge);
@@ -626,7 +627,7 @@ function buildSlider() {
       const imgWrap = item.querySelector('.vm-car-img-wrap');
       if (!imgWrap) return;
       // Compute how far this item is from visual center right now
-      const itemCenterX = (centerOff()) + (i - currentIndex) * ITEM_W + trackX - (centerOff() - currentIndex * ITEM_W);
+      const itemCenterX = (centerOff()) + (i - currentIndex) * getItemW() + trackX - (centerOff() - currentIndex * getItemW());
       const distFromCenter = i - currentIndex;
       gsap.set(imgWrap, { x: -distFromCenter * PARALLAX });
     });
@@ -719,6 +720,15 @@ function buildSlider() {
   goTo(0, true);
   // Slight delay to let layout settle then re-center
   setTimeout(() => goTo(0, true), 100);
+  // Re-center once all images/fonts are fully loaded (guarantees correct getBoundingClientRect)
+  window.addEventListener('load', () => goTo(currentIndex, true));
+
+  // Re-center on resize (handles mobile ↔ desktop switch and orientation change)
+  let _resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(_resizeTimer);
+    _resizeTimer = setTimeout(() => goTo(currentIndex, true), 120);
+  });
 }
 
 // ── UTILITY: hex color to rgba ─────────────────────────────
