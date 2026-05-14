@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart — Rin's Cafe Cinnamon ☕</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .page-hero {
+      background: linear-gradient(135deg, var(--pink-light) 0%, var(--lavender-light) 60%, var(--cream) 100%);
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+    }
+
+    .page-hero h1 {
+      font-family: var(--font-accent);
+      font-size: clamp(1.9rem, 5vw, 3rem);
+      color: var(--cinnamon-dark);
+      margin-bottom: 0.4rem;
+    }
+
+    .page-hero p {
+      color: var(--text-mid);
+      font-size: 0.95rem;
+    }
+
+    .cart-layout {
+      max-width: 1000px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    @media (max-width: 720px) {
+      .cart-layout { grid-template-columns: 1fr; }
+    }
+
+    /* ── Cart Items ── */
+    .cart-items-box {
+      background: var(--card-bg);
+      border-radius: 20px;
+      border: 2px solid var(--pink-light);
+      box-shadow: 0 4px 20px var(--shadow);
+      overflow: hidden;
+    }
+
+    .cart-items-head {
+      background: linear-gradient(135deg, var(--pink-light), var(--lavender-light));
+      padding: 1.2rem 1.8rem;
+      font-family: var(--font-accent);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--cinnamon-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cart-empty {
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .cart-empty-icon {
+      font-size: 4rem;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .cart-empty h3 {
+      font-family: var(--font-accent);
+      color: var(--cinnamon-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .cart-empty p {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-shop {
+      display: inline-block;
+      padding: 10px 28px;
+      background: linear-gradient(135deg, var(--pink-mid), var(--cinnamon-light));
+      color: white;
+      border-radius: 999px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .btn-shop:hover { opacity: 0.88; transform: scale(1.03); }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.1rem 1.8rem;
+      border-bottom: 1px solid var(--pink-light);
+      transition: background 0.2s;
+    }
+
+    .cart-item:last-child { border-bottom: none; }
+    .cart-item:hover { background: rgba(255,179,198,0.06); }
+
+    .cart-item-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+      width: 44px;
+      text-align: center;
+    }
+
+    .cart-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .cart-item-name {
+      font-weight: 700;
+      font-size: 0.93rem;
+      color: var(--cinnamon-dark);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cart-item-unit {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    .cart-item-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .qty-btn {
+      width: 28px;
+      height: 28px;
+      border: 2px solid var(--pink-light);
+      border-radius: 50%;
+      background: white;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--cinnamon);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+      line-height: 1;
+    }
+
+    .qty-btn:hover {
+      background: var(--pink-light);
+      border-color: var(--pink-mid);
+    }
+
+    .qty-num {
+      font-weight: 700;
+      font-size: 0.95rem;
+      min-width: 24px;
+      text-align: center;
+      color: var(--cinnamon-dark);
+    }
+
+    .cart-item-subtotal {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--cinnamon);
+      min-width: 70px;
+      text-align: right;
+    }
+
+    .cart-item-remove {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      color: var(--text-light);
+      padding: 4px 6px;
+      border-radius: 6px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .cart-item-remove:hover { background: #ffe0ea; color: #e2231a; }
+
+    /* ── Order Summary ── */
+    .summary-box {
+      background: var(--card-bg);
+      border-radius: 20px;
+      border: 2px solid var(--pink-light);
+      box-shadow: 0 4px 20px var(--shadow);
+      overflow: hidden;
+      position: sticky;
+      top: 80px;
+    }
+
+    .summary-head {
+      background: linear-gradient(135deg, var(--lavender-light), var(--pink-light));
+      padding: 1.2rem 1.8rem;
+      font-family: var(--font-accent);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--cinnamon-dark);
+    }
+
+    .summary-body { padding: 1.5rem 1.8rem; }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      margin-bottom: 0.7rem;
+    }
+
+    .summary-row.total {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--cinnamon-dark);
+      border-top: 2px solid var(--pink-light);
+      padding-top: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .summary-note {
+      background: linear-gradient(135deg, var(--pink-light), var(--lavender-light));
+      border-radius: 12px;
+      padding: 0.9rem 1.1rem;
+      font-size: 0.82rem;
+      color: var(--cinnamon-dark);
+      line-height: 1.55;
+      margin-bottom: 1.3rem;
+    }
+
+    .summary-note strong { color: var(--cinnamon); }
+
+    .btn-checkout {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--pink-mid), var(--cinnamon-light));
+      color: white;
+      border: none;
+      border-radius: 999px;
+      font-family: var(--font-accent);
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-checkout:hover { opacity: 0.88; transform: scale(1.02); }
+    .btn-checkout:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    .btn-clear {
+      width: 100%;
+      padding: 10px;
+      background: none;
+      border: 2px solid var(--pink-light);
+      border-radius: 999px;
+      color: var(--text-light);
+      font-size: 0.85rem;
+      cursor: pointer;
+      margin-top: 0.7rem;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-clear:hover { background: var(--pink-light); color: var(--cinnamon-dark); }
+
+    /* ── Order steps hint ── */
+    .order-steps {
+      background: linear-gradient(135deg, var(--lavender-light), var(--cream));
+      padding: 3rem 2rem;
+    }
+
+    .order-steps-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .order-steps h2 {
+      font-family: var(--font-accent);
+      font-size: 1.6rem;
+      color: var(--cinnamon-dark);
+      margin-bottom: 0.4rem;
+    }
+
+    .order-steps > .order-steps-inner > p {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .step-card {
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 1.6rem 1.2rem;
+      box-shadow: 0 4px 16px var(--shadow);
+      border: 2px solid var(--pink-light);
+    }
+
+    .step-num {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--pink-mid), var(--cinnamon-light));
+      color: white;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.9rem;
+    }
+
+    .step-icon { font-size: 1.6rem; margin-bottom: 0.5rem; }
+
+    .step-card h4 {
+      font-family: var(--font-accent);
+      font-size: 0.95rem;
+      color: var(--cinnamon-dark);
+      margin-bottom: 0.3rem;
+    }
+
+    .step-card p {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    footer {
+      background: var(--brown);
+      color: rgba(255,255,255,0.8);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.85rem;
+    }
+
+    footer a { color: var(--cinnamon-light); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-bottom { opacity: 0.6; font-size: 0.78rem; margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVIGATION ── -->
+  <nav>
+    <a href="index.html" class="nav-brand">
+      <span class="nav-brand-icon"><img src="assets/000 common/person.png" alt="user"></span>
+      <span class="nav-brand-text">Rin's Cafe Cinnamon<span class="nav-brand-user" id="navUsername"></span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="cart.html" class="nav-cart active" id="navCart">🛒
+      <span class="cart-badge" id="cartBadge">0</span>
+    </a>
+    <a class="nav-logout" id="navLogout" title="Logout" onclick="localStorage.removeItem('cinnamon_user'); window.location.href='cina.html';">🚪</a>
+    <button class="nav-burger" id="navBurger">☰</button>
+  </nav>
+
+  <!-- ── PAGE HERO ── -->
+  <div class="page-hero">
+    <h1>Your Cart 🛒</h1>
+    <p>Review your order before checking out~</p>
+  </div>
+
+  <!-- ── CART LAYOUT ── -->
+  <div class="cart-layout">
+
+    <!-- Left: Cart Items -->
+    <div class="cart-items-box">
+      <div class="cart-items-head">🛒 Cart Items</div>
+      <div id="cartBody">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- Right: Summary -->
+    <div class="summary-box">
+      <div class="summary-head">✨ Order Summary</div>
+      <div class="summary-body">
+        <div class="summary-row">
+          <span>Items</span>
+          <span id="summaryCount">0</span>
+        </div>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="summarySubtotal">₱ 0.00</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total</span>
+          <span id="summaryTotal">₱ 0.00</span>
+        </div>
+
+        <div class="summary-note">
+          <strong>How to complete your order:</strong><br>
+          After clicking checkout, head to our
+          <a href="https://discord.gg/7YP8jZ4bhv" target="_blank" rel="noopener" style="color:var(--cinnamon);font-weight:700;">Discord server</a>
+          or
+          <a href="https://www.facebook.com/cafecinnamonroll" target="_blank" rel="noopener" style="color:var(--cinnamon);font-weight:700;">Facebook page</a>
+          to place your order and send payment. We'll deliver ASAP~ 🌸
+        </div>
+
+        <button class="btn-checkout" id="btnCheckout" disabled onclick="doCheckout()">
+          Proceed to Checkout ✨
+        </button>
+        <button class="btn-clear" id="btnClear" onclick="doClear()">🗑 Clear Cart</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── HOW TO ORDER STEPS ── -->
+  <section class="order-steps">
+    <div class="order-steps-inner">
+      <h2>How to Order~ 🌸</h2>
+      <p>Super easy, we promise! Just follow these steps~</p>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-icon">🛒</div>
+          <h4>Add to Cart</h4>
+          <p>Browse our Products page and add the items you want~</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-icon">📋</div>
+          <h4>Review Order</h4>
+          <p>Check your cart and confirm the items and quantities here.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-icon">💬</div>
+          <h4>Contact Us</h4>
+          <p>Head to our Discord or Facebook to place your order officially.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-icon">💸</div>
+          <h4>Send Payment</h4>
+          <p>Pay via GCash, PayMaya, or other agreed payment methods.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">5</div>
+          <div class="step-icon">🎁</div>
+          <h4>Receive Order</h4>
+          <p>Sit back and relax~ we'll deliver your top-up lightning fast!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="products.html">Products</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div>☕ <strong>Rin's Cafe Cinnamon</strong> — hot drops, sweet deals, all in one swirly cafe!</div>
+    <div class="footer-bottom">Open since August 2022 · Discord · Roblox · Facebook</div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+  <script src="js/main.js"></script>
+  <script>
+    const GAME_ICONS = {
+      'LoL': '⚔️', 'MLBB': '🗡️', 'Valo': '🎯', 'Roblox': '🧱',
+      'Bot': '🤖', 'Hosting': '🖥️', 'RP': '⚔️', 'VP': '🎯',
+      'DIAS': '🗡️', 'CT': '🧱', 'R$': '🧱', 'PASS': '🗡️', 'BUNDLE': '🗡️'
+    };
+
+    function getIcon(name) {
+      const up = name.toUpperCase();
+      for (const [k, v] of Object.entries(GAME_ICONS)) {
+        if (up.includes(k.toUpperCase())) return v;
+      }
+      return '✨';
+    }
+
+    function fmt(n) {
+      return '₱ ' + parseFloat(n).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function renderCart() {
+      const cart = getCart();
+      const body = document.getElementById('cartBody');
+      const btnCheckout = document.getElementById('btnCheckout');
+      const btnClear = document.getElementById('btnClear');
+
+      if (cart.length === 0) {
+        body.innerHTML = `
+          <div class="cart-empty">
+            <span class="cart-empty-icon">🛒</span>
+            <h3>Your cart is empty~</h3>
+            <p>Add some items from the Products page to get started!</p>
+            <a href="products.html" class="btn-shop">Browse Products 🌸</a>
+          </div>`;
+        btnCheckout.disabled = true;
+        btnClear.style.display = 'none';
+      } else {
+        body.innerHTML = cart.map(item => `
+          <div class="cart-item">
+            <div class="cart-item-icon">${getIcon(item.name)}</div>
+            <div class="cart-item-info">
+              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-unit">${fmt(item.price)} each</div>
+            </div>
+            <div class="cart-item-controls">
+              <button class="qty-btn" onclick="changeQty('${item.name.replace(/'/g, "\\'")}', -1)">−</button>
+              <span class="qty-num">${item.qty || 1}</span>
+              <button class="qty-btn" onclick="changeQty('${item.name.replace(/'/g, "\\'")}', +1)">+</button>
+            </div>
+            <div class="cart-item-subtotal">${fmt(item.price * (item.qty || 1))}</div>
+            <button class="cart-item-remove" title="Remove" onclick="removeItem('${item.name.replace(/'/g, "\\'")}')">✕</button>
+          </div>`).join('');
+
+        btnCheckout.disabled = false;
+        btnClear.style.display = '';
+      }
+
+      const count = cart.reduce((s, i) => s + (i.qty || 1), 0);
+      const total = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
+      document.getElementById('summaryCount').textContent = count + ' item' + (count !== 1 ? 's' : '');
+      document.getElementById('summarySubtotal').textContent = fmt(total);
+      document.getElementById('summaryTotal').textContent = fmt(total);
+    }
+
+    function changeQty(name, delta) {
+      const cart = getCart();
+      const item = cart.find(i => i.name === name);
+      if (!item) return;
+      item.qty = Math.max(1, (item.qty || 1) + delta);
+      saveCart(cart);
+      updateCartBadge();
+      renderCart();
+    }
+
+    function removeItem(name) {
+      const cart = getCart().filter(i => i.name !== name);
+      saveCart(cart);
+      updateCartBadge();
+      renderCart();
+      showToast('Item removed~ 🌸');
+    }
+
+    function doClear() {
+      if (!confirm('Clear your entire cart? 🌸')) return;
+      clearCart();
+      renderCart();
+      showToast('Cart cleared~');
+    }
+
+    function doCheckout() {
+      const cart = getCart();
+      if (cart.length === 0) return;
+      const lines = cart.map(i => `• ${i.name} x${i.qty} — ${fmt(i.price * i.qty)}`).join('\n');
+      const total = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
+      localStorage.setItem('cinnamon_order', JSON.stringify({ cart, total, date: new Date().toISOString() }));
+      window.location.href = 'thankyou.html';
+    }
+
+    renderCart();
+    const _u = localStorage.getItem('cinnamon_user');
+    if (_u) { const el = document.getElementById('navUsername'); if (el) el.textContent = ', ' + _u + '~'; }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Rin's Cafe Cinnamon — Registration</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+
+    :root{
+      --bg1:#dff4ff;
+      --bg2:#ffe3ef;
+
+      --white:#ffffff;
+
+      --blue:#8fd3ff;
+      --pink:#ffc5d8;
+      --pink2:#ff8fb5;
+
+      --text:#35507a;
+      --text2:#7087aa;
+
+      --border:rgba(255,255,255,0.55);
+
+      --glass:rgba(255,255,255,0.24);
+
+      --shadow:
+        0 10px 40px rgba(125,170,255,0.18),
+        0 4px 12px rgba(255,170,210,0.12);
+
+      --radius-xl:28px;
+      --radius-lg:20px;
+      --radius-md:14px;
+
+      --error:#ff5d7d;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      cursor:url("assets/000 common/cursor.png") 4 4, pointer;
+    }
+
+    html{
+      overflow-y:auto;
+      scrollbar-width:none;
+    }
+
+    html::-webkit-scrollbar{
+      width:0;
+      display:none;
+    }
+
+    body{
+      font-family:'Nunito',sans-serif;
+
+      min-height:100vh;
+
+      color:var(--text);
+
+      background:
+        linear-gradient(
+          135deg,
+          #dff4ff 0%,
+          #edf8ff 35%,
+          #ffe4ef 100%
+        );
+
+      overflow-y:auto;
+      overflow-x:hidden;
+
+      scrollbar-width:none;
+
+    }
+
+    body::-webkit-scrollbar{
+      width:0;
+      display:none;
+    }
+
+    /* ============================= */
+    /* BACKGROUND */
+    /* ============================= */
+
+    .bg{
+      position:fixed;
+      inset:0;
+      overflow:hidden;
+      z-index:0;
+    }
+
+    .cloud{
+      position:absolute;
+
+      background:rgba(255,255,255,0.55);
+
+      border-radius:999px;
+
+      animation:float linear infinite;
+    }
+
+    .cloud::before,
+    .cloud::after{
+      content:"";
+      position:absolute;
+      background:inherit;
+      border-radius:inherit;
+    }
+
+    .cloud1{
+      width:220px;
+      height:70px;
+
+      top:10%;
+      left:-20%;
+
+      animation-duration:40s;
+    }
+
+    .cloud1::before{
+      width:90px;
+      height:90px;
+
+      left:25px;
+      top:-35px;
+    }
+
+    .cloud1::after{
+      width:110px;
+      height:110px;
+
+      right:20px;
+      top:-50px;
+    }
+
+    .cloud2{
+      width:260px;
+      height:80px;
+
+      top:42%;
+      left:-25%;
+
+      animation-duration:55s;
+
+      opacity:.5;
+    }
+
+    .cloud2::before{
+      width:100px;
+      height:100px;
+
+      left:30px;
+      top:-40px;
+    }
+
+    .cloud2::after{
+      width:120px;
+      height:120px;
+
+      right:25px;
+      top:-50px;
+    }
+
+    .cloud3{
+      width:180px;
+      height:60px;
+
+      top:75%;
+      left:-15%;
+
+      animation-duration:50s;
+
+      opacity:.45;
+    }
+
+    .cloud3::before{
+      width:75px;
+      height:75px;
+
+      left:15px;
+      top:-28px;
+    }
+
+    .cloud3::after{
+      width:90px;
+      height:90px;
+
+      right:15px;
+      top:-35px;
+    }
+
+    @keyframes float{
+      from{
+        transform:translateX(0);
+      }
+
+      to{
+        transform:translateX(140vw);
+      }
+    }
+
+    /* sparkles */
+
+    .sparkle{
+      position:absolute;
+
+      color:#fff;
+
+      opacity:.75;
+
+      animation:twinkle 3s ease-in-out infinite;
+    }
+
+    .sparkle:nth-child(4){
+      top:18%;
+      left:20%;
+    }
+
+    .sparkle:nth-child(5){
+      top:70%;
+      left:28%;
+      animation-delay:1s;
+    }
+
+    .sparkle:nth-child(6){
+      top:24%;
+      right:18%;
+      animation-delay:2s;
+    }
+
+    .sparkle:nth-child(7){
+      top:82%;
+      right:20%;
+      animation-delay:1.5s;
+    }
+
+    @keyframes twinkle{
+
+      0%,100%{
+        transform:scale(1);
+        opacity:.45;
+      }
+
+      50%{
+        transform:scale(1.6);
+        opacity:1;
+      }
+
+    }
+
+    /* ============================= */
+    /* MAIN */
+    /* ============================= */
+
+    .wrapper{
+      position:relative;
+      z-index:2;
+
+      min-height:100vh;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      padding:40px 20px;
+    }
+
+    .register-box{
+      width:100%;
+      max-width:430px;
+
+      background:var(--glass);
+
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+
+      border:1.5px solid var(--border);
+
+      border-radius:var(--radius-xl);
+
+      box-shadow:var(--shadow);
+
+      padding:38px 34px;
+
+      position:relative;
+      overflow:hidden;
+    }
+
+    .register-box::before{
+      content:"";
+
+      position:absolute;
+
+      width:180px;
+      height:180px;
+
+      background:
+        radial-gradient(
+          circle,
+          var(--pink) 0%,
+          transparent 70%
+        );
+
+      top:-80px;
+      right:-70px;
+
+      opacity:.45;
+    }
+
+    .register-box::after{
+      content:"";
+
+      position:absolute;
+
+      width:150px;
+      height:150px;
+
+      background:
+        radial-gradient(
+          circle,
+          var(--blue) 0%,
+          transparent 70%
+        );
+
+      bottom:-70px;
+      left:-60px;
+
+      opacity:.35;
+    }
+
+    .content{
+      position:relative;
+      z-index:2;
+    }
+
+    /* ============================= */
+    /* LOGO */
+    /* ============================= */
+
+    .logo{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+
+      margin-bottom:28px;
+    }
+
+    .logo-circle{
+      width:82px;
+      height:82px;
+
+      border-radius:50%;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--pink) 0%,
+          var(--blue) 100%
+        );
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      font-size:34px;
+
+      margin-bottom:16px;
+
+      box-shadow:
+        0 8px 22px rgba(255,170,210,0.35);
+    }
+
+    .logo h1{
+      font-size:1.3rem;
+      font-weight:900;
+      color:var(--text);
+      text-align:center;
+    }
+
+
+    /* ============================= */
+    /* FORM */
+    /* ============================= */
+
+    .input-group{
+      margin-bottom:16px;
+    }
+
+    .input-group label{
+      display:block;
+
+      margin-bottom:7px;
+
+      font-size:.82rem;
+      font-weight:800;
+
+      color:var(--text2);
+
+      letter-spacing:.03em;
+    }
+
+    .input-group input{
+      width:100%;
+
+      padding:14px 16px;
+
+      border-radius:var(--radius-md);
+
+      border:1.5px solid rgba(180,220,255,0.6);
+
+      background:rgba(255,255,255,0.72);
+
+      font-family:'Nunito',sans-serif;
+      font-size:.94rem;
+
+      color:var(--text);
+
+      outline:none;
+
+      transition:
+        border .2s,
+        box-shadow .2s,
+        background .2s;
+    }
+
+    .input-group input::placeholder{
+      color:#a7bddb;
+    }
+
+    .input-group input:focus{
+      background:#fff;
+
+      border-color:var(--pink2);
+
+      box-shadow:
+        0 0 0 4px rgba(255,143,181,0.16);
+    }
+
+    /* ERROR */
+
+    .input-group input.error{
+      border-color:var(--error);
+
+      background:#fff4f7;
+
+      box-shadow:
+        0 0 0 4px rgba(255,93,125,0.12);
+    }
+
+    .error-text{
+      display:none;
+
+      margin-top:7px;
+
+      font-size:.76rem;
+      font-weight:700;
+
+      color:var(--error);
+
+      padding-left:2px;
+    }
+
+    .error-text.active{
+      display:block;
+    }
+
+    /* ============================= */
+    /* TERMS */
+    /* ============================= */
+
+    .terms{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+
+      margin-top:4px;
+      margin-bottom:8px;
+
+      padding:10px 12px;
+
+      border-radius:14px;
+
+      transition:
+        border .2s,
+        background .2s;
+
+      border:1.5px solid transparent;
+    }
+
+    .terms.error{
+      border-color:var(--error);
+
+      background:rgba(255,93,125,0.08);
+    }
+
+    .terms input{
+      margin-top:4px;
+
+      accent-color:#ff8fb5;
+
+      transform:scale(1.05);
+    }
+
+    .terms label{
+      font-size:.8rem;
+      line-height:1.5;
+
+      color:var(--text2);
+    }
+
+    .terms span{
+      color:var(--pink2);
+      font-weight:800;
+    }
+
+    .checkbox-error{
+      display:none;
+
+      margin-bottom:18px;
+
+      color:var(--error);
+
+      font-size:.76rem;
+      font-weight:700;
+
+      padding-left:2px;
+    }
+
+    .checkbox-error.active{
+      display:block;
+    }
+
+    /* ============================= */
+    /* BUTTON */
+    /* ============================= */
+
+    .btn-register{
+      width:100%;
+
+      border:none;
+      outline:none;
+
+      padding:15px;
+
+      border-radius:999px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #ffb4cb 0%,
+          #ff90b6 100%
+        );
+
+      color:#fff;
+
+      font-family:'Nunito',sans-serif;
+      font-size:1rem;
+      font-weight:900;
+
+      letter-spacing:.03em;
+
+      box-shadow:
+        0 8px 22px rgba(255,144,182,0.38);
+
+      transition:
+        transform .18s,
+        box-shadow .18s;
+    }
+
+    .btn-register:hover{
+      transform:
+        translateY(-2px)
+        scale(1.02);
+
+      box-shadow:
+        0 12px 28px rgba(255,144,182,0.48);
+    }
+
+    /* ============================= */
+    /* RESPONSIVE */
+    /* ============================= */
+
+    @media(max-width:520px){
+
+      .wrapper{
+        padding:28px 16px;
+      }
+
+      .register-box{
+        padding:34px 24px;
+      }
+
+      .logo h1{
+        font-size:1.55rem;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- BACKGROUND -->
+  <div class="bg">
+
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
+
+    <div class="sparkle">✦</div>
+    <div class="sparkle">☁</div>
+    <div class="sparkle">✧</div>
+    <div class="sparkle">♡</div>
+
+  </div>
+
+  <!-- MAIN -->
+  <div class="wrapper">
+
+    <div class="register-box">
+
+      <div class="content">
+
+        <!-- LOGO -->
+        <div class="logo">
+
+          <div class="logo-circle">
+            <img src="assets/000 common/logo.png" alt="Cafe Cinnamon" style="width:52px;height:52px;object-fit:contain;border-radius:50%;" />
+          </div>
+
+          <h1>Rin's Cafe Cinnamon</h1>
+
+        </div>
+
+        <!-- FORM -->
+        <form id="registerForm" novalidate>
+
+          <!-- EMAIL -->
+          <div class="input-group">
+
+            <label>Email Address</label>
+
+            <input
+              type="text"
+              id="email"
+              placeholder="Enter your email"
+              autocomplete="off"
+            />
+
+            <div class="error-text" id="emailError">
+              Please enter a valid email address.
+            </div>
+
+          </div>
+
+          <!-- USERNAME -->
+          <div class="input-group">
+
+            <label>Username</label>
+
+            <input
+              type="text"
+              id="username"
+              placeholder="Choose a username"
+              autocomplete="off"
+            />
+
+            <div class="error-text" id="usernameError">
+              Username is required.
+            </div>
+
+          </div>
+
+          <!-- PASSWORD -->
+          <div class="input-group">
+
+            <label>Password</label>
+
+            <input
+              type="password"
+              id="password"
+              placeholder="Create a password"
+              autocomplete="off"
+            />
+
+            <div class="error-text" id="passwordError">
+              Password must be at least 6 characters.
+            </div>
+
+          </div>
+
+          <!-- CONFIRM PASSWORD -->
+          <div class="input-group">
+
+            <label>Confirm Password</label>
+
+            <input
+              type="password"
+              id="confirmPassword"
+              placeholder="Confirm your password"
+              autocomplete="off"
+            />
+
+            <div class="error-text" id="confirmPasswordError">
+              Passwords do not match.
+            </div>
+
+          </div>
+
+          <!-- TERMS -->
+          <div
+            class="terms"
+            id="termsBox"
+          >
+
+            <input
+              type="checkbox"
+              id="agree"
+            />
+
+            <label for="agree">
+              I agree to the
+              <span>Café Terms & Policies</span>
+              and understand that all orders are processed digitally.
+            </label>
+
+          </div>
+
+          <div
+            class="checkbox-error"
+            id="agreeError"
+          >
+            You must agree to the Café Terms & Policies.
+          </div>
+
+          <!-- BUTTON -->
+          <button
+            type="submit"
+            class="btn-register"
+          >
+            Enter the Café ☁️
+          </button>
+
+        </form>
+
+        <p style="text-align:center;margin-top:18px;font-size:.82rem;color:var(--text2);">Already have an account? <a href="index.html" style="color:var(--pink2);font-weight:800;text-decoration:none;">Log in</a></p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    const form = document.getElementById("registerForm");
+
+    const email = document.getElementById("email");
+    const username = document.getElementById("username");
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirmPassword");
+    const agree = document.getElementById("agree");
+
+    const termsBox = document.getElementById("termsBox");
+
+    function setError(input, errorId, message){
+
+      input.classList.add("error");
+
+      const errorText =
+        document.getElementById(errorId);
+
+      errorText.textContent = message;
+
+      errorText.classList.add("active");
+
+    }
+
+    function clearError(input, errorId){
+
+      input.classList.remove("error");
+
+      document
+        .getElementById(errorId)
+        .classList.remove("active");
+
+    }
+
+    function validateEmail(emailValue){
+
+      const pattern =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      return pattern.test(emailValue);
+
+    }
+
+    form.addEventListener("submit", function(e){
+
+      e.preventDefault();
+
+      let valid = true;
+
+      // reset
+      clearError(email, "emailError");
+      clearError(username, "usernameError");
+      clearError(password, "passwordError");
+      clearError(confirmPassword, "confirmPasswordError");
+
+      termsBox.classList.remove("error");
+
+      document
+        .getElementById("agreeError")
+        .classList.remove("active");
+
+      // EMAIL
+      if(email.value.trim() === ""){
+
+        setError(
+          email,
+          "emailError",
+          "Email address is required."
+        );
+
+        valid = false;
+
+      }
+      else if(
+        !validateEmail(email.value.trim())
+      ){
+
+        setError(
+          email,
+          "emailError",
+          "Please enter a valid email address."
+        );
+
+        valid = false;
+
+      }
+
+      // USERNAME
+      if(username.value.trim() === ""){
+
+        setError(
+          username,
+          "usernameError",
+          "Username is required."
+        );
+
+        valid = false;
+
+      }
+
+      // PASSWORD
+      if(password.value === ""){
+
+        setError(
+          password,
+          "passwordError",
+          "Password is required."
+        );
+
+        valid = false;
+
+      }
+      else if(password.value.length < 6){
+
+        setError(
+          password,
+          "passwordError",
+          "Password must be at least 6 characters."
+        );
+
+        valid = false;
+
+      }
+
+      // CONFIRM PASSWORD
+      if(confirmPassword.value === ""){
+
+        setError(
+          confirmPassword,
+          "confirmPasswordError",
+          "Please confirm your password."
+        );
+
+        valid = false;
+
+      }
+      else if(
+        password.value !== confirmPassword.value
+      ){
+
+        setError(
+          confirmPassword,
+          "confirmPasswordError",
+          "Passwords do not match."
+        );
+
+        valid = false;
+
+      }
+
+      // TERMS
+      if(!agree.checked){
+
+        termsBox.classList.add("error");
+
+        document
+          .getElementById("agreeError")
+          .classList.add("active");
+
+        valid = false;
+
+      }
+
+      // SUCCESS
+      if(valid){
+          localStorage.setItem('cinnamon_user', username.value.trim());
+          window.location.href = "index.html";
+
+      }
+
+    });
+
+    // LIVE REMOVE ERRORS
+
+    email.addEventListener("input", () => {
+      clearError(email, "emailError");
+    });
+
+    username.addEventListener("input", () => {
+      clearError(username, "usernameError");
+    });
+
+    password.addEventListener("input", () => {
+      clearError(password, "passwordError");
+    });
+
+    confirmPassword.addEventListener("input", () => {
+      clearError(
+        confirmPassword,
+        "confirmPasswordError"
+      );
+    });
+
+    agree.addEventListener("change", () => {
+
+      if(agree.checked){
+
+        termsBox.classList.remove("error");
+
+        document
+          .getElementById("agreeError")
+          .classList.remove("active");
+
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>

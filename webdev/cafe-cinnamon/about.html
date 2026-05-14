@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — Rin's Cafe Cinnamon ☕</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── PAGE-SPECIFIC: ABOUT ── */
+
+    .page-hero {
+      background: linear-gradient(135deg, var(--pink-light) 0%, var(--lavender-light) 60%, var(--cream) 100%);
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+    }
+
+    .page-hero h1 {
+      font-family: var(--font-accent);
+      font-size: clamp(1.9rem, 5vw, 3rem);
+      color: var(--cinnamon-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .page-hero p {
+      color: var(--text-mid);
+      font-size: 1rem;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* SHOP HISTORY */
+    .history-section {
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-accent);
+      font-size: 1.6rem;
+      color: var(--cinnamon-dark);
+      margin-bottom: 0.3rem;
+    }
+
+    .section-header p {
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 2.5rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--pink), var(--lavender), var(--mint));
+      border-radius: 2px;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -2.1rem;
+      top: 4px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 3px solid white;
+      box-shadow: 0 0 0 2px var(--cinnamon-light);
+      background: var(--cinnamon-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+    }
+
+    .timeline-content {
+      background: var(--card-bg);
+      border: 1.5px solid var(--pink-light);
+      border-radius: var(--border-radius);
+      padding: 1.2rem 1.5rem;
+      box-shadow: 0 3px 12px var(--shadow);
+    }
+
+    .timeline-date {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--cinnamon);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.3rem;
+    }
+
+    .timeline-content h4 {
+      font-family: var(--font-accent);
+      font-size: 1rem;
+      color: var(--cinnamon-dark);
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-content p {
+      font-size: 0.87rem;
+      color: var(--text-light);
+      line-height: 1.55;
+    }
+
+    /* DISCORD STAFF CARDS */
+    .staff-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 2rem 4rem;
+    }
+
+    .staff-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.8rem;
+      margin-top: 2.5rem;
+    }
+
+    /* Discord Profile Card */
+    .discord-card {
+      background: #36393f;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+    }
+
+    .discord-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.35);
+    }
+
+    .discord-card.aerin-card:hover {
+      box-shadow: 0 16px 48px rgba(255, 143, 171, 0.4);
+    }
+
+    .discord-banner {
+      height: 90px;
+      position: relative;
+    }
+
+    .banner-pink    { background: linear-gradient(135deg, #ffb3c6 0%, #ff8fab 100%); }
+    .banner-lavender{ background: linear-gradient(135deg, #d4b8e0 0%, #b39ddb 100%); }
+    .banner-mint    { background: linear-gradient(135deg, #b5ead7 0%, #80cbc4 100%); }
+    .banner-yellow  { background: linear-gradient(135deg, #ffd166 0%, #ffab40 100%); }
+    .banner-blue    { background: linear-gradient(135deg, #90caf9 0%, #42a5f5 100%); }
+
+    .banner-deco {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 1.2rem;
+      font-size: 2.5rem;
+      opacity: 0.45;
+    }
+
+    .discord-avatar-wrap {
+      position: relative;
+      margin: -38px 0 0 18px;
+      width: fit-content;
+    }
+
+    .discord-avatar {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      border: 5px solid #36393f;
+      background: #2f3136;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+    }
+
+    .discord-status {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 3px solid #36393f;
+    }
+
+    .status-online  { background: #3ba55c; }
+    .status-idle    { background: #faa81a; }
+    .status-dnd     { background: #ed4245; }
+    .status-bot     { background: #5865f2; }
+
+    .discord-body {
+      padding: 0.6rem 1.2rem 1.4rem;
+    }
+
+    .discord-name-row {
+      margin-top: 0.6rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .discord-username {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    .discord-tag {
+      font-size: 0.8rem;
+      color: #b9bbbe;
+    }
+
+    .discord-bot-tag {
+      display: inline-block;
+      background: #5865f2;
+      color: white;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-left: 5px;
+      vertical-align: middle;
+    }
+
+    .discord-divider {
+      height: 1px;
+      background: #4f545c;
+      margin: 0.8rem 0;
+    }
+
+    .discord-section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #b9bbbe;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.4rem;
+    }
+
+    .discord-about {
+      font-size: 0.85rem;
+      color: #dcddde;
+      line-height: 1.55;
+      margin-bottom: 0.8rem;
+    }
+
+    .discord-roles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 0.6rem;
+    }
+
+    .discord-role {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #dcddde;
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: 6px;
+    }
+
+    .discord-role-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-pink    { background: #ff8fab; }
+    .dot-lavender{ background: #b39ddb; }
+    .dot-mint    { background: #80cbc4; }
+    .dot-yellow  { background: #ffd166; }
+    .dot-blue    { background: #42a5f5; }
+    .dot-indigo  { background: #5865f2; }
+
+    .discord-member-since {
+      font-size: 0.78rem;
+      color: #72767d;
+      margin-top: 0.5rem;
+    }
+
+    /* bio link on aerin card */
+    .view-bio-link {
+      display: inline-block;
+      margin-top: 0.8rem;
+      font-size: 0.8rem;
+      color: #ff8fab;
+      text-decoration: none;
+      border: 1px solid #ff8fab55;
+      padding: 4px 12px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    .view-bio-link:hover {
+      background: rgba(255, 143, 171, 0.15);
+    }
+
+    /* BOT CARDS */
+    .bot-section {
+      background: linear-gradient(135deg, var(--lavender-light), var(--pink-light));
+      padding: 3rem 2rem;
+    }
+
+    .bot-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .bots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .bot-card {
+      background: #2f3136;
+      border-radius: 16px;
+      padding: 1.8rem;
+      border: 2px solid #4f545c;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+    }
+
+    .bot-card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .bot-icon {
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+
+    .bot-icon-cinna { background: linear-gradient(135deg, #ffb3c6, #ff8fab); }
+    .bot-icon-mocha { background: linear-gradient(135deg, #c47d3a, #8b5520); }
+
+    .bot-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .bot-type {
+      font-size: 0.78rem;
+      color: #b9bbbe;
+    }
+
+    .bot-desc {
+      font-size: 0.87rem;
+      color: #dcddde;
+      line-height: 1.55;
+    }
+
+    .bot-features {
+      margin-top: 0.8rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .bot-feat-tag {
+      font-size: 0.75rem;
+      background: rgba(255,255,255,0.08);
+      color: #dcddde;
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    footer {
+      background: var(--brown);
+      color: rgba(255,255,255,0.8);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: var(--cinnamon-light);
+      text-decoration: none;
+    }
+
+    footer a:hover { text-decoration: underline; }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-bottom {
+      opacity: 0.6;
+      font-size: 0.78rem;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVIGATION ── -->
+  <nav>
+    <a href="index.html" class="nav-brand">
+      <span class="nav-brand-icon"><img src="assets/000 common/person.png" alt="user"></span>
+      <span class="nav-brand-text">Rin's Cafe Cinnamon<span class="nav-brand-user" id="navUsername"></span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html" class="active">About Us</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="cart.html" class="nav-cart" id="navCart">
+        🛒
+        <span class="cart-badge" id="cartBadge">0</span>
+      </a>
+      <a class="nav-logout" id="navLogout" title="Logout" onclick="localStorage.removeItem('cinnamon_user'); window.location.href='cina.html';">🚪</a>
+    </div>
+    <button class="nav-burger" id="navBurger">☰</button>
+  </nav>
+
+  <!-- ── PAGE HERO ── -->
+  <div class="page-hero">
+    <h1>About Us ☕🌸</h1>
+    <p>Meet the sweet team behind Rin's Cafe Cinnamon and learn our story~</p>
+  </div>
+
+  <!-- ── SHOP HISTORY ── -->
+  <section class="history-section">
+    <div class="section-header">
+      <h2>Our Journey 🗓️</h2>
+      <p>From a tiny Discord shop to everywhere you play</p>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot">☕</div>
+        <div class="timeline-content">
+          <div class="timeline-date">August 2022</div>
+          <h4>🎉 Cafe Cinnamon Opens on Discord</h4>
+          <p>It all started with a simple idea — bring discounted game top-ups to friends and the community. Rin's Cafe Cinnamon opened its doors on Discord with a small but passionate team ready to serve!</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">📘</div>
+        <div class="timeline-content">
+          <div class="timeline-date">June 2023</div>
+          <h4>📘 Expanding to Facebook</h4>
+          <p>The cafe grew bigger! We launched our official Facebook Page to reach more customers and make ordering even more accessible for everyone.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">🧱</div>
+        <div class="timeline-content">
+          <div class="timeline-date">August 2025</div>
+          <h4>🧱 Joining the Roblox Community</h4>
+          <p>We opened our official Roblox Community to connect with the Roblox gaming crowd and offer Roblox Credits directly to players. The cafe keeps brewing new things!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STAFF SECTION ── -->
+  <section class="staff-section">
+    <div class="section-header">
+      <h2>Our Baristas 🌸</h2>
+      <p>The lovely humans (and bots!) keeping the cafe running</p>
+    </div>
+
+    <div class="staff-grid">
+
+      <!-- AERIN — Owner -->
+      <div class="discord-card aerin-card" onclick="window.location.href='biography.html'">
+        <div class="discord-banner banner-pink">
+          <img src="assets/002 about us/aerin profile/banner.png" alt="Aerin Banner" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">
+        </div>
+        <div class="discord-avatar-wrap">
+          <div class="discord-avatar"><img src="assets/002 about us/aerin profile/aerin.jpg" alt="Aerin" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
+          <div class="discord-status status-online"></div>
+        </div>
+        <div class="discord-body">
+          <div class="discord-name-row">
+            <div class="discord-username">Aerin</div>
+            <div class="discord-tag">#owner • Rin's Cafe Cinnamon</div>
+          </div>
+          <div class="discord-divider"></div>
+          <div class="discord-section-label">About Me</div>
+          <div class="discord-about">
+            hi!! i'm aerin, the owner of this cozy little cafe ☕ i started this to share sweet deals with everyone~ feel free to dm me anytime!! 🌸
+          </div>
+          <div class="discord-section-label">Roles</div>
+          <div class="discord-roles">
+            <span class="discord-role"><span class="discord-role-dot dot-pink"></span>Owner</span>
+            <span class="discord-role"><span class="discord-role-dot dot-yellow"></span>Head Barista</span>
+            <span class="discord-role"><span class="discord-role-dot dot-lavender"></span>Cafe Cinnamon</span>
+          </div>
+          <div class="discord-member-since">☕ Member since August 2022</div>
+          <a href="biography.html" class="view-bio-link" onclick="event.stopPropagation()">📖 View Full Bio</a>
+        </div>
+      </div>
+
+      <!-- ELLA — Manager -->
+      <div class="discord-card">
+        <div class="discord-banner banner-lavender">
+          <img src="assets/002 about us/ella profile/ella-banner.jpg" alt="Ella Banner" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">
+        </div>
+        <div class="discord-avatar-wrap">
+          <div class="discord-avatar"><img src="assets/002 about us/ella profile/ella.jpg" alt="Ella" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
+          <div class="discord-status status-online"></div>
+        </div>
+        <div class="discord-body">
+          <div class="discord-name-row">
+            <div class="discord-username">Ella</div>
+            <div class="discord-tag">#manager • Rin's Cafe Cinnamon</div>
+          </div>
+          <div class="discord-divider"></div>
+          <div class="discord-section-label">About Me</div>
+          <div class="discord-about">
+            hello!! ella here~ i help keep the cafe organized and make sure every order is handled with care 🍵 i love matcha and cozy vibes!
+          </div>
+          <div class="discord-section-label">Roles</div>
+          <div class="discord-roles">
+            <span class="discord-role"><span class="discord-role-dot dot-lavender"></span>Manager</span>
+            <span class="discord-role"><span class="discord-role-dot dot-mint"></span>Order Handler</span>
+            <span class="discord-role"><span class="discord-role-dot dot-lavender"></span>Cafe Cinnamon</span>
+          </div>
+          <div class="discord-member-since">☕ Member since August 2022</div>
+        </div>
+      </div>
+
+      <!-- CRYSTALL — Staff -->
+      <div class="discord-card">
+        <div class="discord-banner banner-mint">
+          <img src="assets/002 about us/crystal profile/crystal-banner.jpg" alt="Crystal Banner" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">
+        </div>
+        <div class="discord-avatar-wrap">
+          <div class="discord-avatar"><img src="assets/002 about us/crystal profile/crystal.jpg" alt="Crystall" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
+          <div class="discord-status status-idle"></div>
+        </div>
+        <div class="discord-body">
+          <div class="discord-name-row">
+            <div class="discord-username">Crystall</div>
+            <div class="discord-tag">#staff • Rin's Cafe Cinnamon</div>
+          </div>
+          <div class="discord-divider"></div>
+          <div class="discord-section-label">About Me</div>
+          <div class="discord-about">
+            heya!! crystall here ✨ i'm one of the cafe staff, always ready to help process your orders and answer questions~
+          </div>
+          <div class="discord-section-label">Roles</div>
+          <div class="discord-roles">
+            <span class="discord-role"><span class="discord-role-dot dot-mint"></span>Staff</span>
+            <span class="discord-role"><span class="discord-role-dot dot-yellow"></span>Top-Up Handler</span>
+            <span class="discord-role"><span class="discord-role-dot dot-lavender"></span>Cafe Cinnamon</span>
+          </div>
+          <div class="discord-member-since">☕ Member since 2023</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── BOTS SECTION ── -->
+  <section class="bot-section">
+    <div class="bot-inner">
+      <div class="section-header">
+        <h2 style="color:var(--cinnamon-dark);">Our Cafe Bots 🤖</h2>
+        <p style="color:var(--text-mid);">Two trusty automatons keeping the cafe brewing 24/7</p>
+      </div>
+      <div class="bots-grid">
+
+        <!-- CINNA BOT -->
+        <div class="bot-card">
+          <div class="bot-card-header">
+            <div class="bot-icon bot-icon-cinna"><img src="assets/002 about us/cinna bot profile/cinna.png" alt="Cinna Bot" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
+            <div>
+              <div class="bot-name">Cinna Bot <span class="discord-bot-tag">BOT</span></div>
+              <div class="bot-type">Discord Bot · Cafe Helper</div>
+            </div>
+          </div>
+          <p class="bot-desc">
+            Cinna Bot keeps the Discord server sweet and organized! From welcoming new members to managing order tickets, she's the warm cinnamon roll of the server.
+          </p>
+          <div class="bot-features">
+            <span class="bot-feat-tag">🎉 Welcome Messages</span>
+            <span class="bot-feat-tag">🎫 Order Tickets</span>
+            <span class="bot-feat-tag">📋 Role Assignment</span>
+            <span class="bot-feat-tag">📢 Announcements</span>
+          </div>
+        </div>
+
+        <!-- MOCHA BOT -->
+        <div class="bot-card">
+          <div class="bot-card-header">
+            <div class="bot-icon bot-icon-mocha"><img src="assets/002 about us/MCPV4X~F/mocha.png" alt="Mocha Bot" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
+            <div>
+              <div class="bot-name">Mocha Bot <span class="discord-bot-tag">BOT</span></div>
+              <div class="bot-type">Discord Bot · Order Manager</div>
+            </div>
+          </div>
+          <p class="bot-desc">
+            Mocha Bot is the serious one — handling order tracking, payment confirmations, and keeping the cafe queue running smoothly. Rich, reliable, and always on duty!
+          </p>
+          <div class="bot-features">
+            <span class="bot-feat-tag">📦 Order Tracking</span>
+            <span class="bot-feat-tag">✅ Payment Confirm</span>
+            <span class="bot-feat-tag">📊 Queue Manager</span>
+            <span class="bot-feat-tag">🔔 Notifications</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="products.html">Products</a>
+      <a href="contact.html">Contact</a>
+      <a href="cart.html">Cart</a>
+    </div>
+    <div>☕ <strong>Rin's Cafe Cinnamon</strong> — hot drops, sweet deals, all in one swirly cafe!</div>
+    <div class="footer-bottom">Open since August 2022 · Discord · Roblox · Facebook</div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+  <script src="js/main.js"></script>
+  <script>
+    (function() {
+      const u = localStorage.getItem('cinnamon_user');
+      const el = document.getElementById('navUsername');
+      const logout = document.getElementById('navLogout');
+      if (el && u) el.textContent = u;
+      if (logout) logout.style.display = u ? '' : 'none';
+    })();
+  </script>
+
+</body>
+</html>

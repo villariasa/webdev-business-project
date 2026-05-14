@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thank You! — Rin's Cafe Cinnamon ☕</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(160deg, var(--pink-light) 0%, var(--lavender-light) 40%, var(--cream) 100%);
+    }
+
+    /* ── Confetti ── */
+    #confetti-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      overflow: hidden;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      top: -20px;
+      animation: confettiFall linear forwards;
+    }
+
+    @keyframes confettiFall {
+      0%   { transform: translateY(0) rotate(0deg);   opacity: 1; }
+      80%  { opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* ── Main wrapper ── */
+    .ty-wrapper {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    /* ── Hero burst ── */
+    .ty-hero {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.7); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .ty-emoji {
+      font-size: 5rem;
+      display: block;
+      margin-bottom: 0.6rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+
+    .ty-hero h1 {
+      font-family: var(--font-accent);
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      color: var(--cinnamon-dark);
+      margin-bottom: 0.5rem;
+      line-height: 1.15;
+    }
+
+    .ty-hero p {
+      color: var(--text-mid);
+      font-size: 1rem;
+      max-width: 420px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ── Receipt card ── */
+    .receipt {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 8px 40px rgba(196,125,58,0.15);
+      overflow: hidden;
+      animation: slideUp 0.7s 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* receipt top tape decoration */
+    .receipt-tape {
+      height: 14px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--pink-light) 0px,
+        var(--pink-light) 20px,
+        var(--lavender-light) 20px,
+        var(--lavender-light) 40px,
+        var(--cream) 40px,
+        var(--cream) 60px
+      );
+    }
+
+    .receipt-header {
+      padding: 1.8rem 2rem 1rem;
+      text-align: center;
+      border-bottom: 2px dashed var(--pink-light);
+    }
+
+    .receipt-logo {
+      font-size: 1.8rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .receipt-shop-name {
+      font-family: var(--font-accent);
+      font-size: 1.35rem;
+      color: var(--cinnamon-dark);
+      font-weight: 700;
+    }
+
+    .receipt-tagline {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    .receipt-meta {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      font-size: 0.8rem;
+      color: var(--text-light);
+      border-bottom: 1px dashed var(--pink-light);
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .receipt-meta span strong {
+      color: var(--cinnamon-dark);
+    }
+
+    /* items */
+    .receipt-items {
+      padding: 1.2rem 2rem;
+    }
+
+    .receipt-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #f3eee8;
+      font-size: 0.88rem;
+    }
+
+    .receipt-item:last-child {
+      border-bottom: none;
+    }
+
+    .receipt-item-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      width: 2rem;
+      text-align: center;
+    }
+
+    .receipt-item-name {
+      flex: 1;
+      color: var(--text-dark);
+      font-weight: 600;
+    }
+
+    .receipt-item-qty {
+      color: var(--text-light);
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+
+    .receipt-item-price {
+      color: var(--cinnamon-dark);
+      font-weight: 700;
+      white-space: nowrap;
+      min-width: 80px;
+      text-align: right;
+    }
+
+    /* totals */
+    .receipt-totals {
+      padding: 1rem 2rem 1.5rem;
+      border-top: 2px dashed var(--pink-light);
+    }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      color: var(--text-mid);
+      margin-bottom: 0.4rem;
+    }
+
+    .receipt-row.total {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--cinnamon-dark);
+      margin-top: 0.6rem;
+      padding-top: 0.6rem;
+      border-top: 1px solid var(--pink-light);
+    }
+
+    /* barcode decoration */
+    .receipt-barcode {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 2px;
+      padding: 1.2rem 2rem 1.5rem;
+      border-top: 1px dashed var(--pink-light);
+    }
+
+    .receipt-barcode span {
+      display: inline-block;
+      background: var(--cinnamon-dark);
+      border-radius: 1px;
+      width: 3px;
+    }
+
+    .receipt-barcode-text {
+      font-size: 0.7rem;
+      color: var(--text-light);
+      letter-spacing: 0.15em;
+      margin-top: 0.5rem;
+      text-align: center;
+    }
+
+    /* receipt zigzag bottom */
+    .receipt-zigzag {
+      height: 20px;
+      background: linear-gradient(-45deg, var(--bg) 10px, transparent 0) 0 0,
+                  linear-gradient( 45deg, var(--bg) 10px, transparent 0) 0 0;
+      background-repeat: repeat-x;
+      background-size: 20px 20px;
+      background-color: white;
+    }
+
+    /* ── Next steps ── */
+    .next-steps {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      margin-top: 2rem;
+      box-shadow: 0 4px 20px rgba(196,125,58,0.1);
+      animation: slideUp 0.7s 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    .next-steps h3 {
+      font-family: var(--font-accent);
+      font-size: 1.15rem;
+      color: var(--cinnamon-dark);
+      margin-bottom: 1.2rem;
+    }
+
+    .next-step-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .next-step-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      line-height: 1.5;
+    }
+
+    .step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cinnamon-light), var(--cinnamon-dark));
+      color: white;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-link {
+      color: var(--cinnamon-dark);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .step-link:hover { text-decoration: underline; }
+
+    /* ── Action buttons ── */
+    .ty-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2.5rem;
+      animation: slideUp 0.7s 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 12px 28px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--cinnamon-light), var(--cinnamon-dark));
+      color: white;
+      transition: opacity 0.2s, transform 0.2s;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+    }
+
+    .btn-back:hover {
+      opacity: 0.88;
+      transform: translateY(-2px);
+    }
+
+    .btn-discord-ty {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 12px 28px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      text-decoration: none;
+      background: #7289da;
+      color: white;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .btn-discord-ty:hover {
+      opacity: 0.88;
+      transform: translateY(-2px);
+    }
+
+    /* ── No order fallback ── */
+    .no-order {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .no-order .empty-icon {
+      font-size: 4rem;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .no-order h2 {
+      font-family: var(--font-accent);
+      color: var(--cinnamon-dark);
+      margin-bottom: 0.8rem;
+    }
+
+    .no-order p {
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
+    }
+
+    footer {
+      background: var(--brown);
+      color: rgba(255,255,255,0.8);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.85rem;
+    }
+
+    footer a { color: var(--cinnamon-light); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-bottom {
+      opacity: 0.6;
+      font-size: 0.78rem;
+      margin-top: 0.5rem;
+    }
+
+    /* ── sparkle decorations ── */
+    .sparkles {
+      text-align: center;
+      font-size: 1.5rem;
+      margin: 1.5rem 0 0;
+      letter-spacing: 0.4em;
+      animation: sparkleGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes sparkleGlow {
+      from { opacity: 0.5; }
+      to   { opacity: 1; }
+    }
+
+    @media (max-width: 500px) {
+      .receipt-meta { flex-direction: column; gap: 0.3rem; }
+      .receipt-items { padding: 1rem 1.2rem; }
+      .receipt-totals { padding: 0.8rem 1.2rem 1.2rem; }
+      .receipt-header { padding: 1.2rem 1.2rem 0.8rem; }
+      .receipt-barcode { padding: 0.8rem 1.2rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="confetti-container"></div>
+
+  <!-- ── NAVIGATION ── -->
+  <nav>
+    <a href="index.html" class="nav-brand">
+      <span class="nav-brand-icon"><img src="assets/000 common/person.png" alt="user"></span>
+      <span class="nav-brand-text">Rin's Cafe Cinnamon<span class="nav-brand-user" id="navUsername"></span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="cart.html" class="nav-cart" id="navCart">🛒
+      <span class="cart-badge" id="cartBadge">0</span>
+    </a>
+    <a class="nav-logout" id="navLogout" title="Logout" onclick="localStorage.removeItem('cinnamon_user'); window.location.href='cina.html';">🚪</a>
+    <button class="nav-burger" id="navBurger">☰</button>
+  </nav>
+
+  <div class="ty-wrapper" id="tyContent">
+    <!-- filled by JS -->
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="products.html">Products</a>
+      <a href="contact.html">Contact</a>
+      <a href="cart.html">Cart</a>
+    </div>
+    <div>☕ <strong>Rin's Cafe Cinnamon</strong> — hot drops, sweet deals, all in one swirly cafe!</div>
+    <div class="footer-bottom">Open since August 2022 · Discord · Roblox · Facebook</div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+  <script src="js/main.js"></script>
+  <script>
+    const GAME_ICONS = {
+      'RP': '⚔️', 'VP': '🎯', 'DIAS': '🗡️', 'PASS': '🗡️', 'BUNDLE': '🗡️',
+      'CT': '🧱', 'R$': '🧱', 'BOT': '🤖', 'HOSTING': '🖥️',
+      'LOL': '⚔️', 'MLBB': '🗡️', 'VALO': '🎯', 'ROBLOX': '🧱'
+    };
+
+    function getIcon(name) {
+      const up = name.toUpperCase();
+      for (const [k, v] of Object.entries(GAME_ICONS)) {
+        if (up.includes(k)) return v;
+      }
+      return '✨';
+    }
+
+    function fmt(n) {
+      return '₱ ' + parseFloat(n).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function buildBarcode() {
+      const bars = [];
+      const pattern = [3,1,2,1,4,1,1,3,2,1,3,1,2,4,1,1,2,3,1,2,1,4,1,3,2,1,3,1,2,1,4,3,1,2,1];
+      pattern.forEach(h => {
+        bars.push(`<span style="height:${h * 8}px;"></span>`);
+      });
+      return bars.join('');
+    }
+
+    function formatDate(iso) {
+      const d = new Date(iso);
+      return d.toLocaleString('en-PH', {
+        year: 'numeric', month: 'long', day: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      });
+    }
+
+    function generateOrderId() {
+      return 'CIN-' + Date.now().toString(36).toUpperCase().slice(-6);
+    }
+
+    function renderPage() {
+      const raw = localStorage.getItem('cinnamon_order');
+      const content = document.getElementById('tyContent');
+
+      if (!raw) {
+        content.innerHTML = `
+          <div class="no-order">
+            <span class="empty-icon">🍪</span>
+            <h2>No order found~</h2>
+            <p>Looks like you haven't placed an order yet!</p>
+            <a href="products.html" class="btn-back">Browse Products ✨</a>
+          </div>`;
+        return;
+      }
+
+      const order = JSON.parse(raw);
+      const { cart, total, date } = order;
+      const itemCount = cart.reduce((s, i) => s + (i.qty || 1), 0);
+      const orderId = generateOrderId();
+
+      const itemRows = cart.map(item => `
+        <div class="receipt-item">
+          <span class="receipt-item-icon">${getIcon(item.name)}</span>
+          <span class="receipt-item-name">${item.name}</span>
+          <span class="receipt-item-qty">× ${item.qty || 1}</span>
+          <span class="receipt-item-price">${fmt(item.price * (item.qty || 1))}</span>
+        </div>
+      `).join('');
+
+      content.innerHTML = `
+        <div class="ty-hero">
+          <span class="ty-emoji">🎉</span>
+          <h1>Order Received!~</h1>
+          <p>Thank you for your order at Rin's Cafe Cinnamon! 🌸 Please head over to Discord or Facebook to complete your payment and finalize your order~</p>
+        </div>
+
+        <div class="receipt">
+          <div class="receipt-tape"></div>
+
+          <div class="receipt-header">
+            <div class="receipt-logo">☕✨</div>
+            <div class="receipt-shop-name">Rin's Cafe Cinnamon</div>
+            <div class="receipt-tagline">hot drops, sweet deals, all in one swirly cafe!</div>
+          </div>
+
+          <div class="receipt-meta">
+            <span>Order No. <strong>${orderId}</strong></span>
+            <span>Date: <strong>${formatDate(date)}</strong></span>
+            <span>Items: <strong>${itemCount}</strong></span>
+          </div>
+
+          <div class="receipt-items">
+            ${itemRows}
+          </div>
+
+          <div class="receipt-totals">
+            <div class="receipt-row">
+              <span>Subtotal (${itemCount} item${itemCount !== 1 ? 's' : ''})</span>
+              <span>${fmt(total)}</span>
+            </div>
+            <div class="receipt-row">
+              <span>Processing Fee</span>
+              <span>FREE ✨</span>
+            </div>
+            <div class="receipt-row total">
+              <span>TOTAL</span>
+              <span>${fmt(total)}</span>
+            </div>
+          </div>
+
+          <div class="receipt-barcode">
+            <div>
+              <div style="display:flex;align-items:flex-end;gap:2px;justify-content:center;">
+                ${buildBarcode()}
+              </div>
+              <div class="receipt-barcode-text">${orderId} · CAFE CINNAMON</div>
+            </div>
+          </div>
+
+          <div class="receipt-zigzag"></div>
+        </div>
+
+        <div class="next-steps">
+          <h3>⟡ What happens next? ~</h3>
+          <ul class="next-step-list">
+            <li>
+              <span class="step-num">1</span>
+              <span>Screenshot or note your order above — you'll need it when contacting us!</span>
+            </li>
+            <li>
+              <span class="step-num">2</span>
+              <span>Join our <a href="https://discord.gg/7YP8jZ4bhv" target="_blank" rel="noopener" class="step-link">Discord Server</a> or message us on <a href="https://www.facebook.com/cafecinnamonroll" target="_blank" rel="noopener" class="step-link">Facebook</a> and share your order details.</span>
+            </li>
+            <li>
+              <span class="step-num">3</span>
+              <span>Open a ticket in Discord and our staff will assist you with payment instructions (GCash / PayMaya).</span>
+            </li>
+            <li>
+              <span class="step-num">4</span>
+              <span>Send payment and your in-game ID / username as needed — Cinna Bot will notify you on every update! 🤖</span>
+            </li>
+            <li>
+              <span class="step-num">5</span>
+              <span>Your top-up or commission will be delivered within the processing time shown on the Products page. Enjoy~! ✨</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sparkles">✦ ✧ ✦ ✧ ✦</div>
+
+        <div class="ty-actions">
+          <a href="products.html" class="btn-back">🛒 Shop More</a>
+          <a href="https://discord.gg/7YP8jZ4bhv" target="_blank" rel="noopener" class="btn-discord-ty">💬 Go to Discord</a>
+        </div>
+      `;
+
+      launchConfetti();
+    }
+
+    document.addEventListener('DOMContentLoaded', renderPage);
+    const _u = localStorage.getItem('cinnamon_user');
+    if (_u) { const el = document.getElementById('navUsername'); if (el) el.textContent = ', ' + _u + '~'; }
+  </script>
+</body>
+</html>
