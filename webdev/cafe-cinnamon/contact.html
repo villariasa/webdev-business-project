@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact Us — Rin's Cafe Cinnamon ☕</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      cursor: url("assets/000 common/cursor.png") 4 4, pointer;
+    }
+
     .page-hero {
       background: linear-gradient(135deg, var(--lavender-light) 0%, var(--pink-light) 60%, var(--cream) 100%);
       padding: 4rem 2rem 3rem;
@@ -73,8 +81,10 @@
     .contact-card::before {
       content: '';
       position: absolute;
-      top: -40px; left: -40px;
-      width: 120px; height: 120px;
+      top: -40px;
+      left: -40px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       opacity: 0.15;
       transition: transform 0.4s;
@@ -82,23 +92,47 @@
 
     .contact-card:hover {
       transform: translateY(-8px);
-      box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
     }
 
     /* Discord */
-    .card-discord { border-color: #7289da55; }
-    .card-discord::before { background: #7289da; }
-    .card-discord:hover { border-color: #7289da; }
+    .card-discord {
+      border-color: #7289da55;
+    }
+
+    .card-discord::before {
+      background: #7289da;
+    }
+
+    .card-discord:hover {
+      border-color: #7289da;
+    }
 
     /* Roblox */
-    .card-roblox { border-color: #e2231a55; }
-    .card-roblox::before { background: #e2231a; }
-    .card-roblox:hover { border-color: #e2231a; }
+    .card-roblox {
+      border-color: #e2231a55;
+    }
+
+    .card-roblox::before {
+      background: #e2231a;
+    }
+
+    .card-roblox:hover {
+      border-color: #e2231a;
+    }
 
     /* Facebook */
-    .card-facebook { border-color: #1877f255; }
-    .card-facebook::before { background: #1877f2; }
-    .card-facebook:hover { border-color: #1877f2; }
+    .card-facebook {
+      border-color: #1877f255;
+    }
+
+    .card-facebook::before {
+      background: #1877f2;
+    }
+
+    .card-facebook:hover {
+      border-color: #1877f2;
+    }
 
     .contact-card-icon {
       font-size: 3.2rem;
@@ -106,6 +140,13 @@
       display: block;
       position: relative;
       z-index: 1;
+    }
+
+    .contact-card-icon img {
+      width: 128px;
+      height: 128px;
+      object-fit: cover;
+      border-radius: 12px;
     }
 
     .contact-card h3 {
@@ -154,9 +195,17 @@
       transform: scale(1.04);
     }
 
-    .btn-discord  { background: #7289da; }
-    .btn-roblox   { background: #e2231a; }
-    .btn-facebook { background: #1877f2; }
+    .btn-discord {
+      background: #7289da;
+    }
+
+    .btn-roblox {
+      background: #e2231a;
+    }
+
+    .btn-facebook {
+      background: #1877f2;
+    }
 
     /* FAQ */
     .faq-section {
@@ -180,7 +229,7 @@
       background: white;
       border-radius: var(--border-radius);
       padding: 1.2rem 1.5rem;
-      box-shadow: 0 3px 12px rgba(196,125,58,0.1);
+      box-shadow: 0 3px 12px rgba(196, 125, 58, 0.1);
       cursor: pointer;
     }
 
@@ -219,14 +268,20 @@
 
     footer {
       background: var(--brown);
-      color: rgba(255,255,255,0.8);
+      color: rgba(255, 255, 255, 0.8);
       text-align: center;
       padding: 2rem;
       font-size: 0.85rem;
     }
 
-    footer a { color: var(--cinnamon-light); text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
+    footer a {
+      color: var(--cinnamon-light);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
 
     .footer-links {
       display: flex;
@@ -243,12 +298,13 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- ── NAVIGATION ── -->
   <nav>
     <a href="index.html" class="nav-brand">
-      <span class="nav-brand-icon"><img src="assets/000 common/person.png" alt="user"></span>
+      <span class="nav-brand-icon"><img src="assets/000 common/logo.png" alt="user"></span>
       <span class="nav-brand-text">Rin's Cafe Cinnamon<span class="nav-brand-user" id="navUsername"></span></span>
     </a>
     <ul class="nav-links">
@@ -257,10 +313,14 @@
       <li><a href="products.html">Products</a></li>
       <li><a href="contact.html" class="active">Contact</a></li>
     </ul>
-    <a href="cart.html" class="nav-cart" id="navCart">🛒
-      <span class="cart-badge" id="cartBadge">0</span>
-    </a>
-    <a class="nav-logout" id="navLogout" title="Logout" onclick="localStorage.removeItem('cinnamon_user'); window.location.href='cina.html';">🚪</a>
+    <div class="nav-right">
+      <a href="cart.html" class="nav-cart" id="navCart">
+        🛒
+        <span class="cart-badge" id="cartBadge">0</span>
+      </a>
+      <a class="nav-logout" id="navLogout" title="Logout"
+        onclick="localStorage.removeItem('cinnamon_user'); window.location.href='cina.html';">🚪</a>
+    </div>
     <button class="nav-burger" id="navBurger">☰</button>
   </nav>
 
@@ -281,28 +341,33 @@
 
       <!-- Discord -->
       <a href="https://discord.gg/7YP8jZ4bhv" target="_blank" rel="noopener" class="contact-card card-discord">
-        <span class="contact-card-icon">💬</span>
+        <span class="contact-card-icon"><img src="assets/003 Contact Us/discord.jpg" alt="Discord"></span>
         <h3>Discord Server</h3>
         <div class="contact-handle">discord.gg/7YP8jZ4bhv</div>
-        <p>Our main hub! Join the server to place orders, get updates, open tickets, and chat with the team. Cinna Bot and Mocha Bot will greet you~</p>
+        <p>Our main hub! Join the server to place orders, get updates, open tickets, and chat with the team. Cinna Bot
+          and Mocha Bot will greet you~</p>
         <span class="contact-btn btn-discord">Join Server</span>
       </a>
 
       <!-- Roblox -->
-      <a href="https://www.roblox.com/communities/878654329/cafe-cinnamon#!" target="_blank" rel="noopener" class="contact-card card-roblox">
-        <span class="contact-card-icon">🧱</span>
+      <a href="https://www.roblox.com/communities/878654329/cafe-cinnamon#!" target="_blank" rel="noopener"
+        class="contact-card card-roblox">
+        <span class="contact-card-icon"><img src="assets/003 Contact Us/roblox.jpg" alt="Roblox"></span>
         <h3>Roblox Community</h3>
         <div class="contact-handle">Cafe Cinnamon Community</div>
-        <p>Join our Roblox Community to order Roblox Credits, get announcements, and connect with fellow Roblox players in the cafe!</p>
+        <p>Join our Roblox Community to order Roblox Credits, get announcements, and connect with fellow Roblox players
+          in the cafe!</p>
         <span class="contact-btn btn-roblox">Join Community</span>
       </a>
 
       <!-- Facebook -->
-      <a href="https://www.facebook.com/cafecinnamonroll" target="_blank" rel="noopener" class="contact-card card-facebook">
-        <span class="contact-card-icon">📘</span>
+      <a href="https://www.facebook.com/cafecinnamonroll" target="_blank" rel="noopener"
+        class="contact-card card-facebook">
+        <span class="contact-card-icon"><img src="assets/003 Contact Us/facebook.jpg" alt="Facebook"></span>
         <h3>Facebook Page</h3>
         <div class="contact-handle">@cafecinnamonroll</div>
-        <p>Follow our Facebook Page for announcements, deals, and updates. You can also send us a message there for any inquiries!</p>
+        <p>Follow our Facebook Page for announcements, deals, and updates. You can also send us a message there for any
+          inquiries!</p>
         <span class="contact-btn btn-facebook">Visit Page</span>
       </a>
 
@@ -324,7 +389,8 @@
             <span class="faq-arrow">▼</span>
           </div>
           <div class="faq-a">
-            Most top-ups are delivered within a few minutes to a few hours after payment confirmation. For Discord bot commissions, delivery time depends on complexity — we'll give you an estimate when you order!
+            Most top-ups are delivered within a few minutes to a few hours after payment confirmation. For Discord bot
+            commissions, delivery time depends on complexity — we'll give you an estimate when you order!
           </div>
         </div>
 
@@ -334,7 +400,8 @@
             <span class="faq-arrow">▼</span>
           </div>
           <div class="faq-a">
-            We accept GCash, PayMaya, and other popular payment methods. Details are shared when you place an order on Discord or Facebook.
+            We accept GCash, PayMaya, and other popular payment methods. Details are shared when you place an order on
+            Discord or Facebook.
           </div>
         </div>
 
@@ -344,7 +411,8 @@
             <span class="faq-arrow">▼</span>
           </div>
           <div class="faq-a">
-            Yes! We've been serving the community since August 2022 with hundreds of successful orders. We'll never ask for your account password — only the game ID or username needed for the top-up.
+            Yes! We've been serving the community since August 2022 with hundreds of successful orders. We'll never ask
+            for your account password — only the game ID or username needed for the top-up.
           </div>
         </div>
 
@@ -354,7 +422,8 @@
             <span class="faq-arrow">▼</span>
           </div>
           <div class="faq-a">
-            Absolutely! Open a ticket on our Discord server or message us on Facebook with your requirements. We'll discuss features, timeline, and pricing with you~
+            Absolutely! Open a ticket on our Discord server or message us on Facebook with your requirements. We'll
+            discuss features, timeline, and pricing with you~
           </div>
         </div>
 
@@ -364,7 +433,8 @@
             <span class="faq-arrow">▼</span>
           </div>
           <div class="faq-a">
-            Don't worry! Contact us immediately via Discord (preferred) or Facebook and we'll sort it out as quickly as possible. Customer satisfaction is our top priority 🌸
+            Don't worry! Contact us immediately via Discord (preferred) or Facebook and we'll sort it out as quickly as
+            possible. Customer satisfaction is our top priority 🌸
           </div>
         </div>
 
@@ -394,8 +464,9 @@
       });
     });
     const _u = localStorage.getItem('cinnamon_user');
-    if (_u) { const el = document.getElementById('navUsername'); if (el) el.textContent = ', ' + _u + '~'; }
+    if (_u) { const el = document.getElementById('navUsername'); if (el) el.textContent = _u; }
   </script>
 
 </body>
+
 </html>

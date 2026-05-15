@@ -6,6 +6,15 @@
   <title>Aerin's Biography — Rin's Cafe Cinnamon ☕</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
+
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      cursor:url("assets/000 common/cursor.png") 4 4, pointer;
+    }
+    
     /* ── Page wrapper ── */
     .bio-page {
       max-width: 860px;
@@ -27,7 +36,7 @@
       height: 160px;
       background: linear-gradient(135deg, #d4b8e0 0%, #ffb3c6 40%, #ffd6e0 70%, #ffe8b0 100%);
       position: relative;
-      overflow: hidden;
+      overflow: visible;
     }
 
     .profile-banner::before {
@@ -57,17 +66,28 @@
     }
 
     .profile-avatar {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      border: 5px solid white;
-      background: linear-gradient(135deg, #ffb3c6, #d4b8e0);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.8rem;
-      box-shadow: 0 4px 20px rgba(196,125,58,0.25);
-    }
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 5px solid white;
+  background: linear-gradient(135deg, #ffb3c6, #d4b8e0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.8rem;
+  box-shadow: 0 4px 20px rgba(196,125,58,0.25);
+  overflow: hidden;
+  position: relative;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border-radius: 50%;
+}
 
     .profile-status-dot {
       position: absolute;
@@ -493,7 +513,7 @@
   <!-- ── NAVIGATION ── -->
   <nav>
     <a href="index.html" class="nav-brand">
-      <span class="nav-brand-icon"><img src="assets/000 common/person.png" alt="user"></span>
+      <span class="nav-brand-icon"><img src="assets/000 common/logo.png" alt="user"></span>
       <span class="nav-brand-text">Rin's Cafe Cinnamon<span class="nav-brand-user" id="navUsername"></span></span>
     </a>
     <ul class="nav-links">
@@ -502,10 +522,13 @@
       <li><a href="products.html">Products</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
-    <a href="cart.html" class="nav-cart" id="navCart">🛒
-      <span class="cart-badge" id="cartBadge">0</span>
-    </a>
-    <a class="nav-logout" id="navLogout" title="Logout" onclick="localStorage.removeItem('cinnamon_user'); window.location.href='cina.html';">🚪</a>
+    <div class="nav-right">
+      <a href="cart.html" class="nav-cart" id="navCart">
+        🛒
+        <span class="cart-badge" id="cartBadge">0</span>
+      </a>
+      <a class="nav-logout" id="navLogout" title="Logout" onclick="localStorage.removeItem('cinnamon_user'); window.location.href='cina.html';">🚪</a>
+    </div>
     <button class="nav-burger" id="navBurger">☰</button>
   </nav>
 
@@ -523,16 +546,16 @@
       <div class="profile-banner">
         <div class="profile-banner-deco"></div>
         <div class="profile-avatar-wrap">
-          <div class="profile-avatar">
-            🌸
-            <span class="profile-status-dot"></span>
-          </div>
+         <div class="profile-avatar">
+  <img src="assets/004 biography/profile.jpg" alt="Aerin" />
+  <span class="profile-status-dot"></span>
+</div>
         </div>
       </div>
       <div class="profile-body">
         <div class="profile-top-row">
           <div class="profile-names">
-            <div class="profile-display-name">Aerin ✨</div>
+            <div class="profile-display-name">Deetreena R. Morano ✨</div>
             <div class="profile-username">@aerin • she/her</div>
           </div>
           <div class="profile-badge-row">
@@ -573,7 +596,7 @@
       <div class="info-grid">
         <div class="info-item">
           <div class="info-label">Name</div>
-          <div class="info-value">Aerin</div>
+          <div class="info-value">Deetreena</div>
         </div>
         <div class="info-item">
           <div class="info-label">Nickname</div>
@@ -602,7 +625,7 @@
     <div class="bio-section">
       <div class="bio-section-title">🌸 About Me</div>
       <p class="bio-text">
-        Hi, I'm Aerin — but most people know me as Rin! I'm a Filipino student with a big passion for gaming, cute aesthetics, and building connections in online communities.
+        Hi, I'm Deetreena — but most people know me as Rin or Aerin! I'm a Filipino student with a big passion for gaming, cute aesthetics, and building connections in online communities.
         I spend most of my free time hopping between Discord servers, playing Roblox or Mobile Legends, and occasionally diving into Valorant lobbies.
       </p>
       <p class="bio-text" style="margin-top:0.8rem;">
@@ -611,7 +634,7 @@
       </p>
       <blockquote class="bio-quote">
         "I built this cafe because I wanted a place where people could get good deals AND feel welcomed at the same time. It's not just a shop — it's a community~"
-        <cite>— Aerin, Cafe Owner</cite>
+        <cite>— Rin</cite>
       </blockquote>
     </div>
 
@@ -629,7 +652,7 @@
         <div class="info-grid">
           <div class="info-item">
             <div class="info-label">Field of Study</div>
-            <div class="info-value">Information Technology</div>
+            <div class="info-value">Information Systems</div>
           </div>
           <div class="info-item">
             <div class="info-label">Favorite Subject</div>
@@ -749,7 +772,7 @@
       <div class="funfact-list">
         <div class="funfact-item">
           <span class="funfact-icon">☕</span>
-          <span>The cafe is named after me — Aerin → Rin, and cinnamon because it's literally my favorite flavor ever.</span>
+          <span>The cafe is named after my nickname and a cafe from Sanrio, Cinnamon Roll is my favorite character.</span>
         </div>
         <div class="funfact-item">
           <span class="funfact-icon">🤖</span>
@@ -790,7 +813,7 @@
       </p>
       <blockquote class="bio-quote">
         "hot drops, sweet deals, all in one swirly cafe!"
-        <cite>— Rin's Cafe Cinnamon Tagline</cite>
+        <cite>— Rin</cite>
       </blockquote>
     </div>
 
@@ -820,7 +843,7 @@
   <script src="js/main.js"></script>
   <script>
     const _u = localStorage.getItem('cinnamon_user');
-    if (_u) { const el = document.getElementById('navUsername'); if (el) el.textContent = ', ' + _u + '~'; }
+    if (_u) { const el = document.getElementById('navUsername'); if (el) el.textContent = _u; }
   </script>
 
 </body>

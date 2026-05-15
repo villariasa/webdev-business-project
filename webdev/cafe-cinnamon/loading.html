@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loading... Rin's Cafe Cinnamon</title>
+
+<style>
+    
+:root {
+  --animation-duration: 0.3s;
+  --animation-timing-function: cubic-bezier(.58,-0.23,.3,1.3);
+  --animation-stretch: 2;
+  --animation-distance: 60px;
+
+  --background: #fcd5ef;
+  --background-shaded: #7F6544;
+}
+
+* {
+  cursor: url("assets/000 common/cursor.png") 4 4, pointer;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background);
+  color: #313030;
+  font-family: Helvetica, sans-serif;
+}
+
+/* ============================= */
+    /* BACKGROUND */
+    /* ============================= */
+
+    .bg{
+      position:fixed;
+      inset:0;
+      overflow:hidden;
+      z-index:0;
+    }
+
+    .cloud{
+      position:absolute;
+
+      background:rgba(255,255,255,0.55);
+
+      border-radius:999px;
+
+      animation:float linear infinite;
+    }
+
+    .cloud::before,
+    .cloud::after{
+      content:"";
+      position:absolute;
+      background:inherit;
+      border-radius:inherit;
+    }
+
+    .cloud1{
+      width:220px;
+      height:70px;
+
+      top:10%;
+      left:-20%;
+
+      animation-duration:40s;
+    }
+
+    .cloud1::before{
+      width:90px;
+      height:90px;
+
+      left:25px;
+      top:-35px;
+    }
+
+    .cloud1::after{
+      width:110px;
+      height:110px;
+
+      right:20px;
+      top:-50px;
+    }
+
+    .cloud2{
+      width:260px;
+      height:80px;
+
+      top:42%;
+      left:-25%;
+
+      animation-duration:55s;
+
+      opacity:.5;
+    }
+
+    .cloud2::before{
+      width:100px;
+      height:100px;
+
+      left:30px;
+      top:-40px;
+    }
+
+    .cloud2::after{
+      width:120px;
+      height:120px;
+
+      right:25px;
+      top:-50px;
+    }
+
+    .cloud3{
+      width:180px;
+      height:60px;
+
+      top:75%;
+      left:-15%;
+
+      animation-duration:50s;
+
+      opacity:.45;
+    }
+
+    .cloud3::before{
+      width:75px;
+      height:75px;
+
+      left:15px;
+      top:-28px;
+    }
+
+    .cloud3::after{
+      width:90px;
+      height:90px;
+
+      right:15px;
+      top:-35px;
+    }
+
+    @keyframes float{
+      from{
+        transform:translateX(0);
+      }
+
+      to{
+        transform:translateX(140vw);
+      }
+    }
+
+    /* sparkles */
+
+    .sparkle{
+      position:absolute;
+
+      color:#fff;
+
+      opacity:.75;
+
+      animation:twinkle 3s ease-in-out infinite;
+    }
+
+    .sparkle:nth-child(4){
+      top:18%;
+      left:20%;
+    }
+
+    .sparkle:nth-child(5){
+      top:70%;
+      left:28%;
+      animation-delay:1s;
+    }
+
+    .sparkle:nth-child(6){
+      top:24%;
+      right:18%;
+      animation-delay:2s;
+    }
+
+    .sparkle:nth-child(7){
+      top:82%;
+      right:20%;
+      animation-delay:1.5s;
+    }
+
+    @keyframes twinkle{
+
+      0%,100%{
+        transform:scale(1);
+        opacity:.45;
+      }
+
+      50%{
+        transform:scale(1.6);
+        opacity:1;
+      }
+
+    }
+
+/* ANIMATIONS */
+@keyframes blurIn {
+  0% {
+    transform: translate3d(0,-60px,0) scale(0.9,2);
+    filter: blur(3px);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(0,0,0) scale(1);
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+@keyframes blurOut {
+  0% {
+    transform: translate3d(0,0,0) scale(1);
+    filter: blur(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0,60px,0) scale(0.9,2);
+    filter: blur(3px);
+    opacity: 0;
+  }
+}
+
+@keyframes pulseEllipsis {
+  0% {
+    box-shadow: -3px 0 0 rgba(127,101,68,0.6),
+                -9px 0 0 rgba(127,101,68,0.6),
+                -15px 0 0 rgba(127,101,68,0.6);
+  }
+  20% {
+    box-shadow: -3px 0 rgba(127,101,68,0.6),
+                -9px 0 0 rgba(127,101,68,0.6),
+                -15px 0 0 rgba(127,101,68,1);
+  }
+  40% {
+    box-shadow: -3px 0 0 rgba(127,101,68,0.6),
+                -9px 0 0 rgba(127,101,68,1),
+                -15px 0 0 rgba(127,101,68,0.6);
+  }
+  60% {
+    box-shadow: -3px 0 0 rgba(127,101,68,1),
+                -9px 0 0 rgba(127,101,68,0.6),
+                -15px 0 0 rgba(127,101,68,0.6);
+  }
+}
+
+#loader {
+  background: var(--background);
+  width: 400px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.emoji, .text {
+  animation: blurIn var(--animation-duration) var(--animation-timing-function) both;
+}
+
+.emoji {
+  display: block;
+  font-size: 3.5em;
+  margin-bottom: 0.2em;
+  animation-delay: 0.1s;
+}
+
+.text {
+  line-height: 1;
+  color: var(--background-shaded);
+  font-size: 20px;
+  margin-right: -14px;
+}
+
+.text::after {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  margin-left: 18px;
+  box-shadow: -3px 0 0 rgba(127,101,68,0.6),
+              -9px 0 0 rgba(127,101,68,0.6),
+              -15px 0 0 rgba(127,101,68,0.6);
+  animation: pulseEllipsis 0.8s infinite ease-in-out;
+}
+
+.animateOut {
+  animation: blurOut var(--animation-duration) var(--animation-timing-function) both;
+}
+</style>
+</head>
+
+<body>
+
+    <!-- BACKGROUND -->
+  <div class="bg">
+
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
+
+    <div class="sparkle">✦</div>
+    <div class="sparkle">☁</div>
+    <div class="sparkle">✧</div>
+    <div class="sparkle">♡</div>
+
+  </div>
+
+<div id="loader"></div>
+
+<script>
+const LOADER_CONTAINER = document.getElementById("loader");
+const LOADER_INTERVAL = 1600;
+
+const LOADERS = [
+  ["🌶","Dicing peppers"],
+  ["🔪","Sharpening knives"],
+  ["👩🏽‍🍳","Starching aprons"],
+  ["🥒","Sautéing veggies"],
+  ["🍳","Frying eggs"],
+  ["🧀","Cutting cheese"],
+  ["🥓","Crisping bacon"],
+  ["🍚","Steaming rice"],
+  ["🍞","Baking bread"],
+  ["🍷","Uncorking wine"],
+  ["🍽","Plating dishes"],
+  ["🍕","Firing pizzas"],
+  ["🔥","Lighting burners"],
+  ["🤔","Testing tastes"],
+  ["💧","Pouring water"],
+  ["🍦","Freezing ice cream"],
+  ["🥗","Mixing salads"],
+  ["🥞","Stacking pancakes"],
+  ["🍒","Putting a cherry on top"],
+  ["🍗","Seasoning wings"],
+  ["💖","Adding a pinch of something perfect"],
+  ["📝","Writing recipes"],
+  ["🍿","Popping popcorn"],
+  ["🍔","Flipping burgers"],
+  ["🍪","Baking cookies"],
+  ["🍣","Rolling sushi"],
+  ["☕️","Brewing coffee"],
+  ["🍰","Slicing cakes"],
+  ["🍟","Frying fries"],
+  ["🍜","Cooking ramen"],
+  ["🍹","Mixing drinks"],
+  ["✨","Making magic"]
+];
+
+function cycleLoader() {
+  const index = Math.floor(Math.random() * LOADERS.length);
+  const [emoji, text] = LOADERS[index];
+
+  setTimeout(() => {
+    Array.from(LOADER_CONTAINER.children).forEach(el => el.classList.add("animateOut"));
+  }, LOADER_INTERVAL - 300);
+
+  setTimeout(() => {
+    LOADER_CONTAINER.innerHTML = "";
+    LOADER_CONTAINER.innerHTML += `<div class="emoji">${emoji}</div>`;
+    LOADER_CONTAINER.innerHTML += `<div class="text">${text}</div>`;
+  }, 300);
+}
+
+document.addEventListener("click", () => {
+  window.location.href = "cina.html";
+});
+
+setInterval(cycleLoader, LOADER_INTERVAL);
+cycleLoader();
+</script>
+
+</body>
+</html>

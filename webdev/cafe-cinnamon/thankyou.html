@@ -6,6 +6,14 @@
   <title>Thank You! — Rin's Cafe Cinnamon ☕</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      cursor:url("assets/000 common/cursor.png") 4 4, pointer;
+    }
+
     body {
       min-height: 100vh;
       background: linear-gradient(160deg, var(--pink-light) 0%, var(--lavender-light) 40%, var(--cream) 100%);
@@ -433,7 +441,7 @@
   <!-- ── NAVIGATION ── -->
   <nav>
     <a href="index.html" class="nav-brand">
-      <span class="nav-brand-icon"><img src="assets/000 common/person.png" alt="user"></span>
+      <span class="nav-brand-icon"><img src="assets/000 common/logo.png" alt="user"></span>
       <span class="nav-brand-text">Rin's Cafe Cinnamon<span class="nav-brand-user" id="navUsername"></span></span>
     </a>
     <ul class="nav-links">
@@ -442,10 +450,13 @@
       <li><a href="products.html">Products</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
-    <a href="cart.html" class="nav-cart" id="navCart">🛒
-      <span class="cart-badge" id="cartBadge">0</span>
-    </a>
-    <a class="nav-logout" id="navLogout" title="Logout" onclick="localStorage.removeItem('cinnamon_user'); window.location.href='cina.html';">🚪</a>
+    <div class="nav-right">
+      <a href="cart.html" class="nav-cart" id="navCart">
+        🛒
+        <span class="cart-badge" id="cartBadge">0</span>
+      </a>
+      <a class="nav-logout" id="navLogout" title="Logout" onclick="localStorage.removeItem('cinnamon_user'); window.location.href='cina.html';">🚪</a>
+    </div>
     <button class="nav-burger" id="navBurger">☰</button>
   </nav>
 
@@ -505,7 +516,7 @@
     }
 
     function generateOrderId() {
-      return 'CIN-' + Date.now().toString(36).toUpperCase().slice(-6);
+      return 'TIX-' + Date.now().toString(36).toUpperCase().slice(-6);
     }
 
     function renderPage() {
@@ -540,7 +551,7 @@
       content.innerHTML = `
         <div class="ty-hero">
           <span class="ty-emoji">🎉</span>
-          <h1>Order Received!~</h1>
+          <h1>Thank you for ordering!~</h1>
           <p>Thank you for your order at Rin's Cafe Cinnamon! 🌸 Please head over to Discord or Facebook to complete your payment and finalize your order~</p>
         </div>
 
@@ -595,7 +606,7 @@
           <ul class="next-step-list">
             <li>
               <span class="step-num">1</span>
-              <span>Screenshot or note your order above — you'll need it when contacting us!</span>
+              <span>Save your order number</span>
             </li>
             <li>
               <span class="step-num">2</span>
@@ -629,7 +640,7 @@
 
     document.addEventListener('DOMContentLoaded', renderPage);
     const _u = localStorage.getItem('cinnamon_user');
-    if (_u) { const el = document.getElementById('navUsername'); if (el) el.textContent = ', ' + _u + '~'; }
+    if (_u) { const el = document.getElementById('navUsername'); if (el) el.textContent = _u; }
   </script>
 </body>
 </html>

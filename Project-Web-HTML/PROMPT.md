@@ -1,1 +1,0 @@
-dashboard changes must be base from the database data dont create or false data in each card must be from the db , so if no procedure yet pls add and put a service on the dashboard -- insert this at the last of the PRD 

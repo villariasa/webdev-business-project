@@ -6,6 +6,14 @@
   <title>Cart — Rin's Cafe Cinnamon ☕</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      cursor:url("assets/000 common/cursor.png") 4 4, pointer;
+    }
+
     .page-hero {
       background: linear-gradient(135deg, var(--pink-light) 0%, var(--lavender-light) 60%, var(--cream) 100%);
       padding: 4rem 2rem 3rem;
@@ -375,7 +383,7 @@
   <!-- ── NAVIGATION ── -->
   <nav>
     <a href="index.html" class="nav-brand">
-      <span class="nav-brand-icon"><img src="assets/000 common/person.png" alt="user"></span>
+      <span class="nav-brand-icon"><img src="assets/000 common/logo.png" alt="user"></span>
       <span class="nav-brand-text">Rin's Cafe Cinnamon<span class="nav-brand-user" id="navUsername"></span></span>
     </a>
     <ul class="nav-links">
@@ -384,10 +392,13 @@
       <li><a href="products.html">Products</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
-    <a href="cart.html" class="nav-cart active" id="navCart">🛒
-      <span class="cart-badge" id="cartBadge">0</span>
-    </a>
-    <a class="nav-logout" id="navLogout" title="Logout" onclick="localStorage.removeItem('cinnamon_user'); window.location.href='cina.html';">🚪</a>
+    <div class="nav-right">
+      <a href="cart.html" class="nav-cart" id="navCart">
+        🛒
+        <span class="cart-badge" id="cartBadge">0</span>
+      </a>
+      <a class="nav-logout" id="navLogout" title="Logout" onclick="localStorage.removeItem('cinnamon_user'); window.location.href='cina.html';">🚪</a>
+    </div>
     <button class="nav-burger" id="navBurger">☰</button>
   </nav>
 
@@ -596,7 +607,7 @@
 
     renderCart();
     const _u = localStorage.getItem('cinnamon_user');
-    if (_u) { const el = document.getElementById('navUsername'); if (el) el.textContent = ', ' + _u + '~'; }
+    if (_u) { const el = document.getElementById('navUsername'); if (el) el.textContent = _u; }
   </script>
 
 </body>

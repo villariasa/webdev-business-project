@@ -25,7 +25,7 @@
   --font-accent: 'Quicksand', sans-serif;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; cursor: url("assets/000 common/cursor.png") 4 4, auto; }
+* { margin: 0; padding: 0; box-sizing: border-box; cursor:url("assets/000 common/cursor.png") 4 4, pointer; }
 
 body {
   font-family: var(--font-main);

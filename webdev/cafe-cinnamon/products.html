@@ -6,6 +6,14 @@
   <title>Products — Rin's Cafe Cinnamon ☕</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      cursor:url("assets/000 common/cursor.png") 4 4, pointer;
+    }
+
     /* ── PAGE HERO ── */
     .page-hero {
       background: linear-gradient(135deg, var(--pink-light) 0%, var(--lavender-light) 60%, var(--cream) 100%);
@@ -500,7 +508,7 @@
   <!-- ── NAVIGATION ── -->
   <nav>
     <a href="index.html" class="nav-brand">
-      <span class="nav-brand-icon"><img src="assets/000 common/person.png" alt="user"></span>
+      <span class="nav-brand-icon"><img src="assets/000 common/logo.png" alt="user"></span>
       <span class="nav-brand-text">Rin's Cafe Cinnamon<span class="nav-brand-user" id="navUsername"></span></span>
     </a>
     <ul class="nav-links">
@@ -509,11 +517,13 @@
       <li><a href="products.html" class="active">Products</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
-    <a href="cart.html" class="nav-cart" id="navCart">
-      🛒
-      <span class="cart-badge" id="cartBadge">0</span>
-    </a>
-    <a class="nav-logout" id="navLogout" title="Logout" onclick="localStorage.removeItem('cinnamon_user'); window.location.href='cina.html';">🚪</a>
+    <div class="nav-right">
+      <a href="cart.html" class="nav-cart" id="navCart">
+        🛒
+        <span class="cart-badge" id="cartBadge">0</span>
+      </a>
+      <a class="nav-logout" id="navLogout" title="Logout" onclick="localStorage.removeItem('cinnamon_user'); window.location.href='cina.html';">🚪</a>
+    </div>
     <button class="nav-burger" id="navBurger">☰</button>
   </nav>
 
@@ -568,7 +578,7 @@
       <div class="product-grid">
 
         <div class="product-card card-lol">
-          <div class="product-card-game"><img src="assets/000 Games/LoL.png" alt="LoL"></div>
+          <div class="product-card-game"><img src="assets/000 Games/LoL rp.png" alt="LoL"></div>
           <div class="product-card-amount">575</div>
           <div class="product-card-unit">Riot Points</div>
           <div class="product-card-price">₱ 188</div>
@@ -577,7 +587,7 @@
 
         <div class="product-card card-lol">
           <div class="card-badge card-badge-popular">Popular</div>
-          <div class="product-card-game"><img src="assets/000 Games/LoL.png" alt="LoL"></div>
+          <div class="product-card-game"><img src="assets/000 Games/LoL rp.png" alt="LoL"></div>
           <div class="product-card-amount">1,380</div>
           <div class="product-card-unit">Riot Points</div>
           <div class="product-card-price">₱ 424</div>
@@ -585,7 +595,7 @@
         </div>
 
         <div class="product-card card-lol">
-          <div class="product-card-game"><img src="assets/000 Games/LoL.png" alt="LoL"></div>
+          <div class="product-card-game"><img src="assets/000 Games/LoL rp.png" alt="LoL"></div>
           <div class="product-card-amount">1,955</div>
           <div class="product-card-unit">Riot Points</div>
           <div class="product-card-price">₱ 608</div>
@@ -593,7 +603,7 @@
         </div>
 
         <div class="product-card card-lol">
-          <div class="product-card-game"><img src="assets/000 Games/LoL.png" alt="LoL"></div>
+          <div class="product-card-game"><img src="assets/000 Games/LoL rp.png" alt="LoL"></div>
           <div class="product-card-amount">2,800</div>
           <div class="product-card-unit">Riot Points</div>
           <div class="product-card-price">₱ 840</div>
@@ -602,7 +612,7 @@
 
         <div class="product-card card-lol">
           <div class="card-badge card-badge-best">Best Value</div>
-          <div class="product-card-game"><img src="assets/000 Games/LoL.png" alt="LoL"></div>
+          <div class="product-card-game"><img src="assets/000 Games/LoL rp.png" alt="LoL"></div>
           <div class="product-card-amount">3,375</div>
           <div class="product-card-unit">Riot Points</div>
           <div class="product-card-price">₱ 1,025</div>
@@ -610,7 +620,7 @@
         </div>
 
         <div class="product-card card-lol">
-          <div class="product-card-game"><img src="assets/000 Games/LoL.png" alt="LoL"></div>
+          <div class="product-card-game"><img src="assets/000 Games/LoL rp.png" alt="LoL"></div>
           <div class="product-card-amount">4,500</div>
           <div class="product-card-unit">Riot Points</div>
           <div class="product-card-price">₱ 1,295</div>
@@ -618,7 +628,7 @@
         </div>
 
         <div class="product-card card-lol">
-          <div class="product-card-game"><img src="assets/000 Games/LoL.png" alt="LoL"></div>
+          <div class="product-card-game"><img src="assets/000 Games/LoL rp.png" alt="LoL"></div>
           <div class="product-card-amount">5,075</div>
           <div class="product-card-unit">Riot Points</div>
           <div class="product-card-price">₱ 1,490</div>
@@ -626,7 +636,7 @@
         </div>
 
         <div class="product-card card-lol">
-          <div class="product-card-game"><img src="assets/000 Games/LoL.png" alt="LoL"></div>
+          <div class="product-card-game"><img src="assets/000 Games/LoL rp.png" alt="LoL"></div>
           <div class="product-card-amount">6,500</div>
           <div class="product-card-unit">Riot Points</div>
           <div class="product-card-price">₱ 1,845</div>
@@ -634,7 +644,7 @@
         </div>
 
         <div class="product-card card-lol">
-          <div class="product-card-game"><img src="assets/000 Games/LoL.png" alt="LoL"></div>
+          <div class="product-card-game"><img src="assets/000 Games/LoL rp.png" alt="LoL"></div>
           <div class="product-card-amount">7,075</div>
           <div class="product-card-unit">Riot Points</div>
           <div class="product-card-price">₱ 2,050</div>
@@ -642,7 +652,7 @@
         </div>
 
         <div class="product-card card-lol">
-          <div class="product-card-game"><img src="assets/000 Games/LoL.png" alt="LoL"></div>
+          <div class="product-card-game"><img src="assets/000 Games/LoL rp.png" alt="LoL"></div>
           <div class="product-card-amount">7,880</div>
           <div class="product-card-unit">Riot Points</div>
           <div class="product-card-price">₱ 2,280</div>
@@ -650,7 +660,7 @@
         </div>
 
         <div class="product-card card-lol">
-          <div class="product-card-game"><img src="assets/000 Games/LoL.png" alt="LoL"></div>
+          <div class="product-card-game"><img src="assets/000 Games/LoL rp.png" alt="LoL"></div>
           <div class="product-card-amount">9,300</div>
           <div class="product-card-unit">Riot Points</div>
           <div class="product-card-price">₱ 2,690</div>
@@ -658,7 +668,7 @@
         </div>
 
         <div class="product-card card-lol">
-          <div class="product-card-game"><img src="assets/000 Games/LoL.png" alt="LoL"></div>
+          <div class="product-card-game"><img src="assets/000 Games/LoL rp.png" alt="LoL"></div>
           <div class="product-card-amount">11,000</div>
           <div class="product-card-unit">Riot Points</div>
           <div class="product-card-price">₱ 3,150</div>
@@ -666,7 +676,7 @@
         </div>
 
         <div class="product-card card-lol">
-          <div class="product-card-game"><img src="assets/000 Games/LoL.png" alt="LoL"></div>
+          <div class="product-card-game"><img src="assets/000 Games/LoL rp.png" alt="LoL"></div>
           <div class="product-card-amount">22,000</div>
           <div class="product-card-unit">Riot Points</div>
           <div class="product-card-price">₱ 6,270</div>
@@ -674,7 +684,7 @@
         </div>
 
         <div class="product-card card-lol">
-          <div class="product-card-game"><img src="assets/000 Games/LoL.png" alt="LoL"></div>
+          <div class="product-card-game"><img src="assets/000 Games/LoL rp.png" alt="LoL"></div>
           <div class="product-card-amount">33,000</div>
           <div class="product-card-unit">Riot Points</div>
           <div class="product-card-price">₱ 9,395</div>
@@ -683,7 +693,7 @@
 
         <div class="product-card card-lol">
           <div class="card-badge card-badge-best">Max Pack</div>
-          <div class="product-card-game"><img src="assets/000 Games/LoL.png" alt="LoL"></div>
+          <div class="product-card-game"><img src="assets/000 Games/LoL rp.png" alt="LoL"></div>
           <div class="product-card-amount">44,000</div>
           <div class="product-card-unit">Riot Points</div>
           <div class="product-card-price">₱ 12,495</div>
@@ -715,7 +725,7 @@
 
         <div class="product-card card-mlbb">
           <div class="card-badge card-badge-popular">Popular</div>
-          <div class="product-card-game"><img src="assets/000 Games/mlbb logo.png" alt="MLBB"></div>
+          <div class="product-card-game"><img src="assets/000 Games/mlbb items/weekly pass.png" alt="MLBB"></div>
           <div class="product-card-amount">Weekly Pass</div>
           <div class="product-card-unit">MLBB Pass</div>
           <div class="product-card-price">₱ 96</div>
@@ -723,7 +733,7 @@
         </div>
 
         <div class="product-card card-mlbb">
-          <div class="product-card-game"><img src="assets/000 Games/mlbb logo.png" alt="MLBB"></div>
+          <div class="product-card-game"><img src="assets/000 Games/mlbb items/twilight pass.png" alt="MLBB"></div>
           <div class="product-card-amount">Twilight Pass</div>
           <div class="product-card-unit">MLBB Pass</div>
           <div class="product-card-price">₱ 485</div>
@@ -731,7 +741,7 @@
         </div>
 
         <div class="product-card card-mlbb">
-          <div class="product-card-game"><img src="assets/000 Games/mlbb logo.png" alt="MLBB"></div>
+          <div class="product-card-game"><img src="assets/000 Games/mlbb items/weekly bundle.png" alt="MLBB"></div>
           <div class="product-card-amount">Weekly Bundle</div>
           <div class="product-card-unit">MLBB Bundle</div>
           <div class="product-card-price">₱ 52</div>
@@ -739,7 +749,7 @@
         </div>
 
         <div class="product-card card-mlbb">
-          <div class="product-card-game"><img src="assets/000 Games/mlbb logo.png" alt="MLBB"></div>
+          <div class="product-card-game"><img src="assets/000 Games/mlbb items/monthly bundle.png" alt="MLBB"></div>
           <div class="product-card-amount">Monthly Bundle</div>
           <div class="product-card-unit">MLBB Bundle</div>
           <div class="product-card-price">₱ 250</div>
@@ -753,7 +763,7 @@
       <div class="product-grid">
 
         <div class="product-card card-mlbb">
-          <div class="product-card-game"><img src="assets/000 Games/mlbb logo.png" alt="MLBB"></div>
+          <div class="product-card-game">💎</div>
           <div class="product-card-amount">56</div>
           <div class="product-card-unit">Diamonds</div>
           <div class="product-card-price">₱ 52</div>
@@ -761,7 +771,7 @@
         </div>
 
         <div class="product-card card-mlbb">
-          <div class="product-card-game"><img src="assets/000 Games/mlbb logo.png" alt="MLBB"></div>
+          <div class="product-card-game">💎</div>
           <div class="product-card-amount">112</div>
           <div class="product-card-unit">Diamonds</div>
           <div class="product-card-price">₱ 98</div>
@@ -770,7 +780,7 @@
 
         <div class="product-card card-mlbb">
           <div class="card-badge card-badge-popular">Popular</div>
-          <div class="product-card-game"><img src="assets/000 Games/mlbb logo.png" alt="MLBB"></div>
+          <div class="product-card-game">💎</div>
           <div class="product-card-amount">223</div>
           <div class="product-card-unit">Diamonds</div>
           <div class="product-card-price">₱ 195</div>
@@ -778,7 +788,7 @@
         </div>
 
         <div class="product-card card-mlbb">
-          <div class="product-card-game"><img src="assets/000 Games/mlbb logo.png" alt="MLBB"></div>
+          <div class="product-card-game">💎</div>
           <div class="product-card-amount">336</div>
           <div class="product-card-unit">Diamonds</div>
           <div class="product-card-price">₱ 295</div>
@@ -787,7 +797,7 @@
 
         <div class="product-card card-mlbb">
           <div class="card-badge card-badge-best">Best Value</div>
-          <div class="product-card-game"><img src="assets/000 Games/mlbb logo.png" alt="MLBB"></div>
+          <div class="product-card-game">💎</div>
           <div class="product-card-amount">570</div>
           <div class="product-card-unit">Diamonds</div>
           <div class="product-card-price">₱ 480</div>
@@ -795,7 +805,7 @@
         </div>
 
         <div class="product-card card-mlbb">
-          <div class="product-card-game"><img src="assets/000 Games/mlbb logo.png" alt="MLBB"></div>
+          <div class="product-card-game">💎</div>
           <div class="product-card-amount">1,163</div>
           <div class="product-card-unit">Diamonds</div>
           <div class="product-card-price">₱ 940</div>
@@ -810,7 +820,7 @@
 
         <div class="product-card card-mlbb">
           <div class="card-badge card-badge-double">2x</div>
-          <div class="product-card-game"><img src="assets/000 Games/mlbb logo.png" alt="MLBB"></div>
+          <div class="product-card-game">💎</div>
           <div class="product-card-amount">50+50</div>
           <div class="product-card-unit">Diamonds (1st Recharge)</div>
           <div class="product-card-price">₱ 52</div>
@@ -820,7 +830,7 @@
 
         <div class="product-card card-mlbb">
           <div class="card-badge card-badge-double">2x</div>
-          <div class="product-card-game"><img src="assets/000 Games/mlbb logo.png" alt="MLBB"></div>
+          <div class="product-card-game">💎</div>
           <div class="product-card-amount">150+150</div>
           <div class="product-card-unit">Diamonds (1st Recharge)</div>
           <div class="product-card-price">₱ 155</div>
@@ -830,7 +840,7 @@
 
         <div class="product-card card-mlbb">
           <div class="card-badge card-badge-double">2x</div>
-          <div class="product-card-game"><img src="assets/000 Games/mlbb logo.png" alt="MLBB"></div>
+          <div class="product-card-game">💎</div>
           <div class="product-card-amount">250+250</div>
           <div class="product-card-unit">Diamonds (1st Recharge)</div>
           <div class="product-card-price">₱ 250</div>
@@ -840,7 +850,7 @@
 
         <div class="product-card card-mlbb">
           <div class="card-badge card-badge-double">2x</div>
-          <div class="product-card-game"><img src="assets/000 Games/mlbb logo.png" alt="MLBB"></div>
+          <div class="product-card-game">💎</div>
           <div class="product-card-amount">500+500</div>
           <div class="product-card-unit">Diamonds (1st Recharge)</div>
           <div class="product-card-price">₱ 500</div>
@@ -1031,7 +1041,7 @@
       <div class="product-grid">
 
         <div class="product-card card-rbx">
-          <div class="product-card-game"><img src="assets/000 Games/roblox logo.png" alt="Roblox"></div>
+          <div class="product-card-game"><img src="assets/000 Games/robux.png" alt="Roblox"></div>
           <div class="product-card-amount">100</div>
           <div class="product-card-unit">CT (Covered Tax)</div>
           <div class="product-card-price">₱ 65</div>
@@ -1039,7 +1049,7 @@
         </div>
 
         <div class="product-card card-rbx">
-          <div class="product-card-game"><img src="assets/000 Games/roblox logo.png" alt="Roblox"></div>
+          <div class="product-card-game"><img src="assets/000 Games/robux.png" alt="Roblox"></div>
           <div class="product-card-amount">200</div>
           <div class="product-card-unit">CT (Covered Tax)</div>
           <div class="product-card-price">₱ 105</div>
@@ -1047,7 +1057,7 @@
         </div>
 
         <div class="product-card card-rbx">
-          <div class="product-card-game"><img src="assets/000 Games/roblox logo.png" alt="Roblox"></div>
+          <div class="product-card-game"><img src="assets/000 Games/robux.png" alt="Roblox"></div>
           <div class="product-card-amount">300</div>
           <div class="product-card-unit">CT (Covered Tax)</div>
           <div class="product-card-price">₱ 145</div>
@@ -1055,7 +1065,7 @@
         </div>
 
         <div class="product-card card-rbx">
-          <div class="product-card-game"><img src="assets/000 Games/roblox logo.png" alt="Roblox"></div>
+          <div class="product-card-game"><img src="assets/000 Games/robux.png" alt="Roblox"></div>
           <div class="product-card-amount">400</div>
           <div class="product-card-unit">CT (Covered Tax)</div>
           <div class="product-card-price">₱ 185</div>
@@ -1064,7 +1074,7 @@
 
         <div class="product-card card-rbx">
           <div class="card-badge card-badge-popular">Popular</div>
-          <div class="product-card-game"><img src="assets/000 Games/roblox logo.png" alt="Roblox"></div>
+          <div class="product-card-game"><img src="assets/000 Games/robux.png" alt="Roblox"></div>
           <div class="product-card-amount">500</div>
           <div class="product-card-unit">CT (Covered Tax)</div>
           <div class="product-card-price">₱ 220</div>
@@ -1072,7 +1082,7 @@
         </div>
 
         <div class="product-card card-rbx">
-          <div class="product-card-game"><img src="assets/000 Games/roblox logo.png" alt="Roblox"></div>
+          <div class="product-card-game"><img src="assets/000 Games/robux.png" alt="Roblox"></div>
           <div class="product-card-amount">600</div>
           <div class="product-card-unit">CT (Covered Tax)</div>
           <div class="product-card-price">₱ 255</div>
@@ -1080,7 +1090,7 @@
         </div>
 
         <div class="product-card card-rbx">
-          <div class="product-card-game"><img src="assets/000 Games/roblox logo.png" alt="Roblox"></div>
+          <div class="product-card-game"><img src="assets/000 Games/robux.png" alt="Roblox"></div>
           <div class="product-card-amount">700</div>
           <div class="product-card-unit">CT (Covered Tax)</div>
           <div class="product-card-price">₱ 295</div>
@@ -1088,7 +1098,7 @@
         </div>
 
         <div class="product-card card-rbx">
-          <div class="product-card-game"><img src="assets/000 Games/roblox logo.png" alt="Roblox"></div>
+          <div class="product-card-game"><img src="assets/000 Games/robux.png" alt="Roblox"></div>
           <div class="product-card-amount">800</div>
           <div class="product-card-unit">CT (Covered Tax)</div>
           <div class="product-card-price">₱ 320</div>
@@ -1096,7 +1106,7 @@
         </div>
 
         <div class="product-card card-rbx">
-          <div class="product-card-game"><img src="assets/000 Games/roblox logo.png" alt="Roblox"></div>
+          <div class="product-card-game"><img src="assets/000 Games/robux.png" alt="Roblox"></div>
           <div class="product-card-amount">900</div>
           <div class="product-card-unit">CT (Covered Tax)</div>
           <div class="product-card-price">₱ 350</div>
@@ -1105,7 +1115,7 @@
 
         <div class="product-card card-rbx">
           <div class="card-badge card-badge-best">Best Value</div>
-          <div class="product-card-game"><img src="assets/000 Games/roblox logo.png" alt="Roblox"></div>
+          <div class="product-card-game"><img src="assets/000 Games/robux.png" alt="Roblox"></div>
           <div class="product-card-amount">1,000</div>
           <div class="product-card-unit">CT (Covered Tax)</div>
           <div class="product-card-price">₱ 375</div>
@@ -1123,7 +1133,7 @@
       <div class="product-grid">
 
         <div class="product-card card-rbx">
-          <div class="product-card-game"><img src="assets/000 Games/roblox logo.png" alt="Roblox"></div>
+          <div class="product-card-game"><img src="assets/000 Games/robux.png" alt="Roblox"></div>
           <div class="product-card-amount">1</div>
           <div class="product-card-unit">Robux (R$) — per unit rate</div>
           <div class="product-card-price">₱ 0.36</div>
@@ -1133,7 +1143,7 @@
 
         <div class="product-card card-rbx">
           <div class="card-badge card-badge-popular">Popular</div>
-          <div class="product-card-game"><img src="assets/000 Games/roblox logo.png" alt="Roblox"></div>
+          <div class="product-card-game"><img src="assets/000 Games/robux.png" alt="Roblox"></div>
           <div class="product-card-amount">1,000</div>
           <div class="product-card-unit">Robux (R$) via Gifting</div>
           <div class="product-card-price">₱ 360</div>
@@ -1151,7 +1161,7 @@
       <div class="product-grid">
 
         <div class="product-card card-rbx">
-          <div class="product-card-game"><img src="assets/000 Games/roblox logo.png" alt="Roblox"></div>
+          <div class="product-card-game"><img src="assets/000 Games/robux.png" alt="Roblox"></div>
           <div class="product-card-amount">10</div>
           <div class="product-card-unit">Robux (R$) via Payout</div>
           <div class="product-card-price">₱ 5</div>
@@ -1159,7 +1169,7 @@
         </div>
 
         <div class="product-card card-rbx">
-          <div class="product-card-game"><img src="assets/000 Games/roblox logo.png" alt="Roblox"></div>
+          <div class="product-card-game"><img src="assets/000 Games/robux.png" alt="Roblox"></div>
           <div class="product-card-amount">50</div>
           <div class="product-card-unit">Robux (R$) via Payout</div>
           <div class="product-card-price">₱ 25</div>
@@ -1168,7 +1178,7 @@
 
         <div class="product-card card-rbx">
           <div class="card-badge card-badge-popular">Popular</div>
-          <div class="product-card-game"><img src="assets/000 Games/roblox logo.png" alt="Roblox"></div>
+          <div class="product-card-game"><img src="assets/000 Games/robux.png" alt="Roblox"></div>
           <div class="product-card-amount">100</div>
           <div class="product-card-unit">Robux (R$) via Payout</div>
           <div class="product-card-price">₱ 45</div>
@@ -1176,7 +1186,7 @@
         </div>
 
         <div class="product-card card-rbx">
-          <div class="product-card-game"><img src="assets/000 Games/roblox logo.png" alt="Roblox"></div>
+          <div class="product-card-game"><img src="assets/000 Games/robux.png" alt="Roblox"></div>
           <div class="product-card-amount">500</div>
           <div class="product-card-unit">Robux (R$) via Payout</div>
           <div class="product-card-price">₱ 200</div>
@@ -1185,7 +1195,7 @@
 
         <div class="product-card card-rbx">
           <div class="card-badge card-badge-best">Best Value</div>
-          <div class="product-card-game"><img src="assets/000 Games/roblox logo.png" alt="Roblox"></div>
+          <div class="product-card-game"><img src="assets/000 Games/robux.png" alt="Roblox"></div>
           <div class="product-card-amount">1,000</div>
           <div class="product-card-unit">Robux (R$) via Payout</div>
           <div class="product-card-price">₱ 360</div>
@@ -1400,7 +1410,7 @@
     const _u = localStorage.getItem('cinnamon_user');
     if (_u) {
       const el = document.getElementById('navUsername');
-      if (el) el.textContent = ', ' + _u + '~';
+      if (el) el.textContent = _u;
     }
   </script>
 
