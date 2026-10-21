@@ -1,4 +1,4 @@
-# Villarias Motors — Automotive Showcase & E-Commerce Platform
+# <img src="icons/sparkles.svg" width="28" height="28" align="center" /> Villarias Motors — Automotive Showcase & E-Commerce Platform
 
 <div align="center">
 
@@ -15,21 +15,22 @@
 
 ---
 
-## 🚗 Core Modules & Pages
+## <img src="icons/swatch.svg" width="22" height="22" align="center" /> Core Modules & Pages
 
-- **Interactive Vehicle Showcase (`index.html`):** Dynamic vehicle catalog with image carousels, specification breakdowns, and pricing badges.
-- **Client-Side Shopping Cart (`cart.html` & `js/cart.js`):** Persistent item management, quantity manipulation, live total calculation, and order review.
-- **Service & Maintenance Booking (`services.html`):** Online scheduling form for maintenance checkups, engine tuning, and detailing appointments.
-- **Customer Portal & Registration (`register.html`):** Responsive account creation with form validation and onboarding workflows.
-- **Company Profile & Leadership (`about.html` & `bio.html`):** Brand history, team qualifications, and customer mission statements.
-- **Inquiry & Feedback (`contact.html` & `thankyou.html`):** Contact channels, location details, and automated submission confirmation pages.
+- <img src="icons/window.svg" width="16" height="16" align="center" /> **Interactive Vehicle Showcase (`index.html`)** — Dynamic vehicle catalog with image carousels, specification breakdowns, and pricing badges.
+- <img src="icons/currency-dollar.svg" width="16" height="16" align="center" /> **Client-Side Shopping Cart (`cart.html` & `js/cart.js`)** — Persistent item management, quantity manipulation, live total calculation, and order review.
+- <img src="icons/wrench-screwdriver.svg" width="16" height="16" align="center" /> **Service & Maintenance Booking (`services.html`)** — Online scheduling form for maintenance checkups, engine tuning, and detailing appointments.
+- <img src="icons/user-group.svg" width="16" height="16" align="center" /> **Customer Portal & Registration (`register.html`)** — Responsive account creation with form validation and onboarding workflows.
+- <img src="icons/document-text.svg" width="16" height="16" align="center" /> **Company Profile & Leadership (`about.html` & `bio.html`)** — Brand history, team qualifications, and customer mission statements.
+- <img src="icons/globe-alt.svg" width="16" height="16" align="center" /> **Inquiry & Feedback (`contact.html` & `thankyou.html`)** — Contact channels, location details, and automated submission confirmation pages.
 
 ---
 
-## 📁 Repository Structure
+## <img src="icons/archive-box.svg" width="22" height="22" align="center" /> Repository Structure
 
 ```
 webdev-business-project/
+├── icons/                     # Tailwind Heroicons suite
 └── Project-Web-HTML/
     └── villarias-motors/
         ├── index.html         # Homepage & vehicle showcase
@@ -48,7 +49,7 @@ webdev-business-project/
 
 ---
 
-## 🚀 Running the Project
+## <img src="icons/rocket-launch.svg" width="22" height="22" align="center" /> Running the Project
 
 No build step or dependencies required. Open directly in any modern web browser or run using a lightweight static server:
 
@@ -67,6 +68,6 @@ python -m http.server 8000
 
 ---
 
-## 📄 License
+## <img src="icons/document-text.svg" width="22" height="22" align="center" /> License
 
 Proprietary © Medy Villarias. All rights reserved.
